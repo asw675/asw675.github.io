@@ -24,7 +24,7 @@
 
   
 
-  <title>SpringBoot学习 | ReasonLee</title>
+  <title>计算机网络：TCP常见问题 | ReasonLee</title>
 
   
 
@@ -102,20 +102,22 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">SpringBoot学习</h1>
+          <h1 class="title-wrap">计算机网络：TCP常见问题</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2021-12-18T01:20:12.000Z" itemprop="datePublished">2021-12-18</time>
+            <time  class="article-date" datetime="2021-12-31T15:20:33.000Z" itemprop="datePublished">2021-12-31</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/spring/">📒 spring</a></li>
+    <li><a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">📒 计算机网络</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/spring/">🏷️ spring</a></li>
+    <li><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">🏷️ 计算机网络</a></li>
+  
+    <li><a href="/tags/TCP/">🏷️ TCP</a></li>
   
 </ul>
         </div>
@@ -139,8 +141,31 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h4 id="Repository注解的作用："><a href="#Repository注解的作用：" class="headerlink" title="@Repository注解的作用："></a>@Repository注解的作用：</h4><h4 id="用在持久层的接口上，这个注解是将接口的一个实现类交给spring管理。"><a href="#用在持久层的接口上，这个注解是将接口的一个实现类交给spring管理。" class="headerlink" title="用在持久层的接口上，这个注解是将接口的一个实现类交给spring管理。"></a>用在持久层的接口上，这个注解是将接口的一个实现类交给spring管理。</h4><h4 id="Repository-value-”userDao”"><a href="#Repository-value-”userDao”" class="headerlink" title="@Repository(value=”userDao”)"></a>@Repository(value=”userDao”)</h4><p><strong>该注解是告诉Spring，让Spring创建一个名字叫“userDao”的UserDaoImpl实例。</strong></p>
-<p><strong>当Service需要使用Spring创建的名字叫“userDao”的UserDaoImpl实例时，就可以使用@Resource(name = “userDao”)注解告诉Spring，Spring把创建好的userDao注入给Service即可。</strong></p>
+        <h1 id="一些TCP常见的问题"><a href="#一些TCP常见的问题" class="headerlink" title="一些TCP常见的问题"></a>一些TCP常见的问题</h1><h2 id="TCP-与-UDP-在网络协议中的哪一层，他们之间有什么区别？"><a href="#TCP-与-UDP-在网络协议中的哪一层，他们之间有什么区别？" class="headerlink" title="TCP 与 UDP 在网络协议中的哪一层，他们之间有什么区别？"></a>TCP 与 UDP 在网络协议中的哪一层，他们之间有什么区别？</h2><h2 id="TCP-挥手时出现大量-CLOSE-WAIT-或-TIME-WAIT-怎么解决？"><a href="#TCP-挥手时出现大量-CLOSE-WAIT-或-TIME-WAIT-怎么解决？" class="headerlink" title="TCP 挥手时出现大量 CLOSE_WAIT 或 TIME_WAIT 怎么解决？"></a>TCP 挥手时出现大量 CLOSE_WAIT 或 TIME_WAIT 怎么解决？</h2><h2 id="TCP-的-keepalive-了解吗？说一说它和-HTTP-的-keepalive-的区别？"><a href="#TCP-的-keepalive-了解吗？说一说它和-HTTP-的-keepalive-的区别？" class="headerlink" title="TCP 的 keepalive 了解吗？说一说它和 HTTP 的 keepalive 的区别？"></a>TCP 的 keepalive 了解吗？说一说它和 HTTP 的 keepalive 的区别？</h2><h2 id="简述-TCP-协议的延迟-ACK-和累计应答"><a href="#简述-TCP-协议的延迟-ACK-和累计应答" class="headerlink" title="简述 TCP 协议的延迟 ACK 和累计应答"></a>简述 TCP 协议的延迟 ACK 和累计应答</h2><h2 id="简述-TCP-半连接发生场景"><a href="#简述-TCP-半连接发生场景" class="headerlink" title="简述 TCP 半连接发生场景"></a>简述 TCP 半连接发生场景</h2><h2 id="什么是-SYN-flood，如何防止这类攻击？"><a href="#什么是-SYN-flood，如何防止这类攻击？" class="headerlink" title="什么是 SYN flood，如何防止这类攻击？"></a>什么是 SYN flood，如何防止这类攻击？</h2><p>​    <strong>客户端不断进行请求链接会怎样？</strong></p>
+<p>服务器端准备为每个请求创建一个链接，并向其发送确认报文，然后等待客户端进行确认后创建。如果此时客户端一直不确认，会造成 SYN 攻击，即：</p>
+<p>SYN 攻击，英文为 SYN Flood ，是一种典型的 DoS/DDoS 攻击。</p>
+<ul>
+<li>1、客户端向服务端发送请求连接数据包。</li>
+<li>2、服务端向客户端发送确认数据包。</li>
+<li>3、客户端不向服务端发送确认数据包，服务器一直等待来自客户端的确认。</li>
+</ul>
+<p>这是这一步！！！</p>
+<p>🚀 如何检测 SYN 攻击？检测 SYN 攻击非常的方便，当你在服务器上看到大量的半连接状态时，特别是源 IP 地址是随机的，基本上可以断定这是一次 SYN 攻击。在 Linux/Unix 上可以使用系统自带的 netstat 命令来检测 SYN 攻击。</p>
+<p>🚀 怎么解决 SYN 攻击呢？答案是<strong>只能预防</strong>，没有彻底根治的办法，除非不使用 TCP 。方式如下：</p>
+<ul>
+<li><p>1、限制同时打开 SYN 半链接的数目</p>
+</li>
+<li><p>2、缩短 SYN 半链接的 Timeout 时间</p>
+</li>
+<li><p>3、关闭不必要的服务。</p>
+</li>
+<li><p>4、增加最大半连接数。</p>
+</li>
+<li><p>5、过滤网关防护。</p>
+</li>
+<li><p>6、<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/SYN_cookie">SYN cookie</a> 技术。</p>
+</li>
+</ul>
 
       </section>
 
@@ -148,28 +173,14 @@
       
         <nav class="article-nav">
           
-            <div class="article-nav-item layout-padding">
-  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
-    
-    <div class="card-text">
-      
-        <a href="/2021/12/260920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">操作系统：什么是大端序和小端序</h2>
-        </a>
-      
-      <div class="card-text--row">Newer</div>
-    </div>
-  </article>
-</div>
-          
           
             <div class="article-nav-item layout-padding">
   <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
     
     <div class="card-text">
       
-        <a href="/2021/12/010920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">健身餐</h2>
+        <a href="/2021/12/310920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">计算机网络：详解TCP协议</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -238,7 +249,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-%E4%B8%8E-UDP-%E5%9C%A8%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E4%B8%AD%E7%9A%84%E5%93%AA%E4%B8%80%E5%B1%82%EF%BC%8C%E4%BB%96%E4%BB%AC%E4%B9%8B%E9%97%B4%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">TCP 与 UDP 在网络协议中的哪一层，他们之间有什么区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-%E6%8C%A5%E6%89%8B%E6%97%B6%E5%87%BA%E7%8E%B0%E5%A4%A7%E9%87%8F-CLOSE-WAIT-%E6%88%96-TIME-WAIT-%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">TCP 挥手时出现大量 CLOSE_WAIT 或 TIME_WAIT 怎么解决？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-%E7%9A%84-keepalive-%E4%BA%86%E8%A7%A3%E5%90%97%EF%BC%9F%E8%AF%B4%E4%B8%80%E8%AF%B4%E5%AE%83%E5%92%8C-HTTP-%E7%9A%84-keepalive-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">TCP 的 keepalive 了解吗？说一说它和 HTTP 的 keepalive 的区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0-TCP-%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%BB%B6%E8%BF%9F-ACK-%E5%92%8C%E7%B4%AF%E8%AE%A1%E5%BA%94%E7%AD%94"><span class="toc-number">4.</span> <span class="toc-text">简述 TCP 协议的延迟 ACK 和累计应答</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0-TCP-%E5%8D%8A%E8%BF%9E%E6%8E%A5%E5%8F%91%E7%94%9F%E5%9C%BA%E6%99%AF"><span class="toc-number">5.</span> <span class="toc-text">简述 TCP 半连接发生场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-SYN-flood%EF%BC%8C%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E8%BF%99%E7%B1%BB%E6%94%BB%E5%87%BB%EF%BC%9F"><span class="toc-number">6.</span> <span class="toc-text">什么是 SYN flood，如何防止这类攻击？</span></a></li></ol>
   </div>
 </section>
 
