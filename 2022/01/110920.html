@@ -24,7 +24,7 @@
 
   
 
-  <title>移动端IM通讯选用什么协议？ | ReasonLee</title>
+  <title>HTTP和HTTPS的区别 | ReasonLee</title>
 
   
 
@@ -102,22 +102,20 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">移动端IM通讯选用什么协议？</h1>
+          <h1 class="title-wrap">HTTP和HTTPS的区别</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-01-10T01:20:14.000Z" itemprop="datePublished">2022-01-10</time>
+            <time  class="article-date" datetime="2022-01-11T01:20:14.000Z" itemprop="datePublished">2022-01-11</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/IM/">📒 IM</a></li>
+    <li><a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">📒 计算机网络</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
     <li><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">🏷️ 计算机网络</a></li>
-  
-    <li><a href="/tags/IM/">🏷️ IM</a></li>
   
 </ul>
         </div>
@@ -141,10 +139,17 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <p>现在的移动端IM、推送系统，既面对移动互联网的不确定性，又面对智能终端频繁的系统休眠、网络切换，还要考虑服务端的承载成本，对于在线服务而言UDP是比TCP更适合的方式。但是由于数据完整性、安全性的需要，又不应完全放弃TCP的可靠与安全。</p>
-<p>所以，个人认为，更恰当的方式应该是：两种通信协议同时使用，各有侧重。UDP用于保持大量终端的在线与控制，应用与业务则通过TCP去实现。这个和FTP服务控制与数据分离，采取不同的连接，有异曲同工之处。</p>
-<p>事实上，这个也是即时通讯巨头QQ所采用的方式。早期的时候，QQ还是主要使用TCP协议，而后来就转向了采用UDP的方式来保持在线，TCP的方式来上传和下载数据。现在，UDP是QQ的默认工作方式，表现良好。相信这个也被沿用到了微信上。</p>
-<p>简单的考证：登录PC版QQ，关闭多余的QQ窗口只留下主窗口，并将其最小化。几分钟过后，查看系统网络连接，会发现QQ进程已不保有任何TCP连接，但有UDP网络活动。这时在发送聊天信息，或者打开其他窗口和功能，将发现QQ进程会启用TCP连接。</p>
+        <h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>一、HTTPS协议需要到证书颁发机构CA申请证书，HTTP不用申请证书；</p>
+<p>二、HTTP是超文本传输协议，属于应用层信息传输，HTTPS 则是具有SSL加密传安全性传输协议，对数据的传输进行加密，相当于HTTP的升级版；</p>
+<p>三、HTTP和HTTPS使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</p>
+<p>四、HTTP的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比HTTP协议安全。</p>
+<h2 id="HTTPS加密流程"><a href="#HTTPS加密流程" class="headerlink" title="HTTPS加密流程"></a>HTTPS加密流程</h2><p>HTTPS是通过SSL(安全套接层)和TLS(安全传输协议)的组合使用，加密TCP载荷即HTTP报文内容，同时通过不对称密钥方式认证身份，保证传输的安全可靠</p>
+<p><img src="https://img2018.cnblogs.com/blog/1685507/201911/1685507-20191101104105058-2077044780.png" alt="img"></p>
+<h4 id="数字证书认证"><a href="#数字证书认证" class="headerlink" title="数字证书认证"></a>数字证书认证</h4><p>由于公钥在下发的时候也容易被替换劫持，所以需要个第三方认证机构确认公钥的正确性</p>
+<p>CA：数字证书认证机构，是客户端服务端都认可的第三方机构，负责数字签名服务端公钥</p>
+<p>数字签名：签名就是一种证明身份的机制，是一种校验机制（简单说是用私钥加密内容的hash,公钥解密对比hash判断内容是否完整）</p>
+<p>数字证书：由一个可信的组织验证和签发的识别信息</p>
+<p><img src="https://img2018.cnblogs.com/blog/1685507/201911/1685507-20191101132559652-1495242555.png" alt="img"></p>
 
       </section>
 
@@ -157,8 +162,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/101320.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">计算机网络：输入URL到页面展示全过程</h2>
+        <a href="/2022/01/111620.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">UDP总览</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -172,8 +177,8 @@
     
     <div class="card-text">
       
-        <a href="/2021/12/312320.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">计算机网络：TCP常见问题</h2>
+        <a href="/2022/01/110428.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">(no title)</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -242,7 +247,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS%E5%8A%A0%E5%AF%86%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">HTTPS加密流程</span></a></li></ol>
   </div>
 </section>
 
