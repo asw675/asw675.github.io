@@ -24,7 +24,7 @@
 
   
 
-  <title>ReasonLee</title>
+  <title>HTTP总览 | ReasonLee</title>
 
   
 
@@ -102,16 +102,20 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap"></h1>
+          <h1 class="title-wrap">HTTP总览</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-01-10T20:28:49.806Z" itemprop="datePublished">2022-01-11</time>
+            <time  class="article-date" datetime="2022-01-11T07:20:14.000Z" itemprop="datePublished">2022-01-11</time>
           </h2>
           <ul class="wrap-list dark">
   
+    <li><a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">📒 计算机网络</a></li>
+  
 </ul>
           <ul class="wrap-list dark">
+  
+    <li><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">🏷️ 计算机网络</a></li>
   
 </ul>
         </div>
@@ -135,7 +139,144 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        
+        <p><img src="https://upload-images.jianshu.io/upload_images/12603307-27e3bf8fde18f443.png?imageMogr2/auto-orient/strip%7CimageView2/2/format/webp" alt="img"></p>
+<h2 id="HTTP请求报文"><a href="#HTTP请求报文" class="headerlink" title="HTTP请求报文"></a>HTTP请求报文</h2><ul>
+<li>1是请求方法,GET和POST是最常见的HTTP方法,初次以外还包括 DELETE、HEAD、OPTIONS、PUT、TRACE，不过现在大部分的浏览器只支持GET和POST</li>
+<li>2是请求对应的URL地址,他和报文头的Host属性,组合起来是一个完整的请求URL</li>
+<li>3是协议民称和版本号</li>
+<li>4是报文头,有若干个属性,形式为key:val,服务端据此获取客户端信息</li>
+<li>5是报文体,它将一个页面表单中的组件值通过param1=val1&amp;parma=2的键值对形式编码成一个格式化串,它承载多个请求参数的数据,不但报文头可以传递请求参数,URL也可以通过/chapter15/user.html? param1=value1&amp;param2=value2”的方式传递数值</li>
+</ul>
+<h2 id="HTTP响应报文"><a href="#HTTP响应报文" class="headerlink" title="HTTP响应报文"></a>HTTP响应报文</h2><p><img src="https://upload-images.jianshu.io/upload_images/12603307-cf75b41f632499a3.png" alt="img"></p>
+<ul>
+<li>1报文协议及版本；</li>
+<li>2状态码及状态描述；</li>
+<li>3响应报文头，也是由多个属性组成；</li>
+<li>4响应报文体，即我们要的数据。</li>
+</ul>
+<h2 id="GET-和-POST-的区别？"><a href="#GET-和-POST-的区别？" class="headerlink" title="GET 和 POST 的区别？"></a><strong>GET 和 POST 的区别？</strong></h2><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>数据位置</th>
+<th>明文密文</th>
+<th>数据安全</th>
+<th>长度限制</th>
+<th>应用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td>HTTP 请求的 path 中</td>
+<td>明文</td>
+<td>不安全</td>
+<td>长度较小，一般 2k</td>
+<td>查询数据</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>HTTP 请求 body 中</td>
+<td>可明可密</td>
+<td>安全</td>
+<td>支持较大数据传输</td>
+<td>修改数据</td>
+</tr>
+</tbody></table>
+<ul>
+<li><ul>
+<li>对于 GET 方式的请求，浏览器会把 HTTP header 和 data 一并发送出去，服务器响应 200（返回数据）。</li>
+<li>而对于 POST，浏览器先发送 header ，服务器响应 100 continue ，浏览器再发送 data ，服务器响应 200 ok（返回数据）。</li>
+</ul>
+</li>
+</ul>
+<p>也就是说，GET 只需要汽车跑一趟就把货送到了，而 POS T得跑两趟，第一趟，先去和服务器打个招呼“嗨，我等下要送一批货来，你们打开门迎接我”，然后再回头把货送过去。</p>
+<p>ps：不过要注意，POST 具体发几次，也和浏览器的实现有关系。例如：Firefox 只发一次。</p>
+<p>ps2：据研究，在网络环境好的情况下，发一次包的时间和发两次包的时间差别基本可以无视。而在网络环境差的情况下，两次包的 TCP 在验证数据包完整性上，有非常大的优点。</p>
+<h2 id="HTTP-有哪些状态码？"><a href="#HTTP-有哪些状态码？" class="headerlink" title="HTTP 有哪些状态码？"></a><strong>HTTP 有哪些状态码？</strong></h2><ul>
+<li><p>1×× : 请求处理中，请求已被接受，正在处理</p>
+</li>
+<li><p>2×× : 请求成功，请求被成功处理</p>
+</li>
+<li><ul>
+<li>200 OK // 客户端请求成功</li>
+</ul>
+</li>
+<li><p>3×× : 重定向，要完成请求必须进行进一步处理</p>
+</li>
+<li><ul>
+<li>301 Moved Permanently // 永久重定向,使用域名跳转</li>
+<li>302 Found // 临时重定向,未登陆的用户访问用户中心重定向到登录页面</li>
+</ul>
+</li>
+<li><p>4×× : 客户端错误，请求不合法</p>
+</li>
+<li><ul>
+<li>400 Bad Request // 客户端请求有语法错误，不能被服务器所理解</li>
+<li>401 Unauthorized // 请求未经授权，这个状态代码必须和 WWW-Authenticate 报头域一起使用</li>
+<li>403 Forbidden // 服务器收到请求，但是拒绝提供服务</li>
+<li>404 Not Found // 请求资源不存在，eg：输入了错误的 URL</li>
+</ul>
+</li>
+<li><p>5×× : 服务器端错误，服务器不能处理合法请求</p>
+</li>
+<li><ul>
+<li>500 Internal Server Error // 服务器发生不可预期的错误</li>
+<li>503 Server Unavailable // 服务器当前不能处理客户端的请求，一段时间后可能恢复正常</li>
+</ul>
+</li>
+<li></li>
+</ul>
+<h2 id="HTTP1-0-和-HTTP1-1-有什么区别？"><a href="#HTTP1-0-和-HTTP1-1-有什么区别？" class="headerlink" title="HTTP1.0 和 HTTP1.1 有什么区别？"></a><strong>HTTP1.0 和 HTTP1.1 有什么区别？</strong></h2><p>主要是如下 8 点：</p>
+<ul>
+<li><p>1、可扩展性</p>
+</li>
+<li><p>2、缓存</p>
+</li>
+<li><p>3、带宽优化</p>
+</li>
+<li><p>【最重要】4、长连接</p>
+</li>
+<li><p>5、消息传递</p>
+</li>
+<li><p>6、Host 头域</p>
+</li>
+<li><p>7、错误提示</p>
+</li>
+<li><p>8、内容协商</p>
+</li>
+</ul>
+<p>HTTP1.1 支持长连接（PersistentConnection）和请求的流水线（Pipelining）。</p>
+<ul>
+<li>长连接（PersistentConnection）：处理在一个 TCP 连接上可以传送多个 HTTP 请求和响应，减少了建立和关闭连接的消耗和延迟。在 HTTP1.1中 默认开启Connection：keep-alive ，一定程度上弥补了 HTTP1.0 每次请求都要创建连接的缺点。</li>
+<li>请求的流水线（Pipelining）：HTTP1.1 还允许客户端不用等待上一次请求结果返回，就可以发出下一次请求，但服务器端必须按照接收到客户端请求的先后顺序依次回送响应结果，以保证客户端能够区分出每次请求的响应内容，这样也显著地减少了整个下载过程所需要的时间。</li>
+</ul>
+<h2 id="HTTP2"><a href="#HTTP2" class="headerlink" title="HTTP2"></a>HTTP2</h2><p><img src="https://s4.ax1x.com/2022/01/11/7ZGR4U.jpg" alt="7ZGR4U.jpg"></p>
+<h2 id="HTTP2-0-的多路复用和-HTTP1-X-中的长连接复用有什么区别？"><a href="#HTTP2-0-的多路复用和-HTTP1-X-中的长连接复用有什么区别？" class="headerlink" title="HTTP2.0 的多路复用和 HTTP1.X 中的长连接复用有什么区别？"></a><strong>HTTP2.0 的多路复用和 HTTP1.X 中的长连接复用有什么区别？</strong></h2><ul>
+<li>HTTP/1.0：一次请求-响应，建立一个连接，用完关闭；每一个请求都要建立一个连接。</li>
+<li>HTTP/1.1：Pipeling 解决方式为，若干个请求排队串行化单线程处理，后面的请求等待前面请求的返回才能获得执行机会。一旦有某请求超时等，后续请求只能被阻塞，毫无办法，也就是人们常说的线头阻塞。</li>
+<li>HTTP/2：多个请求可同时在一个连接上并行执行。某个请求任务耗时严重，不会影响到其它连接的正常执行。</li>
+</ul>
+<h2 id="HTTP-3-0-QUIC"><a href="#HTTP-3-0-QUIC" class="headerlink" title="HTTP 3.0 (QUIC)"></a>HTTP 3.0 (QUIC)</h2><p>QUIC (Quick UDP Internet Connections), 快速 UDP 互联网连接。<br>QUIC是基于UDP协议的。</p>
+<p>两个主要特性：</p>
+<p><strong>（1）线头阻塞(HOL)问题的解决更为彻底：</strong><br>基于TCP的HTTP/2，尽管从逻辑上来说，不同的流之间相互独立，不会相互影响，但在实际传输方面，数据还是要一帧一帧的发送和接收，一旦某一个流的数据有丢包，则同样会阻塞在它之后传输的流数据传输。而基于UDP的QUIC协议则可以更为彻底地解决这样的问题，让不同的流之间真正的实现相互独立传输，互不干扰。</p>
+<p><strong>（2）切换网络时的连接保持：</strong><br>当前移动端的应用环境，用户的网络可能会经常切换，比如从办公室或家里出门，WiFi断开，网络切换为3G或4G。基于TCP的协议，由于切换网络之后，IP会改变，因而之前的连接不可能继续保持。而基于UDP的QUIC协议，则可以内建与TCP中不同的连接标识方法，从而在网络完成切换之后，恢复之前与服务器的连接。</p>
+<p><strong>解决队头阻塞问题</strong></p>
+<p>队头阻塞 Head-of-line blocking（缩写为HOL blocking）是计算机网络中是一种性能受限的现象，通俗来说就是：一个数据包影响了一堆数据包，它不来大家都走不了。</p>
+<p>队头阻塞问题可能存在于HTTP层和TCP层，在HTTP1.x时两个层次都存在该问题。</p>
+<p><img src="https://pics0.baidu.com/feed/03087bf40ad162d938cfbf693d36eeeb8b13cd97.png?token=97a9db452ed8c54cc5de12640f9aa87f" alt="img"></p>
+<p>HTTP2.0协议的多路复用机制解决了HTTP层的队头阻塞问题，但是在TCP层仍然存在队头阻塞问题。</p>
+<p>TCP协议在收到数据包之后，这部分数据可能是乱序到达的，但是TCP必须将所有数据收集排序整合后给上层使用，如果其中某个包丢失了，就必须等待重传，从而出现某个丢包数据阻塞整个连接的数据使用。</p>
+<p>QUIC协议是基于UDP协议实现的，在一条链接上可以有多个流，流与流之间是互不影响的，当一个流出现丢包影响范围非常小，从而解决队头阻塞问题。</p>
+<h3 id="首次连接"><a href="#首次连接" class="headerlink" title="首次连接"></a>首次连接</h3><p><img src="https://pics3.baidu.com/feed/58ee3d6d55fbb2fb89e29f597ca367a34423dca5.png?token=33387191c5f938a3ac0b3047df294640" alt="img"></p>
+<h3 id="非首次连接"><a href="#非首次连接" class="headerlink" title="非首次连接"></a>非首次连接</h3><p>前面提到客户端和服务端首次连接时服务端传递了config包，里面包含了服务端公钥和两个随机数，客户端会将config存储下来，后续再连接时可以直接使用，从而跳过这个1RTT，实现0RTT的业务数据交互。</p>
+<p>客户端保存config是有时间期限的，在config失效之后仍然需要进行首次连接时的密钥交换。</p>
+<h3 id="优化连接迁移"><a href="#优化连接迁移" class="headerlink" title="优化连接迁移"></a><strong>优化连接迁移</strong></h3><p>网络切换几乎无时无刻不在发生。</p>
+<p>TCP协议使用五元组来表示一条唯一的连接，当我们从4G环境切换到wifi环境时，手机的IP地址就会发生变化，这时必须创建新的TCP连接才能继续传输数据。</p>
+<p>QUIC协议基于UDP实现摒弃了五元组的概念，使用64位的随机数作为连接的ID，并使用该ID表示连接。</p>
+<p>基于QUIC协议之下，我们在日常wifi和4G切换时，或者不同基站之间切换都不会重连，从而提高业务层的体验。</p>
+<p><img src="https://pics3.baidu.com/feed/42166d224f4a20a4d314257ea2bbdf25730ed075.png?token=8eba73bfd91f85bf31ea6c30f52ea103" alt="img"></p>
+<p>- </p>
+
       </section>
 
       
@@ -147,8 +288,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/110920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">HTTP和HTTPS的区别</h2>
+        <a href="/2022/01/111620.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">UDP总览</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -162,8 +303,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/101920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">IM心跳是怎么回事</h2>
+        <a href="/2022/01/110920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">HTTP和HTTPS的区别</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -224,6 +365,18 @@
 </section>
 
       
+<section class="widget-toc widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-toc" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M134.50666666 767.46666668H460.8c27.73333333 0 50.24000001 22.50666668 50.24000001 50.23999999v50.13333333c0 27.73333333-22.50666668 50.24000001-50.24000001 50.24000001H134.50666666c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.24000001v-50.13333333c0.10666668-27.73333333 22.50666668-50.24000001 50.24000001-50.24000001zM84.37333332 541.65333333h326.18666669c27.73333333 0 50.24000001 22.39999999 50.23999999 50.13333334v50.24000001c0 27.73333333-22.50666668 50.24000001-50.24000002 50.23999999H84.37333332c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.23999999v-50.24000001c0-27.73333333 22.50666668-50.13333334 50.24000001-50.13333334zM134.50666666 315.83999999H460.8c27.73333333 0 50.24000001 22.50666668 50.24000001 50.24000001v50.24000001c0 27.73333333-22.50666668 50.13333334-50.24000001 50.13333333H134.50666666c-27.73333333 0-50.24000001-22.39999999-50.23999999-50.13333333v-50.24000001c0.10666668-27.84000001 22.50666668-50.24000001 50.24000001-50.23999999zM209.81333332 89.91999999h326.18666671c27.73333333 0 50.24000001 22.39999999 50.23999997 50.13333335v50.23999999c0 27.73333333-22.50666668 50.24000001-50.24000001 50.24000001H209.81333332c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.24000001v-50.24000001c0-27.73333333 22.50666668-50.13333334 50.24000001-50.13333333zM692.05333333 623.36l274.66666669 176.00000002c23.36000001 14.93333333 30.08 45.97333334 15.14666666 69.33333332L954.77333334 910.93333333c-14.93333333 23.25333334-45.97333334 30.08-69.33333335 15.14666667l-274.66666666-176c-23.36000001-14.93333333-30.08-45.97333334-15.14666667-69.33333333l27.09333334-42.24000001c14.93333333-23.36000001 46.08000001-30.08 69.33333333-15.14666666z" fill="currentColor"></path>
+</svg>
+    <span>TOC</span>
+  </div>
+  <div class="widget-body">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87"><span class="toc-number">1.</span> <span class="toc-text">HTTP请求报文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP%E5%93%8D%E5%BA%94%E6%8A%A5%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">HTTP响应报文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GET-%E5%92%8C-POST-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">GET 和 POST 的区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-%E6%9C%89%E5%93%AA%E4%BA%9B%E7%8A%B6%E6%80%81%E7%A0%81%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">HTTP 有哪些状态码？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP1-0-%E5%92%8C-HTTP1-1-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">HTTP1.0 和 HTTP1.1 有什么区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP2"><span class="toc-number">6.</span> <span class="toc-text">HTTP2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP2-0-%E7%9A%84%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E5%92%8C-HTTP1-X-%E4%B8%AD%E7%9A%84%E9%95%BF%E8%BF%9E%E6%8E%A5%E5%A4%8D%E7%94%A8%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">7.</span> <span class="toc-text">HTTP2.0 的多路复用和 HTTP1.X 中的长连接复用有什么区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-3-0-QUIC"><span class="toc-number">8.</span> <span class="toc-text">HTTP 3.0 (QUIC)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E6%AC%A1%E8%BF%9E%E6%8E%A5"><span class="toc-number">8.1.</span> <span class="toc-text">首次连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E9%A6%96%E6%AC%A1%E8%BF%9E%E6%8E%A5"><span class="toc-number">8.2.</span> <span class="toc-text">非首次连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E8%BF%9E%E6%8E%A5%E8%BF%81%E7%A7%BB"><span class="toc-number">8.3.</span> <span class="toc-text">优化连接迁移</span></a></li></ol></li></ol>
+  </div>
+</section>
+
 
       
 <section class="widet-notice widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
@@ -275,7 +428,7 @@
       
         <li class="categorys-list-item">
           <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-            计算机网络 (6)
+            计算机网络 (7)
           </a>
         </li>
       
