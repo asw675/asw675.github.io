@@ -139,7 +139,7 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <p><img src="https://upload-images.jianshu.io/upload_images/12603307-27e3bf8fde18f443.png?imageMogr2/auto-orient/strip%7CimageView2/2/format/webp" alt="img"></p>
+        <p>[<img src="https://s4.ax1x.com/2022/01/11/7ZN9bR.png" alt="7ZN9bR.png"></p>
 <h2 id="HTTP请求报文"><a href="#HTTP请求报文" class="headerlink" title="HTTP请求报文"></a>HTTP请求报文</h2><ul>
 <li>1是请求方法,GET和POST是最常见的HTTP方法,初次以外还包括 DELETE、HEAD、OPTIONS、PUT、TRACE，不过现在大部分的浏览器只支持GET和POST</li>
 <li>2是请求对应的URL地址,他和报文头的Host属性,组合起来是一个完整的请求URL</li>
@@ -147,7 +147,7 @@
 <li>4是报文头,有若干个属性,形式为key:val,服务端据此获取客户端信息</li>
 <li>5是报文体,它将一个页面表单中的组件值通过param1=val1&amp;parma=2的键值对形式编码成一个格式化串,它承载多个请求参数的数据,不但报文头可以传递请求参数,URL也可以通过/chapter15/user.html? param1=value1&amp;param2=value2”的方式传递数值</li>
 </ul>
-<h2 id="HTTP响应报文"><a href="#HTTP响应报文" class="headerlink" title="HTTP响应报文"></a>HTTP响应报文</h2><p><img src="https://upload-images.jianshu.io/upload_images/12603307-cf75b41f632499a3.png" alt="img"></p>
+<h2 id="HTTP响应报文"><a href="#HTTP响应报文" class="headerlink" title="HTTP响应报文"></a>HTTP响应报文</h2><p><img src="https://s4.ax1x.com/2022/01/11/7ZNpr9.png" alt="7ZNpr9.png"></p>
 <ul>
 <li>1报文协议及版本；</li>
 <li>2状态码及状态描述；</li>
@@ -263,19 +263,18 @@
 <p><strong>解决队头阻塞问题</strong></p>
 <p>队头阻塞 Head-of-line blocking（缩写为HOL blocking）是计算机网络中是一种性能受限的现象，通俗来说就是：一个数据包影响了一堆数据包，它不来大家都走不了。</p>
 <p>队头阻塞问题可能存在于HTTP层和TCP层，在HTTP1.x时两个层次都存在该问题。</p>
-<p><img src="https://pics0.baidu.com/feed/03087bf40ad162d938cfbf693d36eeeb8b13cd97.png?token=97a9db452ed8c54cc5de12640f9aa87f" alt="img"></p>
+<p><img src="https://s4.ax1x.com/2022/01/11/7Ztj8U.png" alt="7Ztj8U.png"></p>
 <p>HTTP2.0协议的多路复用机制解决了HTTP层的队头阻塞问题，但是在TCP层仍然存在队头阻塞问题。</p>
 <p>TCP协议在收到数据包之后，这部分数据可能是乱序到达的，但是TCP必须将所有数据收集排序整合后给上层使用，如果其中某个包丢失了，就必须等待重传，从而出现某个丢包数据阻塞整个连接的数据使用。</p>
 <p>QUIC协议是基于UDP协议实现的，在一条链接上可以有多个流，流与流之间是互不影响的，当一个流出现丢包影响范围非常小，从而解决队头阻塞问题。</p>
-<h3 id="首次连接"><a href="#首次连接" class="headerlink" title="首次连接"></a>首次连接</h3><p><img src="https://pics3.baidu.com/feed/58ee3d6d55fbb2fb89e29f597ca367a34423dca5.png?token=33387191c5f938a3ac0b3047df294640" alt="img"></p>
+<h3 id="首次连接"><a href="#首次连接" class="headerlink" title="首次连接"></a>首次连接</h3><p><img src="https://s4.ax1x.com/2022/01/11/7ZNSKJ.png" alt="7ZNSKJ.png"></p>
 <h3 id="非首次连接"><a href="#非首次连接" class="headerlink" title="非首次连接"></a>非首次连接</h3><p>前面提到客户端和服务端首次连接时服务端传递了config包，里面包含了服务端公钥和两个随机数，客户端会将config存储下来，后续再连接时可以直接使用，从而跳过这个1RTT，实现0RTT的业务数据交互。</p>
 <p>客户端保存config是有时间期限的，在config失效之后仍然需要进行首次连接时的密钥交换。</p>
 <h3 id="优化连接迁移"><a href="#优化连接迁移" class="headerlink" title="优化连接迁移"></a><strong>优化连接迁移</strong></h3><p>网络切换几乎无时无刻不在发生。</p>
 <p>TCP协议使用五元组来表示一条唯一的连接，当我们从4G环境切换到wifi环境时，手机的IP地址就会发生变化，这时必须创建新的TCP连接才能继续传输数据。</p>
 <p>QUIC协议基于UDP实现摒弃了五元组的概念，使用64位的随机数作为连接的ID，并使用该ID表示连接。</p>
 <p>基于QUIC协议之下，我们在日常wifi和4G切换时，或者不同基站之间切换都不会重连，从而提高业务层的体验。</p>
-<p><img src="https://pics3.baidu.com/feed/42166d224f4a20a4d314257ea2bbdf25730ed075.png?token=8eba73bfd91f85bf31ea6c30f52ea103" alt="img"></p>
-<p>- </p>
+<p><img src="https://s4.ax1x.com/2022/01/11/7Ztxv4.png" alt="7Ztxv4.png"></p>
 
       </section>
 
