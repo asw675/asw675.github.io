@@ -24,7 +24,7 @@
 
   
 
-  <title>SpringBoot学习 | ReasonLee</title>
+  <title>JAVA：Hashmap和ConcurrentHashmap实现原理 | ReasonLee</title>
 
   
 
@@ -102,20 +102,22 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">SpringBoot学习</h1>
+          <h1 class="title-wrap">JAVA：Hashmap和ConcurrentHashmap实现原理</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2021-12-18T01:20:12.000Z" itemprop="datePublished">2021-12-18</time>
+            <time  class="article-date" datetime="2022-01-16T01:20:12.000Z" itemprop="datePublished">2022-01-16</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/spring/">📒 spring</a></li>
+    <li><a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">📒 JAVA基础</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/spring/">🏷️ spring</a></li>
+    <li><a href="/tags/JAVA%E9%9B%86%E5%90%88/">🏷️ JAVA集合</a></li>
+  
+    <li><a href="/tags/JAVA%E5%9F%BA%E7%A1%80/">🏷️ JAVA基础</a></li>
   
 </ul>
         </div>
@@ -139,8 +141,56 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h4 id="Repository注解的作用："><a href="#Repository注解的作用：" class="headerlink" title="@Repository注解的作用："></a>@Repository注解的作用：</h4><h4 id="用在持久层的接口上，这个注解是将接口的一个实现类交给spring管理。"><a href="#用在持久层的接口上，这个注解是将接口的一个实现类交给spring管理。" class="headerlink" title="用在持久层的接口上，这个注解是将接口的一个实现类交给spring管理。"></a>用在持久层的接口上，这个注解是将接口的一个实现类交给spring管理。</h4><h4 id="Repository-value-”userDao”"><a href="#Repository-value-”userDao”" class="headerlink" title="@Repository(value=”userDao”)"></a>@Repository(value=”userDao”)</h4><p><strong>该注解是告诉Spring，让Spring创建一个名字叫“userDao”的UserDaoImpl实例。</strong></p>
-<p><strong>当Service需要使用Spring创建的名字叫“userDao”的UserDaoImpl实例时，就可以使用@Resource(name = “userDao”)注解告诉Spring，Spring把创建好的userDao注入给Service即可。</strong></p>
+        <h2 id="Hashmap为什么线程不安全"><a href="#Hashmap为什么线程不安全" class="headerlink" title="Hashmap为什么线程不安全"></a>Hashmap为什么线程不安全</h2><p>首先HashMap是<strong>线程不安全</strong>的，其主要体现：</p>
+<p>#1.在jdk1.7中，在多线程环境下，扩容时会造成环形链或数据丢失。</p>
+<p>#2.在jdk1.8中，在多线程环境下，会发生数据覆盖的情况。</p>
+<p>这是jdk1.8中HashMap中put操作的主函数， 注意第6行代码，如果没有hash碰撞则会直接插入元素。如果线程A和线程B同时进行put操作，刚好这两条不同的数据hash值一样，并且该位置数据为null，所以这线程A、B都会进入第6行代码中。假设一种情况，线程A进入后还未进行数据插入时挂起，而线程B正常执行，从而正常插入数据，然后线程A获取CPU时间片，此时线程A不用再进行hash判断了，问题出现：线程A会把线程B插入的数据给<strong>覆盖</strong>，发生线程不安全。</p>
+<h2 id="红黑树的特性"><a href="#红黑树的特性" class="headerlink" title="红黑树的特性:"></a><strong>红黑树的特性</strong>:</h2><p><strong>（1）每个节点或者是黑色，或者是红色。</strong><br><strong>（2）根节点是黑色。</strong><br><strong>（3）每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！]</strong><br><strong>（4）如果一个节点是红色的，则它的子节点必须是黑色的。</strong><br><strong>（5）从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点。</strong></p>
+<p>插入的节点默认是红色节点，所以此时插入一个节点只有可能违反特性（4），所以需要进行旋转和染色操作使其重新变为一颗红黑树</p>
+<h2 id="HashTable"><a href="#HashTable" class="headerlink" title="HashTable"></a>HashTable</h2><p>线程安全，但是他在对数据操作的时候都会上锁，所以效率比较低下。</p>
+<p>Hashtable 是不允许键或值为 null 的，HashMap 的键值则都可以为 null。</p>
+<p>这是因为Hashtable使用的是<strong>安全失败机制（<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=fail-safe&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1025809537%7D">fail-safe</a>）</strong>，这种机制会使你此次读到的数据不一定是最新的数据。</p>
+<p>如果你使用null值，就会使得其无法判断对应的key是不存在还是为空，因为你无法再调用一次contain(key）来对key是否存在进行判断，ConcurrentHashMap同理。</p>
+<h4 id="一：快速失败（fail—fast）"><a href="#一：快速失败（fail—fast）" class="headerlink" title="一：快速失败（fail—fast）"></a>一：快速失败（fail—fast）</h4><p>​     在用迭代器遍历一个集合对象时，如果遍历过程中对集合对象的内容进行了修改（增加、删除、修改），则会抛出Concurrent Modification Exception。</p>
+<p>​     原理：迭代器在遍历时直接访问集合中的内容，并且在遍历过程中使用一个 modCount 变量。集合在被遍历期间如果内容发生变化，就会改变modCount的值。每当迭代器使用hashNext()/next()遍历下一个元素之前，都会检测modCount变量是否为expectedmodCount值，是的话就返回遍历；否则抛出异常，终止遍历。</p>
+<p>   注意：这里异常的抛出条件是检测到 modCount！=expectedmodCount 这个条件。如果集合发生变化时修改modCount值刚好又设置为了expectedmodCount值，则异常不会抛出。因此，不能依赖于这个异常是否抛出而进行并发操作的编程，这个异常只建议用于检测并发修改的bug。</p>
+<p>   场景：java.util包下的集合类都是快速失败的，不能在多线程下发生并发修改（迭代过程中被修改）。</p>
+<h4 id="二：安全失败（fail—safe）"><a href="#二：安全失败（fail—safe）" class="headerlink" title="二：安全失败（fail—safe）"></a>二：安全失败（fail—safe）</h4><p>   采用安全失败机制的集合容器，在遍历时不是直接在集合内容上访问的，而是先复制原有集合内容，在拷贝的集合上进行遍历。</p>
+<p>   原理：由于迭代时是对原集合的拷贝进行遍历，所以在遍历过程中对原集合所作的修改并不能被迭代器检测到，所以不会触发Concurrent Modification Exception。</p>
+<p>   缺点：基于拷贝内容的优点是避免了Concurrent Modification Exception，但同样地，迭代器并不能访问到修改后的内容，即：迭代器遍历的是开始遍历那一刻拿到的集合拷贝，在遍历期间原集合发生的修改迭代器是不知道的。</p>
+<p>   场景：java.util.concurrent包下的容器都是安全失败，可以在多线程下并发使用，并发修改。</p>
+<h2 id="ConcurrentHashMap原理"><a href="#ConcurrentHashMap原理" class="headerlink" title="ConcurrentHashMap原理"></a>ConcurrentHashMap原理</h2><h3 id="JDK-1-7"><a href="#JDK-1-7" class="headerlink" title="JDK 1.7"></a>JDK 1.7</h3><p>​    <strong>HashEntry数组</strong> + <strong>Segment数组</strong> + <strong>Unsafe</strong> 「大量方法运用」</p>
+<p><strong>JDK1.7中</strong>数据结构是由一个<strong>Segment数组</strong>和多个<strong>HashEntry数组</strong>组成的，每一个<strong>Segment</strong>元素中存储的是<strong>HashEntry数组</strong>+<strong>链表</strong>，而且每个<strong>Segment</strong>均继承自可重入锁<strong>ReentrantLock</strong>，也就带有了锁的功能，当线程执行<strong>put</strong>的时候，只锁住对应的那个<strong>Segment</strong> 对象，对其他的 <strong>Segment</strong> 的 <strong>get put</strong> 互不干扰，这样子就提升了效率，做到了线程安全。</p>
+<p>在 <strong>JDK1.7</strong> 中 <strong>ConcurrentHashMap</strong> 在 <strong>put</strong> 方法中进行了两次 <strong>hash</strong> 计算去定位数据的存储位置，尽可能的减小哈希冲突的可能性，然后再根据 <strong>hash</strong> 值以 <strong>Unsafe</strong> 调用方式，直接获取相应的 <strong>Segment</strong>，最终将数据添加到容器中是由 <strong>segment</strong>对象的 <strong>put</strong> 方法来完成。由于 <strong>Segment</strong> 对象本身就是一把锁，所以在新增数据的时候，相应的 <strong>Segment</strong>对象块是被锁住的，其他线程并不能操作这个 <strong>Segment</strong> 对象，这样就保证了数据的安全性，在扩容时也是这样的，在 <strong>JDK1.7</strong> 中的 <strong>ConcurrentHashMap</strong>扩容只是针对 <strong>Segment</strong> 对象中的 <strong>HashEntry</strong> 数组进行扩容，还是因为 <strong>Segment</strong> 对象是一把锁，所以在 <strong>rehash</strong> 的过程中，其他线程无法对 <strong>segment</strong> 的 <strong>hash</strong> 表做操作，这就解决了 <strong>HashMap</strong> 中 <strong>put</strong> 数据引起的闭环问题。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-458d85ed1a2152458dd2a3b03360d340_720w.jpg?source=1940ef5c" alt="img"></p>
+<p>HashEntry跟HashMap差不多的，但是不同点是，他使用volatile去修饰了他的数据Value还有下一个节点next。</p>
+<p>原理上来说，ConcurrentHashMap 采用了<strong>分段锁</strong>技术，其中 Segment 继承于 ReentrantLock。</p>
+<p>不会像 HashTable 那样不管是 put 还是 get 操作都需要做同步处理，理论上 ConcurrentHashMap 支持 CurrencyLevel (Segment 数组数量)的线程并发。</p>
+<p>每当一个线程占用锁访问一个 Segment 时，不会影响到其他的 Segment。</p>
+<p>就是说如果容量大小是16他的并发度就是16，可以同时允许16个线程操作16个Segment而且还是线程安全的。</p>
+<h3 id="JDK-1-8"><a href="#JDK-1-8" class="headerlink" title="JDK 1.8"></a>JDK 1.8</h3><p><strong>JDK1.8</strong>屏蔽了<strong>JDK1.7</strong>中的<strong>Segment</strong>概念呢，而是直接使用「<strong>Node数组</strong>+<strong>链表</strong>+<strong>红黑树</strong>」的数据结构来实现，并发控制采用 「<strong>Synchronized</strong> + <strong>CAS机制</strong>」来确保安全性，为了兼容旧版本保留了<strong>Segment</strong>的定义，虽然没有任何结构上的作用。</p>
+<p><strong>总之JDK1.8中优化了两个部分：</strong></p>
+<p>放弃了 <strong>HashEntry</strong> 结构而是采用了跟 <strong>HashMap</strong> 结构非常相似的 <strong>Node数组</strong> + <strong>链表</strong>（链表长度大于8时转成红黑树）的形式</p>
+<p><strong>Synchronize</strong>替代了<strong>ReentrantLock</strong>，我们一直固有的思想可能觉得，<strong>Synchronize</strong>是重量级锁，效率比较低，但为什么要替换掉<strong>ReentrantLock</strong>呢？</p>
+<p>1、随着<strong>JDK</strong>版本的迭代，本着对<strong>Synchronize</strong>不放弃的态度，内置的<strong>Synchronize</strong>变的越来越<strong>“轻”</strong>了，某些场合比使用<strong>API</strong>更加灵活。</p>
+<p>2、加锁力度的不同，在<strong>JDK1.7</strong>中加锁的力度是基于<strong>Segment</strong>的，包含多个HashEntry，而JDK1.8锁的粒度就是HashEntry（首节点），也就是1.8中加锁力度更低了，在粗粒度加锁中 ReentrantLock 可能通过 Condition 来控制各个低粒度的边界，更加的灵活，而在低粒度中，Condition的优势就没有了，所以使用内置的 Synchronize 并不比ReentrantLock效果差。</p>
+<p>ConcurrentHashMap JDK 1.8在进行put操作的还是比较复杂的，大致可以分为以下步骤：</p>
+<ol>
+<li>根据 key 计算出 hashcode 。</li>
+<li>判断是否需要进行初始化。</li>
+<li>即为当前 key 定位出的 Node，如果为空表示当前位置可以写入数据，利用 CAS 尝试写入，失败则自旋保证成功。</li>
+<li>如果当前位置的 <code>hashcode == MOVED == -1</code>,则需要进行扩容。</li>
+<li>如果都不满足，则利用 synchronized 锁写入数据。</li>
+<li>如果数量大于 <code>TREEIFY_THRESHOLD</code> 则要转换为红黑树。</li>
+</ol>
+<h4 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h4><p>CAS 是<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E4%B9%90%E8%A7%82%E9%94%81&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1025809537%7D">乐观锁</a>的一种实现方式，是一种轻量级锁，JUC 中很多工具类的实现就是基于 CAS 的。</p>
+<p>CAS 操作的流程如下图所示，线程在读取数据时不进行加锁，在准备写回数据时，比较原值是否修改，若未被其他线程修改则写回，若已被修改，则重新执行读取流程。</p>
+<p>这是一种乐观策略，认为并发操作并不总会发生。</p>
+<blockquote>
+<p>那怎么解决ABA问题？</p>
+</blockquote>
+<p>用版本号去保证就好了，就比如说，我在修改前去查询他原来的值的时候再带一个<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E7%89%88%E6%9C%AC%E5%8F%B7&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1025809537%7D">版本号</a>，每次判断就连值和版本号一起判断，判断成功就给版本号加1。</p>
+<p>其实有很多方式，比如<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E6%97%B6%E9%97%B4%E6%88%B3&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1025809537%7D">时间戳</a>也可以，查询的时候把时间戳一起查出来，对的上才修改并且更新值的时候一起修改更新时间，这样也能保证，方法很多但是跟版本号都是异曲同工之妙，看场景大家想怎么设计吧。</p>
 
       </section>
 
@@ -153,8 +203,8 @@
     
     <div class="card-text">
       
-        <a href="/2021/12/260920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">操作系统：什么是大端序和小端序</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -168,8 +218,8 @@
     
     <div class="card-text">
       
-        <a href="/2021/12/010920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">健身餐</h2>
+        <a href="/2022/01/150920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Java 中垃圾回收机制中如何判断对象需要回收？常见的 GC 回收算法有哪些？</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -238,7 +288,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hashmap%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8"><span class="toc-number">1.</span> <span class="toc-text">Hashmap为什么线程不安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-number">2.</span> <span class="toc-text">红黑树的特性:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HashTable"><span class="toc-number">3.</span> <span class="toc-text">HashTable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ConcurrentHashMap%E5%8E%9F%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">ConcurrentHashMap原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK-1-7"><span class="toc-number">4.1.</span> <span class="toc-text">JDK 1.7</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK-1-8"><span class="toc-number">4.2.</span> <span class="toc-text">JDK 1.8</span></a></li></ol></li></ol>
   </div>
 </section>
 
