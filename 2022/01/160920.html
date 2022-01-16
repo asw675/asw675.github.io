@@ -141,11 +141,15 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="Hashmap为什么线程不安全"><a href="#Hashmap为什么线程不安全" class="headerlink" title="Hashmap为什么线程不安全"></a>Hashmap为什么线程不安全</h2><p>首先HashMap是<strong>线程不安全</strong>的，其主要体现：</p>
+        <h2 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h2><h3 id="Hashmap为什么线程不安全"><a href="#Hashmap为什么线程不安全" class="headerlink" title="Hashmap为什么线程不安全"></a>Hashmap为什么线程不安全</h3><p>首先HashMap是<strong>线程不安全</strong>的，其主要体现：</p>
 <p>#1.在jdk1.7中，在多线程环境下，扩容时会造成环形链或数据丢失。</p>
 <p>#2.在jdk1.8中，在多线程环境下，会发生数据覆盖的情况。</p>
 <p>这是jdk1.8中HashMap中put操作的主函数， 注意第6行代码，如果没有hash碰撞则会直接插入元素。如果线程A和线程B同时进行put操作，刚好这两条不同的数据hash值一样，并且该位置数据为null，所以这线程A、B都会进入第6行代码中。假设一种情况，线程A进入后还未进行数据插入时挂起，而线程B正常执行，从而正常插入数据，然后线程A获取CPU时间片，此时线程A不用再进行hash判断了，问题出现：线程A会把线程B插入的数据给<strong>覆盖</strong>，发生线程不安全。</p>
-<h2 id="红黑树的特性"><a href="#红黑树的特性" class="headerlink" title="红黑树的特性:"></a><strong>红黑树的特性</strong>:</h2><p><strong>（1）每个节点或者是黑色，或者是红色。</strong><br><strong>（2）根节点是黑色。</strong><br><strong>（3）每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！]</strong><br><strong>（4）如果一个节点是红色的，则它的子节点必须是黑色的。</strong><br><strong>（5）从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点。</strong></p>
+<h3 id="HashMap长度为什么是2的幂次？"><a href="#HashMap长度为什么是2的幂次？" class="headerlink" title="HashMap长度为什么是2的幂次？"></a>HashMap长度为什么是2的幂次？</h3><p>HashMap为了存取高效，要尽量较少碰撞，就是要尽量把数据分配均匀，每个链表长度大致相同</p>
+<p>HashMap是根据key的hash值决定key放到哪个桶中，通过tab[i = (n - 1) &amp; hash]公式计算得出</p>
+<p>这里的n是HashMap的容量，因为n永远是2的次幂，所以<strong>n - 1通过二进制表示</strong>，永远都是末尾连续1的形式表示（如00001111、00000011），当(n - 1) 和hash做与运算时，会保留hash中后x位的1</p>
+<p>因为是做与运算，所以为了防止本身的值里有0，因为0&amp;1和0&amp;0都是0，无法表示出精确的特性，导致hash冲突，所以 2的n次方-1是最适合的。</p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="HashMap如果不给长度，第一次初始化是在什么时候？（put方法里）"><a href="#HashMap如果不给长度，第一次初始化是在什么时候？（put方法里）" class="headerlink" title="HashMap如果不给长度，第一次初始化是在什么时候？（put方法里）"></a>HashMap如果不给长度，第一次初始化是在什么时候？（put方法里）</h3><h2 id="红黑树的特性"><a href="#红黑树的特性" class="headerlink" title="红黑树的特性:"></a><strong>红黑树的特性</strong>:</h2><p><strong>（1）每个节点或者是黑色，或者是红色。</strong><br><strong>（2）根节点是黑色。</strong><br><strong>（3）每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！]</strong><br><strong>（4）如果一个节点是红色的，则它的子节点必须是黑色的。</strong><br><strong>（5）从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点。</strong></p>
 <p>插入的节点默认是红色节点，所以此时插入一个节点只有可能违反特性（4），所以需要进行旋转和染色操作使其重新变为一颗红黑树</p>
 <h2 id="HashTable"><a href="#HashTable" class="headerlink" title="HashTable"></a>HashTable</h2><p>线程安全，但是他在对数据操作的时候都会上锁，所以效率比较低下。</p>
 <p>Hashtable 是不允许键或值为 null 的，HashMap 的键值则都可以为 null。</p>
@@ -203,8 +207,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/01/101920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">待看事项</h2>
+        <a href="/2022/01/170920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">JAVA：JAVA中的锁</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -261,7 +265,7 @@
         <svg class="icon icon-article" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <path d="M240.51564747 647.74217627h196.07203239c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806V165.10332731c0-33.18142087-30.16492806-60.32985613-60.32985612-60.32985611H245.04038668C225.43318342 104.7734712 210.35071939 119.85593522 210.35071939 139.46313845V617.57724821c0 16.59071043 13.57421762 30.16492806 30.16492808 30.16492806z m663.62841731-452.47392089v482.63884894c0 33.18142087-27.14843525 60.32985613-60.32985612 60.32985613H180.18579134c-33.18142087 0-60.32985613-27.14843525-60.32985612-60.32985613V195.26825538c-49.77213131 0-90.49478418 40.72265287-90.49478417 90.49478417v452.4739209c0 49.77213131 40.72265287 90.49478418 90.49478417 90.49478417h286.56681657c16.59071043 0 30.16492806 13.57421762 30.16492807 30.16492807s13.57421762 30.16492806 30.16492805 30.16492806h90.49478418c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806s13.57421762-30.16492806 30.16492807-30.16492807h286.56681657c49.77213131 0 90.49478418-40.72265287 90.49478417-90.49478417V285.76303955c0-49.77213131-40.72265287-90.49478418-90.49478417-90.49478417zM587.41232014 647.74217627h191.54729318c19.60720323 0 34.68966726-15.08246403 34.68966729-34.68966727V134.93839925c0-16.59071043-13.57421762-30.16492806-30.16492808-30.16492805H617.57724821c-30.16492806 0-60.32985613 27.14843525-60.32985612 60.32985611v452.4739209c0 16.59071043 13.57421762 30.16492806 30.16492805 30.16492806z" fill="currentColor"></path>
 </svg>
-        <span>20</span>
+        <span>22</span>
       </div>
       <div class="count-box--item">
         <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -273,7 +277,7 @@
         <svg class="icon icon-tags" viewBox="0 0 1098 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <path d="M283.42180005 272q0-28.38857157-20.09142843-48.48000001t-48.47999998-20.09142842-48.48000002 20.09142842-20.09142846 48.48000001 20.09142846 48.48 48.48000002 20.09142843 48.47999998-20.09142843 20.09142843-48.48zM855.0332285 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.03999997 263.58857157q-20.9142853 19.81714313-48.75428534 19.81714312-28.38857157 0-48.20571468-19.81714312l-383.04-383.58857157q-20.36571468-19.81714313-34.55999999-54.10285688t-14.19428534-62.6742853l0-222.85714313q0-27.84000002 20.36571469-48.20571469t48.2057147-20.36571466l222.85714313 0q28.38857157 0 62.6742853 14.19428529t54.65142842 34.55999999l383.04000001 382.49142843q19.81714313 20.9142853 19.81714314 48.75428532zM1060.74751475 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.04 263.58857157q-20.9142853 19.81714313-48.75428531 19.81714312-19.26857155 0-31.61142843-7.47428531t-28.38857159-24.13714314l251.79428534-251.7942853q19.81714313-19.81714313 19.81714308-48.20571469 0-27.84000002-19.81714308-48.75428531l-383.04000001-382.49142845q-20.36571468-20.36571468-54.65142842-34.55999999t-62.67428532-14.19428534l120 0q28.38857157 0 62.67428532 14.19428534t54.65142842 34.55999999l383.03999998 382.49142845q19.81714313 20.9142853 19.81714314 48.75428531z" fill="currentColor"></path>
 </svg>
-        11
+        12
       </div>
     </div>
   </div>
@@ -288,7 +292,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hashmap%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8"><span class="toc-number">1.</span> <span class="toc-text">Hashmap为什么线程不安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-number">2.</span> <span class="toc-text">红黑树的特性:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HashTable"><span class="toc-number">3.</span> <span class="toc-text">HashTable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ConcurrentHashMap%E5%8E%9F%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">ConcurrentHashMap原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK-1-7"><span class="toc-number">4.1.</span> <span class="toc-text">JDK 1.7</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK-1-8"><span class="toc-number">4.2.</span> <span class="toc-text">JDK 1.8</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HashMap"><span class="toc-number">1.</span> <span class="toc-text">HashMap</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hashmap%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8"><span class="toc-number">1.1.</span> <span class="toc-text">Hashmap为什么线程不安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HashMap%E9%95%BF%E5%BA%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF2%E7%9A%84%E5%B9%82%E6%AC%A1%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">HashMap长度为什么是2的幂次？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HashMap%E5%A6%82%E6%9E%9C%E4%B8%8D%E7%BB%99%E9%95%BF%E5%BA%A6%EF%BC%8C%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%88%9D%E5%A7%8B%E5%8C%96%E6%98%AF%E5%9C%A8%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%EF%BC%9F%EF%BC%88put%E6%96%B9%E6%B3%95%E9%87%8C%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">HashMap如果不给长度，第一次初始化是在什么时候？（put方法里）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-number">2.</span> <span class="toc-text">红黑树的特性:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HashTable"><span class="toc-number">3.</span> <span class="toc-text">HashTable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ConcurrentHashMap%E5%8E%9F%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">ConcurrentHashMap原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK-1-7"><span class="toc-number">4.1.</span> <span class="toc-text">JDK 1.7</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK-1-8"><span class="toc-number">4.2.</span> <span class="toc-text">JDK 1.8</span></a></li></ol></li></ol>
   </div>
 </section>
 
@@ -319,7 +323,7 @@
       
         <li class="categorys-list-item">
           <a href="/categories/%E7%AE%97%E6%B3%95/">
-            算法 (1)
+            算法 (2)
           </a>
         </li>
       
@@ -361,7 +365,7 @@
       
         <li class="categorys-list-item">
           <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">
-            JAVA基础 (2)
+            JAVA基础 (3)
           </a>
         </li>
       
@@ -378,7 +382,7 @@
   </div>
   <div class="widget-body">
     <div class="tags-cloud">
-      <a href="/tags/IM/" style="font-size: 13.33px;" class="tags-cloud-3">IM</a> <a href="/tags/JAVA%E5%9F%BA%E7%A1%80/" style="font-size: 13.33px;" class="tags-cloud-3">JAVA基础</a> <a href="/tags/JAVA%E9%9B%86%E5%90%88/" style="font-size: 10px;" class="tags-cloud-0">JAVA集合</a> <a href="/tags/JVM/" style="font-size: 10px;" class="tags-cloud-0">JVM</a> <a href="/tags/TCP/" style="font-size: 13.33px;" class="tags-cloud-3">TCP</a> <a href="/tags/operation-system/" style="font-size: 10px;" class="tags-cloud-0">operation system</a> <a href="/tags/spring/" style="font-size: 10px;" class="tags-cloud-0">spring</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 16.67px;" class="tags-cloud-7">操作系统</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 10px;" class="tags-cloud-0">日常</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;" class="tags-cloud-0">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 20px;" class="tags-cloud-10">计算机网络</a>
+      <a href="/tags/IM/" style="font-size: 13.33px;" class="tags-cloud-3">IM</a> <a href="/tags/JAVA%E5%9F%BA%E7%A1%80/" style="font-size: 16.67px;" class="tags-cloud-7">JAVA基础</a> <a href="/tags/JAVA%E5%B9%B6%E5%8F%91/" style="font-size: 10px;" class="tags-cloud-0">JAVA并发</a> <a href="/tags/JAVA%E9%9B%86%E5%90%88/" style="font-size: 10px;" class="tags-cloud-0">JAVA集合</a> <a href="/tags/JVM/" style="font-size: 10px;" class="tags-cloud-0">JVM</a> <a href="/tags/TCP/" style="font-size: 13.33px;" class="tags-cloud-3">TCP</a> <a href="/tags/operation-system/" style="font-size: 10px;" class="tags-cloud-0">operation system</a> <a href="/tags/spring/" style="font-size: 10px;" class="tags-cloud-0">spring</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 16.67px;" class="tags-cloud-7">操作系统</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 10px;" class="tags-cloud-0">日常</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.33px;" class="tags-cloud-3">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 20px;" class="tags-cloud-10">计算机网络</a>
     </div>
   </div>
 </section>

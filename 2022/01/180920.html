@@ -24,7 +24,7 @@
 
   
 
-  <title>Hello Yusen&#39;s World | ReasonLee</title>
+  <title>算法：TopK问题 | ReasonLee</title>
 
   
 
@@ -102,16 +102,20 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Hello Yusen&#39;s World</h1>
+          <h1 class="title-wrap">算法：TopK问题</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2021-12-28T02:08:53.531Z" itemprop="datePublished">2021-12-28</time>
+            <time  class="article-date" datetime="2022-01-18T01:20:11.000Z" itemprop="datePublished">2022-01-18</time>
           </h2>
           <ul class="wrap-list dark">
   
+    <li><a href="/categories/%E7%AE%97%E6%B3%95/">📒 算法</a></li>
+  
 </ul>
           <ul class="wrap-list dark">
+  
+    <li><a href="/tags/%E7%AE%97%E6%B3%95/">🏷️ 算法</a></li>
   
 </ul>
         </div>
@@ -135,19 +139,15 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        <h2 id="TopK问题"><a href="#TopK问题" class="headerlink" title="TopK问题"></a><strong>TopK问题</strong></h2><h3 id="1）局部淘汰法-–-借助“冒泡排序”获取TopK"><a href="#1）局部淘汰法-–-借助“冒泡排序”获取TopK" class="headerlink" title="1）局部淘汰法 – 借助“冒泡排序”获取TopK"></a><strong>1）局部淘汰法 – 借助“冒泡排序”获取TopK</strong></h3><p>思路：（1）可以避免对所有数据进行排序，只排序部分；（2）冒泡排序是每一轮排序都会获得一个最大值，则K轮排序即可获得TopK。</p>
+<p>时间复杂度空间复杂度：（1）时间复杂度：排序一轮是O(N)，则K次排序总时间复杂度为：O(KN)。（2）空间复杂度：O(K)，用来存放获得的topK，也可以O(1)遍历原数组的最后K个元素即可。</p>
+<h3 id="2）局部淘汰法-–-借助数据结构”堆”获取TopK"><a href="#2）局部淘汰法-–-借助数据结构”堆”获取TopK" class="headerlink" title="2）局部淘汰法 – 借助数据结构”堆”获取TopK"></a><strong>2）局部淘汰法 – 借助数据结构”堆”获取TopK</strong></h3><p>思路：（1）堆：分为大顶堆（堆顶元素大于其他所有元素）和小顶堆（堆顶其他元素小于所有其他元素）。（2）我们使用小顶堆来实现。（3）取出K个元素放在另外的数组中，对这K个元素进行建堆。（4）然后循环从K下标位置遍历数据，只要元素大于堆顶，我们就将堆顶赋值为该元素，然后重新调整为小顶堆。（5）循环完毕后，K个元素的堆数组就是我们所需要的TopK。</p>
+<p>时间复杂度与空间复杂度：（1）时间复杂度：每次对K个元素进行建堆，时间复杂度为：O(KlogK)，加上N-K次的循环，则总时间复杂度为O((K+(N-K))logK)，即O(NlogK)，其中K为想要获取的TopK的数量N为总数据量。（2）空间复杂度：O(K)，只需要新建一个K大小的数组用来存储topK即可</p>
+<h3 id="3）分治法"><a href="#3）分治法" class="headerlink" title="3）分治法"></a>3）分治法</h3><p>将1亿个数据分成100份，每份100万个数据，找到每份数据中最大的10000个，最后在剩下的100*10000个数据里面找出最大的10000个。如果100万数据选择足够理想，那么可以过滤掉1亿数据里面99%的数据。</p>
+<p>100万个数据里面查找最大的10000个数据的方法如下：用快速排序的方法，将数据分为2堆，如果大的那堆个数N大于10000个，继续对大堆快速排序一次分成2堆，如果大的那堆个数N大于10000个，继续对大堆快速排序一次分成2堆，如果大堆个数N小于10000个，就在小的那堆里面快速排序一次，找第10000-n大的数字；递归以上过程，就可以找到第1w大的数。参考上面的找出第1w大数字，就可以类似的方法找到前10000大数字了。此种方法需要每次的内存空间为10^64=4MB，一共需要101次这样的比较。</p>
+<p><img src="https://www.pianshen.com/images/194/841062abe56544c16e2ae321e11eb26a.JPEG" alt="841062abe56544c16e2ae321e11eb26a.JPEG"></p>
+<p>时间复杂度为O（n）,</p>
+<p>因为首先，partition的过程，时间是o(n)。我们在进行第一次partition的时候需要花费n，第二次partition的时候，数据量减半了，所以只要花费n/2，同理第三次的时候只要花费n/4，以此类推。而n+n/2+n/4+…显然是小于2n的，所以这个方法的渐进时间只有o(n)</p>
 
       </section>
 
@@ -160,8 +160,8 @@
     
     <div class="card-text">
       
-        <a href="/2021/12/310920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">计算机网络：详解TCP协议</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -175,8 +175,8 @@
     
     <div class="card-text">
       
-        <a href="/2021/12/270920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">计算机网络：流量控制算法——漏桶算法和令牌桶算法</h2>
+        <a href="/2022/01/170920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">JAVA：JAVA中的锁</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -237,6 +237,18 @@
 </section>
 
       
+<section class="widget-toc widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-toc" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M134.50666666 767.46666668H460.8c27.73333333 0 50.24000001 22.50666668 50.24000001 50.23999999v50.13333333c0 27.73333333-22.50666668 50.24000001-50.24000001 50.24000001H134.50666666c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.24000001v-50.13333333c0.10666668-27.73333333 22.50666668-50.24000001 50.24000001-50.24000001zM84.37333332 541.65333333h326.18666669c27.73333333 0 50.24000001 22.39999999 50.23999999 50.13333334v50.24000001c0 27.73333333-22.50666668 50.24000001-50.24000002 50.23999999H84.37333332c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.23999999v-50.24000001c0-27.73333333 22.50666668-50.13333334 50.24000001-50.13333334zM134.50666666 315.83999999H460.8c27.73333333 0 50.24000001 22.50666668 50.24000001 50.24000001v50.24000001c0 27.73333333-22.50666668 50.13333334-50.24000001 50.13333333H134.50666666c-27.73333333 0-50.24000001-22.39999999-50.23999999-50.13333333v-50.24000001c0.10666668-27.84000001 22.50666668-50.24000001 50.24000001-50.23999999zM209.81333332 89.91999999h326.18666671c27.73333333 0 50.24000001 22.39999999 50.23999997 50.13333335v50.23999999c0 27.73333333-22.50666668 50.24000001-50.24000001 50.24000001H209.81333332c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.24000001v-50.24000001c0-27.73333333 22.50666668-50.13333334 50.24000001-50.13333333zM692.05333333 623.36l274.66666669 176.00000002c23.36000001 14.93333333 30.08 45.97333334 15.14666666 69.33333332L954.77333334 910.93333333c-14.93333333 23.25333334-45.97333334 30.08-69.33333335 15.14666667l-274.66666666-176c-23.36000001-14.93333333-30.08-45.97333334-15.14666667-69.33333333l27.09333334-42.24000001c14.93333333-23.36000001 46.08000001-30.08 69.33333333-15.14666666z" fill="currentColor"></path>
+</svg>
+    <span>TOC</span>
+  </div>
+  <div class="widget-body">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TopK%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">TopK问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%EF%BC%89%E5%B1%80%E9%83%A8%E6%B7%98%E6%B1%B0%E6%B3%95-%E2%80%93-%E5%80%9F%E5%8A%A9%E2%80%9C%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%E2%80%9D%E8%8E%B7%E5%8F%96TopK"><span class="toc-number">1.1.</span> <span class="toc-text">1）局部淘汰法 – 借助“冒泡排序”获取TopK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%EF%BC%89%E5%B1%80%E9%83%A8%E6%B7%98%E6%B1%B0%E6%B3%95-%E2%80%93-%E5%80%9F%E5%8A%A9%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E2%80%9D%E5%A0%86%E2%80%9D%E8%8E%B7%E5%8F%96TopK"><span class="toc-number">1.2.</span> <span class="toc-text">2）局部淘汰法 – 借助数据结构”堆”获取TopK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%EF%BC%89%E5%88%86%E6%B2%BB%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">3）分治法</span></a></li></ol></li></ol>
+  </div>
+</section>
+
 
       
 <section class="widet-notice widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
