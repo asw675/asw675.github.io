@@ -156,7 +156,7 @@
 <p><strong>13.偏向锁</strong></p>
 <p><strong>14.轻量级锁</strong></p>
 <p><strong>15.重量级锁</strong></p>
-<h1 id="Synchronized实现原理"><a href="#Synchronized实现原理" class="headerlink" title="Synchronized实现原理"></a>Synchronized实现原理</h1><h2 id="synchronized锁的原理"><a href="#synchronized锁的原理" class="headerlink" title="synchronized锁的原理"></a><strong>synchronized锁的原理</strong></h2><p>在讲原理前，我们先讲一下Java对象的构成。在JVM中，对象在内存中分为三块区域：对象头，实例数据和对齐填充。如图所示：</p>
+<h1 id="Synchronized实现原理"><a href="#Synchronized实现原理" class="headerlink" title="Synchronized实现原理"></a>Synchronized实现原理</h1><h3 id="synchronized锁的原理"><a href="#synchronized锁的原理" class="headerlink" title="synchronized锁的原理"></a><strong>synchronized锁的原理</strong></h3><p>在讲原理前，我们先讲一下Java对象的构成。在JVM中，对象在内存中分为三块区域：对象头，实例数据和对齐填充。如图所示：</p>
 <p><img src="https://pic4.zhimg.com/80/v2-1af80faaf71acd7d4ba46fb72f6ecfab_720w.jpg" alt="img"></p>
 <p><strong>对象头</strong>：</p>
 <ul>
@@ -172,7 +172,7 @@
 <ul>
 <li>由于虚拟机要求 对象起始地址必须是8字节的整数倍。填充数据不是必须存在的，仅仅是为了字节对齐。</li>
 </ul>
-<h2 id="同步代码块原理"><a href="#同步代码块原理" class="headerlink" title="同步代码块原理"></a>同步代码块原理</h2><p>为了看底层实现原理，使用<code>javap -v xxx.class</code>命令进行反编译。</p>
+<h3 id="同步代码块原理"><a href="#同步代码块原理" class="headerlink" title="同步代码块原理"></a>同步代码块原理</h3><p>为了看底层实现原理，使用<code>javap -v xxx.class</code>命令进行反编译。</p>
 <p><img src="https://pic3.zhimg.com/80/v2-d9109cbf46663031e92110914afdc15e_720w.jpg" alt="img"></p>
 <p>这是使用同步代码块被标志的地方就是刚刚提到的对象头，它会关联一个monitor对象，也就是括号括起来的对象。</p>
 <p>1、<strong>monitorenter</strong>，如果当前monitor的进入数为0时，线程就会进入monitor，并且把进入数+1，那么该线程就是monitor的拥有者(owner)。</p>
@@ -182,30 +182,30 @@
 <p>monitorexit指令出现了两次，第1次为同步正常退出释放锁；第2次为发生异步退出释放锁；</p>
 </blockquote>
 <p>总的来说，synchronized的底层原理是通过monitor对象来完成的。</p>
-<h2 id="同步方法原理"><a href="#同步方法原理" class="headerlink" title="同步方法原理"></a><strong>同步方法原理</strong></h2><p>比如说使用synchronized修饰的实例方法。</p>
+<h3 id="同步方法原理"><a href="#同步方法原理" class="headerlink" title="同步方法原理"></a><strong>同步方法原理</strong></h3><p>比如说使用synchronized修饰的实例方法。</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">public synchronized void hello()&#123;<br>    System.out.println(&quot;hello world&quot;);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>同理使用<code>javap -v</code>反编译。</p>
 <p><img src="https://pic1.zhimg.com/80/v2-fcb452b4e8ea162bb00e4b4322ea0e7c_720w.jpg" alt="img"></p>
 <p>可以看到多了一个标志位<strong>ACC_SYNCHRONIZED</strong>，作用就是一旦执行到这个方法时，就会先判断是否有标志位，如果有这个标志位，就会先尝试获取monitor，获取成功才能执行方法，方法执行完成后再释放monitor。<strong>在方法执行期间，其他线程都无法获取同一个monitor</strong>。归根结底还是对monitor对象的争夺，只是同步方法是一种隐式的方式来实现。</p>
-<h2 id="synchronized锁的优化"><a href="#synchronized锁的优化" class="headerlink" title="synchronized锁的优化"></a><strong>synchronized锁的优化</strong></h2><p>前面讲过JDK1.5之前，synchronized是属于重量级锁，重量级需要依赖于底层操作系统的Mutex Lock实现，然后操作系统需要切换用户态和内核态，这种切换的消耗非常大，所以性能相对来说并不好。</p>
+<h3 id="synchronized锁的优化"><a href="#synchronized锁的优化" class="headerlink" title="synchronized锁的优化"></a><strong>synchronized锁的优化</strong></h3><p>前面讲过JDK1.5之前，synchronized是属于重量级锁，重量级需要依赖于底层操作系统的Mutex Lock实现，然后操作系统需要切换用户态和内核态，这种切换的消耗非常大，所以性能相对来说并不好。</p>
 <p>既然我们都知道性能不好，JDK的开发人员肯定也是知道的，于是在JDK1.6后开始对synchronized进行优化，增加了自适应的CAS自旋、锁消除、锁粗化、偏向锁、轻量级锁这些优化策略。锁的等级从无锁，偏向锁，轻量级锁，重量级锁逐步升级，并且是单向的，不会出现锁的降级。</p>
-<h3 id="自适应性自旋锁"><a href="#自适应性自旋锁" class="headerlink" title="自适应性自旋锁"></a><strong>自适应性自旋锁</strong></h3><p>在说自适应自旋锁之前，先讲自旋锁。上面已经讲过，当线程没有获得monitor对象的所有权时，就会进入阻塞，当持有锁的线程释放了锁，当前线程才可以再去竞争锁，但是如果按照这样的规则，就会浪费大量的性能在阻塞和唤醒的切换上，特别是线程占用锁的时间很短的话。</p>
+<h4 id="自适应性自旋锁"><a href="#自适应性自旋锁" class="headerlink" title="自适应性自旋锁"></a><strong>自适应性自旋锁</strong></h4><p>在说自适应自旋锁之前，先讲自旋锁。上面已经讲过，当线程没有获得monitor对象的所有权时，就会进入阻塞，当持有锁的线程释放了锁，当前线程才可以再去竞争锁，但是如果按照这样的规则，就会浪费大量的性能在阻塞和唤醒的切换上，特别是线程占用锁的时间很短的话。</p>
 <p>为了避免阻塞和唤醒的切换，在没有获得锁的时候就不进入阻塞，而是不断地循环检测锁是否被释放，这就是自旋。在占用锁的时间短的情况下，自旋锁表现的性能是很高的。</p>
 <p>但是又有问题，由于线程是一直在循环检测锁的状态，就会占用cpu资源，如果线程占用锁的时间比较长，那么自旋的次数就会变多，占用cpu时间变长导致性能变差，当然我们也可以通过参数<code>-XX:PreBlockSpin</code>设置自旋锁的自旋次数，当自旋一定的次数(时间)后就挂起，但是设置的自旋次数是多少比较合适呢？</p>
 <p>如果设置次数少了或者多了都会导致性能受到影响，而且占用锁的时间在业务高峰期和正常时期也有区别，所以在JDK1.6引入了自适应性自旋锁。</p>
 <p>自适应性自旋锁的意思是，自旋的次数不是固定的，而是由前一次在同一个锁上的自旋时间及锁的拥有者的状态来决定。</p>
 <p>表现是如果此次自旋成功了，很有可能下一次也能成功，于是允许自旋的次数就会更多，反过来说，如果很少有线程能够自旋成功，很有可能下一次也是失败，则自旋次数就更少。这样能最大化利用资源，随着程序运行和性能监控信息的不断完善，虚拟机对锁的状况预测会越来越准确，也就变得越来越智能。</p>
-<h3 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a><strong>锁消除</strong></h3><p>锁消除是一种锁的优化策略，这种优化更加彻底，在JVM编译时，通过对运行上下文的扫描，去除不可能存在共享资源竞争的锁。这种优化策略可以消除没有必要的锁，节省毫无意义的请求锁时间</p>
-<h3 id="锁粗化"><a href="#锁粗化" class="headerlink" title="锁粗化"></a><strong>锁粗化</strong></h3><p>如果一系列的连续加锁解锁操作，可能会导致不必要的性能损耗，所以引入锁粗话的概念。意思是将多个连续加锁、解锁的操作连接在一起，扩展成为一个范围更大的锁。</p>
-<h3 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a><strong>偏向锁</strong></h3><p>偏向锁是JDK1.6引入的一个重要的概念，JDK的开发人员经过研究发现，在大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程多次获得。也就是说在很多时候我们是假设有多线程的场景，但是实际上却是单线程的。所以偏向锁是在单线程执行代码块时使用的机制。</p>
+<h4 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a><strong>锁消除</strong></h4><p>锁消除是一种锁的优化策略，这种优化更加彻底，在JVM编译时，通过对运行上下文的扫描，去除不可能存在共享资源竞争的锁。这种优化策略可以消除没有必要的锁，节省毫无意义的请求锁时间</p>
+<h4 id="锁粗化"><a href="#锁粗化" class="headerlink" title="锁粗化"></a><strong>锁粗化</strong></h4><p>如果一系列的连续加锁解锁操作，可能会导致不必要的性能损耗，所以引入锁粗话的概念。意思是将多个连续加锁、解锁的操作连接在一起，扩展成为一个范围更大的锁。</p>
+<h4 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a><strong>偏向锁</strong></h4><p>偏向锁是JDK1.6引入的一个重要的概念，JDK的开发人员经过研究发现，在大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程多次获得。也就是说在很多时候我们是假设有多线程的场景，但是实际上却是单线程的。所以偏向锁是在单线程执行代码块时使用的机制。</p>
 <p>原理是什么呢，我们前面提到锁的争夺实际上是Monitor对象的争夺，还有每个对象都有一个对象头，对象头是由Mark Word和Klass pointer 组成的。一旦有线程持有了这个锁对象，标志位修改为1，就进入<strong>偏向模式</strong>，同时会把这个<strong>线程的ID记录在对象的Mark Word中</strong>，当同一个线程再次进入时，就不再进行同步操作，这样就省去了大量的锁申请的操作，从而提高了性能。</p>
 <p>一旦有多个线程开始竞争锁的话呢？那么偏向锁并不会一下子升级为重量级锁，而是先升级为轻量级锁。</p>
-<h3 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a><strong>轻量级锁</strong></h3><p>如果获取偏向锁失败，也就是有多个线程竞争锁的话，就会升级为JDK1.6引入的轻量级锁，Mark Word 的结构也变为轻量级锁的结构。</p>
+<h4 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a><strong>轻量级锁</strong></h4><p>如果获取偏向锁失败，也就是有多个线程竞争锁的话，就会升级为JDK1.6引入的轻量级锁，Mark Word 的结构也变为轻量级锁的结构。</p>
 <p>执行同步代码块之前，JVM会在线程的栈帧中创建一个锁记录（Lock Record），并将Mark Word拷贝复制到锁记录中。然后尝试通过CAS操作将Mark Word中的锁记录的指针，指向创建的Lock Record。如果成功表示获取锁状态成功，如果失败，则进入自旋获取锁状态。</p>
 <p>自旋锁的原理在上面已经讲过了，如果自旋获取锁也失败了，则升级为重量级锁，也就是把线程阻塞起来，等待唤醒。</p>
-<h3 id="重量级锁"><a href="#重量级锁" class="headerlink" title="重量级锁"></a><strong>重量级锁</strong></h3><p>重量级锁就是一个悲观锁了，但是其实不是最坏的锁，因为升级到重量级锁，是因为线程占用锁的时间长(自旋获取失败)，锁竞争激烈的场景，在这种情况下，让线程进入阻塞状态，进入阻塞队列，能减少cpu消耗。所以说在不同的场景使用最佳的解决方案才是最好的技术。synchronized在不同的场景会自动选择不同的锁，这样一个升级锁的策略就体现出了这点。</p>
-<h2 id="Lock锁与synchronized"><a href="#Lock锁与synchronized" class="headerlink" title="Lock锁与synchronized"></a><strong>Lock锁与synchronized</strong></h2><p>我们看一下他们的区别：</p>
+<h4 id="重量级锁"><a href="#重量级锁" class="headerlink" title="重量级锁"></a><strong>重量级锁</strong></h4><p>重量级锁就是一个悲观锁了，但是其实不是最坏的锁，因为升级到重量级锁，是因为线程占用锁的时间长(自旋获取失败)，锁竞争激烈的场景，在这种情况下，让线程进入阻塞状态，进入阻塞队列，能减少cpu消耗。所以说在不同的场景使用最佳的解决方案才是最好的技术。synchronized在不同的场景会自动选择不同的锁，这样一个升级锁的策略就体现出了这点。</p>
+<h3 id="Lock锁与synchronized"><a href="#Lock锁与synchronized" class="headerlink" title="Lock锁与synchronized"></a><strong>Lock锁与synchronized</strong></h3><p>我们看一下他们的区别：</p>
 <ul>
 <li>synchronized是Java语法的一个关键字，加锁的过程是在JVM底层进行。Lock是一个类，是JDK应用层面的，在JUC包里有丰富的API。</li>
 <li>synchronized在加锁和解锁操作上都是自动完成的，Lock锁需要我们手动加锁和解锁。</li>
@@ -214,9 +214,10 @@
 <li>Lock锁有丰富的API，可根据不同的场景，在使用上更加灵活。</li>
 <li>synchronized是非公平锁，而Lock锁既有非公平锁也有公平锁，可以由开发者通过参数控制。</li>
 </ul>
-<h1 id="AQS-AbstractQueuedSynchronizer"><a href="#AQS-AbstractQueuedSynchronizer" class="headerlink" title="AQS(AbstractQueuedSynchronizer)"></a>AQS(AbstractQueuedSynchronizer)</h1><p>实际上AQS是一个抽象类，由源码可以看出AQS是有以下几个部分组成的：</p>
+<h3 id="volatile与synchronized的区别如下："><a href="#volatile与synchronized的区别如下：" class="headerlink" title="volatile与synchronized的区别如下："></a>volatile与synchronized的区别如下：</h3><p>1）volatile本质是告诉JVM当前变量在寄存器中的值是不确定的，需要从主存中读取。synchronized则是锁定当前变量，只有当前线程可以访问该变量，其它线程被阻塞。<br>2）volatile仅能使用在变量级别，synchronized则可以使用在变量、方法。<br>3）volatile仅能实现变量修改的可见性，而synchronized则可以保证变量修改的可见性和原子性。《Java编程思想》上说，定义long或double时，如果使用volatile关键字(简单的赋值与返回操作)，就会获得原子性。(常规状态下，这两个变量由于其长度，其操作不是原子的)<br>4）volatile不会造成线程阻塞，synchronized会造成线程阻塞。<br>5）使用volatile而不是synchronized的唯一安全情况是类中只有一个可变的域。</p>
+<h3 id="AQS-AbstractQueuedSynchronizer"><a href="#AQS-AbstractQueuedSynchronizer" class="headerlink" title="AQS(AbstractQueuedSynchronizer)"></a>AQS(AbstractQueuedSynchronizer)</h3><p>实际上AQS是一个抽象类，由源码可以看出AQS是有以下几个部分组成的：</p>
 <p><img src="https://mmbiz.qpic.cn/mmbiz_png/Rnej1nLQibWAgq1icexQ4FcwC9RaUa8Gz7ic02ciabibPVaTnZQNEYpKusibibQBhOm5QiaAGP3KvYDxc6gO3qFMfWiattw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="Image"></p>
-<h3 id="state共享变量"><a href="#state共享变量" class="headerlink" title="state共享变量"></a>state共享变量</h3><p>AQS中里一个很重要的字段state，表示同步状态，是由<code>volatile</code>修饰的，用于展示当前临界资源的获锁情况。通过getState()，setState()，compareAndSetState()三个方法进行维护。</p>
+<h4 id="state共享变量"><a href="#state共享变量" class="headerlink" title="state共享变量"></a>state共享变量</h4><p>AQS中里一个很重要的字段state，表示同步状态，是由<code>volatile</code>修饰的，用于展示当前临界资源的获锁情况。通过getState()，setState()，compareAndSetState()三个方法进行维护。</p>
 <p>关于state的几个要点：</p>
 <ul>
 <li><p>使用volatile修饰，保证多线程间的可见性。</p>
@@ -226,12 +227,12 @@
 <li><p>compareAndSetState()采用乐观锁思想的CAS算法，保证原子性操作。</p>
 </li>
 </ul>
-<h3 id="CLH队列"><a href="#CLH队列" class="headerlink" title="CLH队列"></a>CLH队列</h3><p>AQS里另一个重要的概念就是CLH队列，它是一个双向链表队列，其内部由head和tail分别记录头结点和尾结点，队列的元素类型是Node。</p>
+<h4 id="CLH队列"><a href="#CLH队列" class="headerlink" title="CLH队列"></a>CLH队列</h4><p>AQS里另一个重要的概念就是CLH队列，它是一个双向链表队列，其内部由head和tail分别记录头结点和尾结点，队列的元素类型是Node。</p>
 <p>简单讲一下这个队列的作用，就是当一个线程获取同步状态(state)失败时，AQS会将此线程以及等待的状态等信息封装成Node加入到队列中，同时阻塞该线程，等待后续的被唤醒。</p>
 <p>队列的元素就是一个个的Node节点。</p>
-<h3 id="exclusiveOwnerThread"><a href="#exclusiveOwnerThread" class="headerlink" title="exclusiveOwnerThread"></a>exclusiveOwnerThread</h3><p>AQS通过继承AbstractOwnableSynchronizer类，拥有的属性。表示独占模式下同步器的持有者。</p>
-<h2 id="AQS的实现原理"><a href="#AQS的实现原理" class="headerlink" title="AQS的实现原理"></a>AQS的实现原理</h2><p>AQS有两种模式，分别是独占式和共享式。</p>
-<h3 id="独占式"><a href="#独占式" class="headerlink" title="独占式"></a>独占式</h3><p>同一时刻仅有一个线程持有同步状态，也就是其他线程只有在占有的线程释放后才能竞争，比如<strong>ReentrantLock</strong>。</p>
+<h4 id="exclusiveOwnerThread"><a href="#exclusiveOwnerThread" class="headerlink" title="exclusiveOwnerThread"></a>exclusiveOwnerThread</h4><p>AQS通过继承AbstractOwnableSynchronizer类，拥有的属性。表示独占模式下同步器的持有者。</p>
+<h3 id="AQS的实现原理"><a href="#AQS的实现原理" class="headerlink" title="AQS的实现原理"></a>AQS的实现原理</h3><p>AQS有两种模式，分别是独占式和共享式。</p>
+<h4 id="独占式"><a href="#独占式" class="headerlink" title="独占式"></a>独占式</h4><p>同一时刻仅有一个线程持有同步状态，也就是其他线程只有在占有的线程释放后才能竞争，比如<strong>ReentrantLock</strong>。</p>
 <p>首先看acquire()方法，这是AQS在独占模式下获取同步状态的方法。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">acquire</span><span class="hljs-params">(<span class="hljs-keyword">int</span> arg)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!tryAcquire(arg) &amp;&amp;<br>        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))<br>        selfInterrupt();<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -260,7 +261,7 @@
 
 <p>过程记不住没关系，下面画张图来总结一下，其实很简单。</p>
 <p><img src="https://mmbiz.qpic.cn/mmbiz_png/Rnej1nLQibWAgq1icexQ4FcwC9RaUa8Gz7wd9BviawedKNE7SOZMlmmW02g2y6rmm4NXkOsic5icrDzUrCb9NEx1p2g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="Image"></p>
-<h3 id="共享式"><a href="#共享式" class="headerlink" title="共享式"></a>共享式</h3><p>即共享资源可以被多个线程同时占有，直到共享资源被占用完毕。比如ReadWriteLock和CountdownLatch。下面我们从源码去分析其实现原理。</p>
+<h4 id="共享式"><a href="#共享式" class="headerlink" title="共享式"></a>共享式</h4><p>即共享资源可以被多个线程同时占有，直到共享资源被占用完毕。比如ReadWriteLock和CountdownLatch。下面我们从源码去分析其实现原理。</p>
 <p>首先还是看最顶层的acquireShared()方法。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">acquireShared</span><span class="hljs-params">(<span class="hljs-keyword">int</span> arg)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (tryAcquireShared(arg) &lt; <span class="hljs-number">0</span>)<br>        doAcquireShared(arg);<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -270,7 +271,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doAcquireShared</span><span class="hljs-params">(<span class="hljs-keyword">int</span> arg)</span> </span>&#123;<br>    <span class="hljs-comment">//调用addWaiter()方法，把当前线程包装成Node，标志为共享式，插入到队列中</span><br>    <span class="hljs-keyword">final</span> Node node = addWaiter(Node.SHARED);<br>    <span class="hljs-keyword">boolean</span> failed = <span class="hljs-keyword">true</span>;<br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-keyword">boolean</span> interrupted = <span class="hljs-keyword">false</span>;<br>        <span class="hljs-keyword">for</span> (;;) &#123;<br>            <span class="hljs-comment">//获取当前节点node的前驱节点</span><br>            <span class="hljs-keyword">final</span> Node p = node.predecessor();<br>            <span class="hljs-comment">//前驱节点是否是头结点</span><br>            <span class="hljs-keyword">if</span> (p == head) &#123;<br>                <span class="hljs-comment">//如果前驱节点是头结点，则调用tryAcquireShared()获取同步资源</span><br>                <span class="hljs-keyword">int</span> r = tryAcquireShared(arg);<br>                <span class="hljs-comment">//r&gt;=0表示获取同步资源成功，只有获取成功，才会执行到return退出for循环</span><br>                <span class="hljs-keyword">if</span> (r &gt;= <span class="hljs-number">0</span>) &#123;<br>                    <span class="hljs-comment">//设置node为头结点</span><br>                    setHeadAndPropagate(node, r);<br>                    p.next = <span class="hljs-keyword">null</span>; <span class="hljs-comment">// help GC</span><br>                    <span class="hljs-keyword">if</span> (interrupted)<br>                        selfInterrupt();<br>                    failed = <span class="hljs-keyword">false</span>;<br>                    <span class="hljs-keyword">return</span>;<br>                &#125;<br>            &#125;<br>            <span class="hljs-comment">//判断是否可以被park，跟独占式的逻辑一样返回true，则进行park操作，阻塞线程</span><br>            <span class="hljs-keyword">if</span> (shouldParkAfterFailedAcquire(p, node) &amp;&amp;<br>                parkAndCheckInterrupt())<br>                interrupted = <span class="hljs-keyword">true</span>;<br>        &#125;<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>        <span class="hljs-keyword">if</span> (failed)<br>            cancelAcquire(node);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这段逻辑基本上跟独占式的逻辑差不多，不同的地方在于入队的Node是标志为SHARED共享式的，获取同步资源的方式是tryAcquireShared()方法。</p>
-<h1 id="ReentrantLock原理"><a href="#ReentrantLock原理" class="headerlink" title="ReentrantLock原理"></a>ReentrantLock原理</h1><h3 id="上锁"><a href="#上锁" class="headerlink" title="上锁"></a>上锁</h3><p>ReentrantLock是通过lock()方法上锁，所以看lock()方法。</p>
+<h3 id="ReentrantLock原理"><a href="#ReentrantLock原理" class="headerlink" title="ReentrantLock原理"></a>ReentrantLock原理</h3><h4 id="上锁"><a href="#上锁" class="headerlink" title="上锁"></a>上锁</h4><p>ReentrantLock是通过lock()方法上锁，所以看lock()方法。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">lock</span><span class="hljs-params">()</span> </span>&#123;<br>    sync.lock();<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>sync就是NonfairSync或者FairSync。</p>
@@ -285,7 +286,7 @@
 <p>其实很明显了，关键的区别就在于尝试获取锁的时候，公平锁会判断是否需要排队再去更新同步状态，非公平锁是直接就更新同步，不判断是否需要排队。</p>
 <p>从性能上来说，公平锁的性能是比非公平锁要差的，因为<strong>公平锁要遵守FIFO(先进先出)的原则，这就会增加了上下文切换与等待线程的状态变换时间</strong>。</p>
 <p>非公平锁的缺点也是很明显的，因为允许插队，这就会存在有线程饿死的情况。</p>
-<h3 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h3><p>解锁对应的方法就是unlock()。</p>
+<h4 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h4><p>解锁对应的方法就是unlock()。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">unlock</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">//调用AQS中的release()方法</span><br>    sync.release(<span class="hljs-number">1</span>);<br>&#125;<br><span class="hljs-comment">//这是AQS框架定义的release()方法</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">release</span><span class="hljs-params">(<span class="hljs-keyword">int</span> arg)</span> </span>&#123;<br>    <span class="hljs-comment">//当前锁是不是没有被线程持有,返回true表示该锁没有被任何线程持有</span><br>    <span class="hljs-keyword">if</span> (tryRelease(arg)) &#123;<br>        <span class="hljs-comment">//获取头结点h</span><br>        Node h = head;<br>        <span class="hljs-comment">//判断头结点是否为null并且waitStatus不是初始化节点状态，解除线程挂起状态</span><br>        <span class="hljs-keyword">if</span> (h != <span class="hljs-keyword">null</span> &amp;&amp; h.waitStatus != <span class="hljs-number">0</span>)<br>            unparkSuccessor(h);<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>关键在于tryRelease()，这就不需要分公平锁和非公平锁的情况，只需要考虑可重入的逻辑。</p>
@@ -293,7 +294,7 @@
 
 
 
-<h1 id="volatile关键字解析"><a href="#volatile关键字解析" class="headerlink" title="volatile关键字解析"></a>volatile关键字解析</h1><p>一旦一个共享变量（类的成员变量、类的静态成员变量）被volatile修饰之后，那么就具备了两层语义：</p>
+<h3 id="volatile关键字解析"><a href="#volatile关键字解析" class="headerlink" title="volatile关键字解析"></a>volatile关键字解析</h3><p>一旦一个共享变量（类的成员变量、类的静态成员变量）被volatile修饰之后，那么就具备了两层语义：</p>
 <p>　　1）保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。</p>
 <p>　　2）禁止进行指令重排序。</p>
 <p>volatile没办法保证对变量的操作的原子性。</p>
@@ -374,7 +375,7 @@
         <svg class="icon icon-article" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <path d="M240.51564747 647.74217627h196.07203239c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806V165.10332731c0-33.18142087-30.16492806-60.32985613-60.32985612-60.32985611H245.04038668C225.43318342 104.7734712 210.35071939 119.85593522 210.35071939 139.46313845V617.57724821c0 16.59071043 13.57421762 30.16492806 30.16492808 30.16492806z m663.62841731-452.47392089v482.63884894c0 33.18142087-27.14843525 60.32985613-60.32985612 60.32985613H180.18579134c-33.18142087 0-60.32985613-27.14843525-60.32985612-60.32985613V195.26825538c-49.77213131 0-90.49478418 40.72265287-90.49478417 90.49478417v452.4739209c0 49.77213131 40.72265287 90.49478418 90.49478417 90.49478417h286.56681657c16.59071043 0 30.16492806 13.57421762 30.16492807 30.16492807s13.57421762 30.16492806 30.16492805 30.16492806h90.49478418c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806s13.57421762-30.16492806 30.16492807-30.16492807h286.56681657c49.77213131 0 90.49478418-40.72265287 90.49478417-90.49478417V285.76303955c0-49.77213131-40.72265287-90.49478418-90.49478417-90.49478417zM587.41232014 647.74217627h191.54729318c19.60720323 0 34.68966726-15.08246403 34.68966729-34.68966727V134.93839925c0-16.59071043-13.57421762-30.16492806-30.16492808-30.16492805H617.57724821c-30.16492806 0-60.32985613 27.14843525-60.32985612 60.32985611v452.4739209c0 16.59071043 13.57421762 30.16492806 30.16492805 30.16492806z" fill="currentColor"></path>
 </svg>
-        <span>22</span>
+        <span>24</span>
       </div>
       <div class="count-box--item">
         <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -401,7 +402,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#synchronized%E9%94%81%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">synchronized锁的原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E4%BB%A3%E7%A0%81%E5%9D%97%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">同步代码块原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E6%96%B9%E6%B3%95%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">同步方法原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#synchronized%E9%94%81%E7%9A%84%E4%BC%98%E5%8C%96"><span class="toc-number">4.</span> <span class="toc-text">synchronized锁的优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E6%80%A7%E8%87%AA%E6%97%8B%E9%94%81"><span class="toc-number">4.1.</span> <span class="toc-text">自适应性自旋锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%81%E6%B6%88%E9%99%A4"><span class="toc-number">4.2.</span> <span class="toc-text">锁消除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%81%E7%B2%97%E5%8C%96"><span class="toc-number">4.3.</span> <span class="toc-text">锁粗化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%8F%E5%90%91%E9%94%81"><span class="toc-number">4.4.</span> <span class="toc-text">偏向锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81"><span class="toc-number">4.5.</span> <span class="toc-text">轻量级锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E9%87%8F%E7%BA%A7%E9%94%81"><span class="toc-number">4.6.</span> <span class="toc-text">重量级锁</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock%E9%94%81%E4%B8%8Esynchronized"><span class="toc-number">5.</span> <span class="toc-text">Lock锁与synchronized</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#state%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">state共享变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CLH%E9%98%9F%E5%88%97"><span class="toc-number">5.2.</span> <span class="toc-text">CLH队列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#exclusiveOwnerThread"><span class="toc-number">5.3.</span> <span class="toc-text">exclusiveOwnerThread</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AQS%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">AQS的实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8B%AC%E5%8D%A0%E5%BC%8F"><span class="toc-number">6.1.</span> <span class="toc-text">独占式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%BC%8F"><span class="toc-number">6.2.</span> <span class="toc-text">共享式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E9%94%81"><span class="toc-number">6.3.</span> <span class="toc-text">上锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%94%81"><span class="toc-number">6.4.</span> <span class="toc-text">解锁</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#synchronized%E9%94%81%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">synchronized锁的原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E4%BB%A3%E7%A0%81%E5%9D%97%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">同步代码块原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E6%96%B9%E6%B3%95%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">同步方法原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#synchronized%E9%94%81%E7%9A%84%E4%BC%98%E5%8C%96"><span class="toc-number">4.</span> <span class="toc-text">synchronized锁的优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lock%E9%94%81%E4%B8%8Esynchronized"><span class="toc-number">5.</span> <span class="toc-text">Lock锁与synchronized</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#volatile%E4%B8%8Esynchronized%E7%9A%84%E5%8C%BA%E5%88%AB%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="toc-number">6.</span> <span class="toc-text">volatile与synchronized的区别如下：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AQS-AbstractQueuedSynchronizer"><span class="toc-number">7.</span> <span class="toc-text">AQS(AbstractQueuedSynchronizer)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AQS%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">8.</span> <span class="toc-text">AQS的实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ReentrantLock%E5%8E%9F%E7%90%86"><span class="toc-number">9.</span> <span class="toc-text">ReentrantLock原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#volatile%E5%85%B3%E9%94%AE%E5%AD%97%E8%A7%A3%E6%9E%90"><span class="toc-number">10.</span> <span class="toc-text">volatile关键字解析</span></a></li></ol>
   </div>
 </section>
 
@@ -474,7 +475,7 @@
       
         <li class="categorys-list-item">
           <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">
-            JAVA基础 (3)
+            JAVA基础 (5)
           </a>
         </li>
       
@@ -491,7 +492,7 @@
   </div>
   <div class="widget-body">
     <div class="tags-cloud">
-      <a href="/tags/IM/" style="font-size: 13.33px;" class="tags-cloud-3">IM</a> <a href="/tags/JAVA%E5%9F%BA%E7%A1%80/" style="font-size: 16.67px;" class="tags-cloud-7">JAVA基础</a> <a href="/tags/JAVA%E5%B9%B6%E5%8F%91/" style="font-size: 10px;" class="tags-cloud-0">JAVA并发</a> <a href="/tags/JAVA%E9%9B%86%E5%90%88/" style="font-size: 10px;" class="tags-cloud-0">JAVA集合</a> <a href="/tags/JVM/" style="font-size: 10px;" class="tags-cloud-0">JVM</a> <a href="/tags/TCP/" style="font-size: 13.33px;" class="tags-cloud-3">TCP</a> <a href="/tags/operation-system/" style="font-size: 10px;" class="tags-cloud-0">operation system</a> <a href="/tags/spring/" style="font-size: 10px;" class="tags-cloud-0">spring</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 16.67px;" class="tags-cloud-7">操作系统</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 10px;" class="tags-cloud-0">日常</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.33px;" class="tags-cloud-3">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 20px;" class="tags-cloud-10">计算机网络</a>
+      <a href="/tags/IM/" style="font-size: 12.5px;" class="tags-cloud-3">IM</a> <a href="/tags/JAVA%E5%9F%BA%E7%A1%80/" style="font-size: 17.5px;" class="tags-cloud-8">JAVA基础</a> <a href="/tags/JAVA%E5%B9%B6%E5%8F%91/" style="font-size: 12.5px;" class="tags-cloud-3">JAVA并发</a> <a href="/tags/JAVA%E9%9B%86%E5%90%88/" style="font-size: 10px;" class="tags-cloud-0">JAVA集合</a> <a href="/tags/JVM/" style="font-size: 12.5px;" class="tags-cloud-3">JVM</a> <a href="/tags/TCP/" style="font-size: 12.5px;" class="tags-cloud-3">TCP</a> <a href="/tags/operation-system/" style="font-size: 10px;" class="tags-cloud-0">operation system</a> <a href="/tags/spring/" style="font-size: 10px;" class="tags-cloud-0">spring</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 15px;" class="tags-cloud-5">操作系统</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 10px;" class="tags-cloud-0">日常</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 12.5px;" class="tags-cloud-3">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 20px;" class="tags-cloud-10">计算机网络</a>
     </div>
   </div>
 </section>

@@ -24,7 +24,7 @@
 
   
 
-  <title>进程和线程的区别 | ReasonLee</title>
+  <title>JAVA：JMM模型 | ReasonLee</title>
 
   
 
@@ -102,20 +102,22 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">进程和线程的区别</h1>
+          <h1 class="title-wrap">JAVA：JMM模型</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-01-13T21:20:14.000Z" itemprop="datePublished">2022-01-14</time>
+            <time  class="article-date" datetime="2022-01-18T17:20:12.000Z" itemprop="datePublished">2022-01-19</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📒 操作系统</a></li>
+    <li><a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">📒 JAVA基础</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">🏷️ 操作系统</a></li>
+    <li><a href="/tags/JAVA%E5%9F%BA%E7%A1%80/">🏷️ JAVA基础</a></li>
+  
+    <li><a href="/tags/JAVA%E5%B9%B6%E5%8F%91/">🏷️ JAVA并发</a></li>
   
 </ul>
         </div>
@@ -139,21 +141,25 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h4 id="什么是进程？什么是线程？"><a href="#什么是进程？什么是线程？" class="headerlink" title="什么是进程？什么是线程？"></a>什么是进程？什么是线程？</h4><p>进程是系统中正在运行的一个程序，程序一旦运行就是进程。</p>
-<p>进程可以看成程序执行的一个实例。进程是系统资源分配的独立实体，每个进程都拥有独立的地址空间。一个进程无法访问另一个进程的变量和数据结构，如果想让一个进程访问另一个进程的资源，需要使用进程间通信，比如<strong>管道，文件，套接字</strong>等。</p>
-<p>一个进程可以拥有多个线程，每个线程使用其所属进程的栈空间。线程与进程的一个主要区别是，<strong>同一进程内的多个线程会共享部分状态，多个线程可以读写同一块内存（一个进程无法直接访问另一进程的内存）。同时，每个线程还拥有自己的寄存器和栈，其他线程可以读写这些栈内存。</strong></p>
-<p>线程是进程的一个实体，是进程的一条执行路径。</p>
-<p>线程是进程的一个特定执行路径。当一个线程修改了进程的资源，它的兄弟线程可以立即看到这种变化。</p>
-<h4 id="进程和线程的区别体现在以下几个方面："><a href="#进程和线程的区别体现在以下几个方面：" class="headerlink" title="进程和线程的区别体现在以下几个方面："></a>进程和线程的区别体现在以下几个方面：</h4><p>1.地址空间和其他资源（如打开文件）：进程间相互独立，同一进程的各线程间共享。某进程内的线程在其他进程内不可见。</p>
-<p>2.通信：进程间通信IPC（管道，信号量，共享内存，消息队列），线程间可以直接独写进程数据段（如全局变量）来进程通信——需要进程同步和互斥手段的辅助，以保证数据的一致性。</p>
-<p>3.调度和切换：线程上下文切换比进程上下文切换快得多。</p>
-<p>4.在多线程OS中，进程不是一个可执行的实体。</p>
-<h4 id="进程和线程的选择取决以下几点："><a href="#进程和线程的选择取决以下几点：" class="headerlink" title="进程和线程的选择取决以下几点："></a>进程和线程的选择取决以下几点：</h4><p>1.需要频繁创建销毁的优先使用线程；因为对进程来说创建和销毁一个进程的代价是很大的。</p>
-<p>2.线程的切换速度快，所以在需要大量计算，切换频繁时使用线程，还有耗时的操作时用使用线程可提高应用程序的响应。</p>
-<p>3.因为对CPU系统的效率使用上线程更占优势，所以可能要发展到多机分布的用进程，多核分布用线程。</p>
-<p>4.并行操作时用线程，如C/S架构的服务器端并发线程响应用户的请求。</p>
-<p>5.需要更稳定安全时，适合选择进程；需要速度时，选择线程更好。</p>
-<p> <img src="https://pic1.zhimg.com/v2-7d100e1d833d74e4fe20ce21c48aedd8_r.jpg" alt="preview"></p>
+        <p>JMM（JAVA内存模型，Java memory Model）本身是一种抽象的概念并不真实存在，它描述的是一组规则和规范，通过这组规范，定义了程序中各个变量（包括实例字段，静态字段和构成数组对象的元素）的访问方式</p>
+<p>JMM 关于同步的规定：</p>
+<p>1:线程解锁前，必须把共享变量的值刷新回主内存</p>
+<p>2:线程加锁前，必须读区主内存的最新值到自己的工作内存</p>
+<p>3:加锁解锁是同一把锁</p>
+<p>JMM特性：</p>
+<p><strong>1:可见性</strong></p>
+<p><strong>2:原子性</strong></p>
+<p><strong>3:有序性（禁止指令重排）</strong>     </p>
+<p><strong>有序性：</strong></p>
+<p>计算机在执行程序时，为了提高性能，编译器和处理器常常会对指令进行重排序一般分为以下三种：</p>
+<p>源代码—》编译器的优化重拍—》指令并行的重拍—》内存系统的重拍—》最终执行的命令</p>
+<p>单线程环境里面确保代码执行结果和代码顺序执行的结果一致</p>
+<p>处理器在进行重排序时必须要考虑指令之间的数据依赖性(指令重排数据依赖性)</p>
+<p>多线程环境中线程交替执行，由于编译器优化重排的存在，两个线程使用的变量能否保证一致性是无法确定的，结果无法预测</p>
+<p><strong>原子性：</strong></p>
+<p>不可分割，完整性，也即某个线程正在做某个业务时，中间不可以被加塞，或者分割，需要整体完整，要么同时成功，要么同时失败。保证数据的完整一致性</p>
+<p><strong>可见性：</strong></p>
+<p>由于JVM运行程序的实体是线程，而每个线程在创建时jvm都会为其创建一个工作内存（有些地方成为栈空间），工作内存是每个线程的私有数据区域，而java内存模型规定，所有变量都存在主内存中，主内存是共享内存区域，所有线程都可以访问，但线程对数据的操作必须在工作内存中进行，所以需要先将变量从主内存中拷贝到自己的工作内存中。然后在对其进行操作，操作完成后，再将变量写回到主内存中，不能直接操作主内存的变量。因此，不同的线程不能访问对方线程的工作内存，线程间的通信都是在主内存中进行的</p>
 
       </section>
 
@@ -166,8 +172,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/140620.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">进程间通信的方式</h2>
+        <a href="/2022/01/190920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">JVM：Java类加载过程</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -181,8 +187,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/111620.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">UDP总览</h2>
+        <a href="/2022/01/180920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">算法：TopK问题</h2>
         </a>
       
       <div class="card-text--row">Older</div>
