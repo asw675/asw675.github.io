@@ -24,7 +24,7 @@
 
   
 
-  <title>HTTP和HTTPS的区别 | ReasonLee</title>
+  <title>JAVA：多线程 | ReasonLee</title>
 
   
 
@@ -102,20 +102,22 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">HTTP和HTTPS的区别</h1>
+          <h1 class="title-wrap">JAVA：多线程</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-01-11T01:20:14.000Z" itemprop="datePublished">2022-01-11</time>
+            <time  class="article-date" datetime="2022-01-19T17:20:12.000Z" itemprop="datePublished">2022-01-20</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">📒 计算机网络</a></li>
+    <li><a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">📒 JAVA基础</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">🏷️ 计算机网络</a></li>
+    <li><a href="/tags/JAVA%E5%9F%BA%E7%A1%80/">🏷️ JAVA基础</a></li>
+  
+    <li><a href="/tags/JAVA%E5%A4%9A%E7%BA%BF%E7%A8%8B/">🏷️ JAVA多线程</a></li>
   
 </ul>
         </div>
@@ -139,17 +141,131 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>一、HTTPS协议需要到证书颁发机构CA申请证书，HTTP不用申请证书；</p>
-<p>二、HTTP是超文本传输协议，属于应用层信息传输，HTTPS 则是具有SSL加密传安全性传输协议，对数据的传输进行加密，相当于HTTP的升级版；</p>
-<p>三、HTTP和HTTPS使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</p>
-<p>四、HTTP的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比HTTP协议安全。</p>
-<h2 id="HTTPS加密流程"><a href="#HTTPS加密流程" class="headerlink" title="HTTPS加密流程"></a>HTTPS加密流程</h2><p>HTTPS是通过SSL(安全套接层)和TLS(安全传输协议)的组合使用，加密TCP载荷即HTTP报文内容，同时通过不对称密钥方式认证身份，保证传输的安全可靠</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7ZtUN6"><img src="https://s4.ax1x.com/2022/01/11/7ZtUN6.png" alt="7ZtUN6.png"></a></p>
-<h4 id="数字证书认证"><a href="#数字证书认证" class="headerlink" title="数字证书认证"></a>数字证书认证</h4><p>由于公钥在下发的时候也容易被替换劫持，所以需要个第三方认证机构确认公钥的正确性</p>
-<p>CA：数字证书认证机构，是客户端服务端都认可的第三方机构，负责数字签名服务端公钥</p>
-<p>数字签名：签名就是一种证明身份的机制，是一种校验机制（简单说是用私钥加密内容的hash,公钥解密对比hash判断内容是否完整）</p>
-<p>数字证书：由一个可信的组织验证和签发的识别信息</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7Zta4K"><img src="https://s4.ax1x.com/2022/01/11/7Zta4K.png" alt="7Zta4K.png"></a></p>
+        <h1 id="JAVA创建线程的三种方法："><a href="#JAVA创建线程的三种方法：" class="headerlink" title="JAVA创建线程的三种方法："></a>JAVA创建线程的三种方法：</h1><p><strong>方法一 创建Thread类的子类</strong></p>
+<p>​    1.创建一个Thread类的子类<br>​    2.在Thread类的子类中重写Thread类中的run方法，设置线程任务(开启线程要做什么)<br>​    3.创建Thread类的子类对象<br>​    4.调用Thread类中的方法start方法，开启新的线程，执行run方法</p>
+<p><strong>方法二 实现Runnable接口</strong></p>
+<p>​    1.创建一个Runnable接口的实现类<br>​    2.在实现类中重写Runnable接口的run方法，设置线程任务<br>​    3.创建一个Runnable接口的实现类对象<br>​    4.创建Thread类对象，构造方法中传递Runnable接口的实现类对象<br>​    5.调用Thread类中的start方法，开启新的线程执行方法</p>
+<p><strong>方法三 实现Callable接口</strong></p>
+<p><strong>方法四 线程池</strong></p>
+<h1 id="Java线程调度机制"><a href="#Java线程调度机制" class="headerlink" title="Java线程调度机制"></a>Java线程调度机制</h1><p><strong>1.抢占式线程调度，</strong>每个线程可能会有自己的优先级，但是优先及并不意味着高优先级的线程一定会被调度，而是由cup随机的选择，所谓抢占式的线程调度，就是说一个线程在执行自己的任务时，虽然任务还没有执行完，但是cpu会迫使它暂停，让其它线程占有cpu的使用权。</p>
+<p><strong>2.协作式线程调度，</strong>每个线程可以有自己的优先级，但优先级并不意味着高优先级的线程一定会被最先调度，而是由cpu时机选择的，所谓协作式的线程调度，就是说一个线程在执行自己的任务时，不允许被中途打断，一定等当前线程将任务执行完毕后才会释放对cpu的占有，其它线程才可以抢占该cpu。</p>
+<p><strong>Java在调度机制上采用的时抢占式的线程调度机制。</strong>（线程调度由操作系统决定）</p>
+<h1 id="Java线程与操作系统线程的关系"><a href="#Java线程与操作系统线程的关系" class="headerlink" title="Java线程与操作系统线程的关系"></a>Java线程与操作系统线程的关系</h1><h4 id="Java中的线程就是调用操作系统的线程"><a href="#Java中的线程就是调用操作系统的线程" class="headerlink" title="Java中的线程就是调用操作系统的线程"></a>Java中的线程就是调用操作系统的线程</h4><p>Java thread创建线程启动 -&gt; 调用JNI方法start0 -&gt; 在JVM中进行一系列的方法调用，最后调用pthread_create创建线程（linux中）</p>
+<h1 id="Java线程的状态有几种"><a href="#Java线程的状态有几种" class="headerlink" title="Java线程的状态有几种"></a>Java线程的状态有几种</h1><p><strong>新建(new Thread)</strong></p>
+<p>当创建Thread类的一个实例(对象)时，此线程进入新建状态(未被启动)</p>
+<p><strong>就绪(runnable)</strong></p>
+<p>线程已经被启动，正在等待被分配给CPU时间片，也就是说此时线程正在就绪队列中排队等候得到CPU资源。</p>
+<p><strong>运行(running)</strong></p>
+<p>线程获得CPU资源正在执行任务(run()方法)，此时除非此线程自动放弃CPU资源或者有优先级更高的线程进入，线程将一直运行到结束。</p>
+<p><strong>死亡(dead)</strong></p>
+<p>当线程执行完毕或被其它线程杀死，线程就进入死亡状态，这时线程不可能再进入就绪状态等待执行。</p>
+<p><strong>堵塞(blocked)</strong></p>
+<p>由于某种原因导致正在运行的线程让出CPU并暂停自己的执行，即进入堵塞状态。</p>
+<p>正在睡眠：用<strong>sleep(long t)</strong> 方法可使线程进入睡眠方式。一个睡眠着的线程在指定的时间过去可进入就绪状态。</p>
+<p>正在等待：调用**wait()**方法。(调用motify()方法回到就绪状态)</p>
+<p><strong>sleep和wait的区别</strong></p>
+<p>sleep()方法，我们首先要知道该方法是属于Thread类中的。</p>
+<p>而wait()方法，则是属于Object类中的。</p>
+<p>sleep()方法导致了程序暂停执行指定的时间，让出cpu该其他线程，但是他的监控状态依然保持者，当指定的时间到了又会自动恢复运行状态。</p>
+<p>在调用sleep()方法的过程中，线程不会释放对象锁。</p>
+<p>而当调用wait()方法的时候，线程会放弃对象锁，进入等待此对象的等待锁定池，只有针对此对象调用notify()方法后本线程才进入对象锁定池准备</p>
+<h2 id="JAVA实现线程安全的方式"><a href="#JAVA实现线程安全的方式" class="headerlink" title="JAVA实现线程安全的方式"></a>JAVA实现线程安全的方式</h2><p>synchronized 同步代码块 （锁类）</p>
+<p>synchronized 同步方法 （锁方法）</p>
+<p>Lock锁机制</p>
+<h2 id="CAS原理"><a href="#CAS原理" class="headerlink" title="CAS原理"></a>CAS原理</h2><p>AtomicInteger等原子类内部方法都是基于 Unsafe 类实现的，Unsafe 类是个跟底层硬件CPU指令通讯的复制工具类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">unsafe.compareAndSwapInt(<span class="hljs-keyword">this</span>, valueOffset, expect, update)<br></code></pre></td></tr></table></figure>
+
+<p>所谓的 CAS，其实是个简称，全称是 Compare And Swap，对比之后交换数据。上面的方法，有几个重要的参数：</p>
+<p>（1）this，Unsafe 对象本身，需要通过这个类来获取 value 的内存偏移地址。</p>
+<p>（2）valueOffset，value 变量的内存偏移地址。</p>
+<p>（3）expect，期望更新的值。</p>
+<p>（4）update，要更新的最新值。</p>
+<p>Linux的X86下主要是通过cmpxchgl这个指令在CPU级完成CAS操作的，但在多处理器情况下必须使用lock指令加锁来完成。</p>
+<h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><p>​    多线程访问同一个共享变量的时候容易出现并发问题，特别是多个线程对一个变量进行写入的时候，为了保证线程安全，一般使用者在访问共享变量的时候需要进行额外的同步措施才能保证线程安全性。ThreadLocal是除了加锁这种同步方式之外的一种保证一种规避多线程访问出现线程不安全的方法，当我们在创建一个变量后，如果每个线程对其进行访问的时候访问的都是线程自己的变量这样就不会存在线程不安全问题。</p>
+<p>　　ThreadLocal是JDK包提供的，它提供线程本地变量，如果创建一乐ThreadLocal变量，那么访问这个变量的每个线程都会有这个变量的一个副本，在实际多线程操作的时候，操作的是自己本地内存中的变量，从而规避了线程安全问题，如下图所示</p>
+<p><img src="https://img2018.cnblogs.com/blog/1368768/201906/1368768-20190613220434628-1803630402.png" alt="img"></p>
+<p>里面有个类似于HashMap，key保存线程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">set</span><span class="hljs-params">(T value)</span> </span>&#123;<br>    <span class="hljs-comment">//(1)获取当前线程（调用者线程）</span><br>    Thread t = Thread.currentThread();<br>    <span class="hljs-comment">//(2)以当前线程作为key值，去查找对应的线程变量，找到对应的map</span><br>    ThreadLocalMap map = getMap(t);<br>    <span class="hljs-comment">//(3)如果map不为null，就直接添加本地变量，key为当前定义的ThreadLocal变量的this引用，值为添加的本地变量值</span><br>    <span class="hljs-keyword">if</span> (map != <span class="hljs-keyword">null</span>)<br>        map.set(<span class="hljs-keyword">this</span>, value);<br>    <span class="hljs-comment">//(4)如果map为null，说明首次添加，需要首先创建出对应的map</span><br>    <span class="hljs-keyword">else</span><br>        createMap(t, value);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="JAVA线程池"><a href="#JAVA线程池" class="headerlink" title="JAVA线程池"></a>JAVA线程池</h2><h4 id="四种线程池"><a href="#四种线程池" class="headerlink" title="四种线程池"></a><strong>四种线程池</strong></h4><p>Java通过Executors提供四种线程池，分别为</p>
+<ol>
+<li><strong>newSingleThreadExecutor</strong> 创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。<ol>
+<li>底层：返回ThreadPoolExecutor实例，corePoolSize为0；maximumPoolSize为Integer.MAX_VALUE；keepAliveTime为60L；时间单位TimeUnit.SECONDS；workQueue为SynchronousQueue(同步队列)</li>
+<li>通俗：当有新任务到来，则插入到SynchronousQueue中，由于SynchronousQueue是同步队列，因此会在池中寻找可用线程来执行，若有可以线程则执行，若没有可用线程则创建一个线程来执行该任务；若池中线程空闲时间超过指定时间，则该线程会被销毁。</li>
+<li>适用：执行很多短期的异步任务</li>
+</ol>
+</li>
+<li><strong>newFixedThreadPool</strong> 创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。<ol>
+<li>底层：返回ThreadPoolExecutor实例，接收参数为所设定线程数量n，corePoolSize和maximumPoolSize均为n；keepAliveTime为0L；时间单位TimeUnit.MILLISECONDS；WorkQueue为：new LinkedBlockingQueue<Runnable>() 无界阻塞队列</li>
+<li>通俗：创建可容纳固定数量线程的池子，每个线程的存活时间是无限的，当池子满了就不再添加线程了；如果池中的所有线程均在繁忙状态，对于新任务会进入阻塞队列中(无界的阻塞队列)</li>
+<li>适用：执行长期任务</li>
+</ol>
+</li>
+<li><strong>newScheduledThreadPool</strong> 创建一个可定期或者延时执行任务的定长线程池，支持定时及周期性任务执行。 <ol>
+<li>底层：FinalizableDelegatedExecutorService包装的ThreadPoolExecutor实例，corePoolSize为1；maximumPoolSize为1；keepAliveTime为0L；时间单位TimeUnit.MILLISECONDS；workQueue为：new LinkedBlockingQueue<Runnable>() 无解阻塞队列</li>
+<li>通俗：创建只有一个线程的线程池，当该线程正繁忙时，对于新任务会进入阻塞队列中(无界的阻塞队列)</li>
+<li>适用：按顺序执行任务的场景</li>
+</ol>
+</li>
+<li><strong>newCachedThreadPool</strong> 创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。 <ol>
+<li>底层：创建ScheduledThreadPoolExecutor实例，该对象继承了ThreadPoolExecutor，corePoolSize为传递来的参数，maximumPoolSize为Integer.MAX_VALUE；keepAliveTime为0；时间单位TimeUnit.NANOSECONDS；workQueue为：new DelayedWorkQueue() 一个按超时时间升序排序的队列</li>
+<li>通俗：创建一个固定大小的线程池，线程池内线程存活时间无限制，线程池可以支持定时及周期性任务执行，如果所有线程均处于繁忙状态，对于新任务会进入DelayedWorkQueue队列中，这是一种按照超时时间排序的队列结构</li>
+<li>适用：执行周期性任务</li>
+</ol>
+</li>
+</ol>
+<p><strong>这四种线程池都是通过ThreadPoolExecutor类创建的，只是传入的参数不同</strong></p>
+<h4 id="核心类"><a href="#核心类" class="headerlink" title="核心类"></a>核心类</h4><p>四种线程池本质都是创建ThreadPoolExecutor类，ThreadPoolExecutor构造参数如下</p>
+<ol>
+<li><p>int corePoolSize, 核心线程大小</p>
+</li>
+<li><p>int maximumPoolSize,最大线程大小</p>
+</li>
+<li><p>long keepAliveTime, 超过corePoolSize的线程多久不活动被销毁时间</p>
+</li>
+<li><p>TimeUnit unit,时间单位</p>
+</li>
+<li><p>BlockingQueue<Runnable> workQueue 任务队列</p>
+</li>
+<li><p>ThreadFactory threadFactory 线程池工厂</p>
+<ol>
+<li><p>threadFactory：线程工厂，是用来创建线程的。默认</p>
+<p>new Executors.DefaultThreadFactory();</p>
+</li>
+</ol>
+</li>
+<li><p>RejectedExecutionHandler handler 拒绝策略</p>
+<ol>
+<li>handler:线程拒绝策略。当创建的线程超出maximumPoolSize，且缓冲队列已满时，新任务会拒绝，有以下取值：<br>　　ThreadPoolExecutor.AbortPolicy:丢弃任务并抛出RejectedExecutionException异常。<br>　　ThreadPoolExecutor.DiscardPolicy：也是丢弃任务，但是不抛出异常。<br>　　ThreadPoolExecutor.DiscardOldestPolicy：丢弃队列最前面的任务，然后重新尝试执行任务（重复此过程）<br>　　ThreadPoolExecutor.CallerRunsPolicy：由调用线程处理该任务</li>
+</ol>
+</li>
+</ol>
+<h4 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h4><ol>
+<li>ArrayBlockingQueue ：一个由数组结构组成的有界阻塞队列</li>
+<li>LinkedBlockingQueue ：一个由链表结构组成的有界阻塞队列（常用）</li>
+<li>PriorityBlockingQueue ：一个支持优先级排序的无界阻塞队列</li>
+<li>DelayQueue： 一个使用优先级队列实现的无界阻塞队列</li>
+<li>SynchronousQueue： 一个不存储元素的阻塞队列（常用）</li>
+<li>LinkedTransferQueue： 一个由链表结构组成的无界阻塞队列</li>
+<li>LinkedBlockingDeque： 一个由链表结构组成的双向阻塞队列</li>
+</ol>
+<h4 id="线程池任务执行流程"><a href="#线程池任务执行流程" class="headerlink" title="线程池任务执行流程"></a><strong>线程池任务执行流程</strong></h4><ol>
+<li>当线程池小于corePoolSize时，新提交任务将创建一个新线程执行任务，即使此时线程池中存在空闲线程。</li>
+<li>当线程池达到corePoolSize时，新提交任务将被放入workQueue中，等待线程池中任务调度执行</li>
+<li>当workQueue已满，且maximumPoolSize&gt;corePoolSize时，新提交任务会创建新线程执行任务</li>
+<li>当提交任务数超过maximumPoolSize时，新提交任务由RejectedExecutionHandler处理</li>
+<li>当线程池中超过corePoolSize线程，空闲时间达到keepAliveTime时，释放空闲线程</li>
+<li>当设置allowCoreThreadTimeOut(true)时，该参数默认false，线程池中corePoolSize线程空闲时间达到keepAliveTime也将关闭</li>
+</ol>
+<h4 id="线程池源码"><a href="#线程池源码" class="headerlink" title="线程池源码"></a>线程池源码</h4><p>线程池里有个AtomicInteger：利用低29位表示线程池中线程数，通过高3位表示线程池的运行状态</p>
+<p>1、RUNNING：<code>-1 &lt;&lt; COUNT_BITS</code>，即高3位为111，该状态的线程池会接收新任务，并处理阻塞队列中的任务；<br> 2、SHUTDOWN： <code>0 &lt;&lt; COUNT_BITS</code>，即高3位为000，该状态的线程池不会接收新任务，但会处理阻塞队列中的任务；<br> 3、STOP ： <code>1 &lt;&lt; COUNT_BITS</code>，即高3位为001，该状态的线程不会接收新任务，也不会处理阻塞队列中的任务，而且会中断正在运行的任务；<br> 4、TIDYING ： <code>2 &lt;&lt; COUNT_BITS</code>，即高3位为010；<br> 5、TERMINATED： <code>3 &lt;&lt; COUNT_BITS</code>，即高3位为011；</p>
+<p>所谓线程池本质是一个hashSet。多余的任务会放在阻塞队列中。</p>
+<p>线程池的工作线程通过Worker类实现，通过ReentrantLock锁保证线程安全。</p>
+<p>Worker就是一个继承了runnable的类，继承了AQS类，可以方便的实现工作线程的中止操作；</p>
+<p><strong>runWorker方法是线程池的核心：</strong></p>
+<p> 1、线程启动之后，通过unlock方法释放锁，设置AQS的state为0，表示运行中断；<br> 2、获取第一个任务firstTask，执行任务的run方法，不过在执行任务之前，会进行加锁操作，任务执行完会释放锁；<br> 3、在执行任务的前后，可以根据业务场景自定义beforeExecute和afterExecute方法；<br> 4、firstTask执行完成之后，通过getTask方法从阻塞队列中获取等待的任务，如果队列中没有任务，getTask方法会被阻塞并挂起，不会占用cpu资源；</p>
 
       </section>
 
@@ -162,8 +278,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/111520.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">HTTP总览</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -177,8 +293,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/101920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">IM心跳是怎么回事</h2>
+        <a href="/2022/01/190920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">JVM：Java类加载过程</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -247,7 +363,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS%E5%8A%A0%E5%AF%86%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">HTTPS加密流程</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">JAVA实现线程安全的方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CAS%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">CAS原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-number">3.</span> <span class="toc-text">JAVA线程池</span></a></li></ol>
   </div>
 </section>
 
