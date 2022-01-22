@@ -24,7 +24,7 @@
 
   
 
-  <title>关于 | ReasonLee</title>
+  <title>JAVA：常见问题汇总 | ReasonLee</title>
 
   
 
@@ -49,9 +49,9 @@
   <div class="root-container">
     
 <!-- header container -->
-<header class="header-container">
+<header class="header-container post">
   
-    <div class="post-image" style="background-image: url(https://qiniu.sukoshi.xyz/src/images/68135789_p0.jpg)"></div>
+    <div class="post-image" style="background-image: url(https://wallpapers.com/images/high/toradora-taiga-aisaka-eating-ithmocq6tsax591p.jpg)"></div>
   
 
   <!-- navbar -->
@@ -99,39 +99,160 @@
 
   
   
-
-  
-  
     <div class="header-content">
-      <div class="post-text layout-block layout-padding">
-        <h1 class="title-wrap">关于</h1>
-        
-          <h2 class="title-sub-wrap">想了解我点的什么？</h2>
-        
+      <div class="post-text layout-block">
+        <div class="layout-margin">
+          <h1 class="title-wrap">JAVA：常见问题汇总</h1>
+          <h2 class="title-sub-wrap">
+            <strong>ReasonLee</strong>
+            <span>发布于</span>
+            <time  class="article-date" datetime="2022-01-22T17:20:12.000Z" itemprop="datePublished">2022-01-23</time>
+          </h2>
+          <ul class="wrap-list dark">
+  
+    <li><a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">📒 JAVA基础</a></li>
+  
+</ul>
+          <ul class="wrap-list dark">
+  
+    <li><a href="/tags/JAVA%E5%9F%BA%E7%A1%80/">🏷️ JAVA基础</a></li>
+  
+</ul>
+        </div>
       </div>
     </div>
+  
+
+  
   
   
 </header>
 
-    <!-- 分页(其他自定义页面) -->
+    <!-- 文章 -->
 
-<!-- 自定义页面 -->
-
+<!-- 文章内容 -->
 <div class="body-container">
   <article class="content-container layout-block post-container">
     <div class="article-info">
       
+      
+      
+      
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <p>NyaRu最强！</p>
+        <h2 id="Java的List如何实现线程安全"><a href="#Java的List如何实现线程安全" class="headerlink" title="Java的List如何实现线程安全"></a>Java的List如何实现线程安全</h2><h4 id="1-Vector"><a href="#1-Vector" class="headerlink" title="1.Vector"></a>1.Vector</h4><p>​    所有方法里加了synchronized，效率低。</p>
+<h4 id="2-CopyOnWriteArrayList"><a href="#2-CopyOnWriteArrayList" class="headerlink" title="2.CopyOnWriteArrayList"></a>2.CopyOnWriteArrayList</h4><p>​    CopyOnWrite 写入时复制，写入的时候复制一个数组出来操作，保证其他线程不影响。</p>
+<h2 id="JAVA中重写和重载的区别（多态性）"><a href="#JAVA中重写和重载的区别（多态性）" class="headerlink" title="JAVA中重写和重载的区别（多态性）"></a>JAVA中重写和重载的区别（多态性）</h2><h4 id="重载："><a href="#重载：" class="headerlink" title="重载："></a>重载：</h4><p>​    Java的方法重载，就是在类中可以创建多个方法，它们具有相同的名字，但具有不同的参数和不同的定义。调用方法时通过传递给它们的不同参数个数和参数类型来决定具体使用哪个方法, 这就是多态性。重载的时候，方法名要一样，但是参数类型和个数不一样，返回值类型可以相同也可以不相同。无法以返回型别作为重载函数的区分标准。</p>
+<h4 id="重写："><a href="#重写：" class="headerlink" title="重写："></a>重写：</h4><p>​    父类与子类之间的多态性，对父类的函数进行重新定义。如果在子类中定义某方法与其父类有相同的名称和参数，我们说该方法被重写 (Overriding)。在<a target="_blank" rel="noopener" href="http://java.chinaitlab.com/">Java</a>中，子类可继承父类中的方法，而不需要重新编写相同的方法。但有时子类并不想原封不动地继承父类的方法，而是想作一定的修改，这就需要采用方法的重写。方法重写又称方法覆盖。</p>
+<h2 id="hashCode和equals方法的关系"><a href="#hashCode和equals方法的关系" class="headerlink" title="hashCode和equals方法的关系"></a>hashCode和equals方法的关系</h2><p>​    hashCode就是计算当前类hash值的方法，一般来说重写equals的时候需要重写hashCode。不然两个值equals相等，但是有不一样的hashCode，在一些hash集合（ hashMap）里就会存在两个值。</p>
+<h2 id="Java中String、StringBuffer、StringBuilder的区别"><a href="#Java中String、StringBuffer、StringBuilder的区别" class="headerlink" title="Java中String、StringBuffer、StringBuilder的区别"></a>Java中String、StringBuffer、StringBuilder的区别</h2><p>​    String不可变，但线程安全</p>
+<p>​    StringBuffer对方法加了同步锁或者对调用的方法加了同步锁，所以是<strong>线程安全的</strong>。</p>
+<p>​    StringBuilder并没有对方法进行加同步锁，所以是<strong>非线程安全的</strong>。</p>
+<p>​    单线程下StringBuilder效率高于StringBuffer</p>
+<h2 id="Java中接口和抽象类的区别"><a href="#Java中接口和抽象类的区别" class="headerlink" title="Java中接口和抽象类的区别"></a>Java中接口和抽象类的区别</h2><h4 id="相同点："><a href="#相同点：" class="headerlink" title="相同点："></a>相同点：</h4><p>（1）都不能被实例化<br>（2）接口的实现类或抽象类的子类都只有实现了接口或抽象类中的方法后才能实例化。</p>
+<h4 id="不同点："><a href="#不同点：" class="headerlink" title="不同点："></a>不同点：</h4><p>（1）接口只有定义，不能有方法的实现，java 1.8中可以定义default方法体，而抽象类可以有定义与实现，方法可在抽象类中实现。<br>（2）实现接口的关键字为implements，继承抽象类的关键字为extends。一个类可以实现多个接口，但一个类只能继承一个抽象类。所以，使用接口可以间接地实现多重继承。<br>（3）接口强调特定功能的实现，而抽象类强调所属关系。<br>（4）接口成员变量默认为public static final，必须赋初值，不能被修改；其所有的成员方法都是public、abstract的。抽象类中成员变量默认default，可在子类中被重新定义，也可被重新赋值；抽象方法被abstract修饰，不能被private、static、synchronized和native等修饰，必须以分号结尾，不带花括号。<br>（5）接口被用于常用的功能，便于日后维护和添加删除，而抽象类更倾向于充当公共类的角色，不适用于日后重新对立面的代码修改。功能需要累积时用抽象类，不需要累积时用接口。</p>
+<h2 id="JAVA反射"><a href="#JAVA反射" class="headerlink" title="JAVA反射"></a>JAVA反射</h2><p>Java的反射机制是在编译时并不确定是哪个类被加载了，而是在程序运行的时候才加载</p>
+<p>假如有两个程序员，一个程序员在写程序的时需要使用第二个程序员所写的类，但第二个程序员并没完成他所写的类。那么第一个程序员的代码是不能通过编译的。此时，利用Java反射的机制，就可以让第一个程序员在没有得到第二个程序员所写的类的时候，来完成自身代码的编译。</p>
+<ol>
+<li>反射获取类实例 Class.forName(“C.a.xxx”);</li>
+<li>Class clazz2 = Person.class</li>
+<li>Class clazz3 = p.getClass()</li>
+</ol>
+<h3 id="反射原理"><a href="#反射原理" class="headerlink" title="反射原理"></a>反射原理</h3><p>​    首先主要是先获取 ClassLoader, 然后调用 native 方法，获取信息，加载类则是回调 java.lang.ClassLoader. 最后，jvm又会回调 ClassLoader 进类加载！</p>
+<p>​     newInstance() 主要做了三件事：</p>
+<p>　　1. 权限检测，如果不通过直接抛出异常；</p>
+<p>　　2. 查找无参构造器，并将其缓存起来；</p>
+<p>　　3. 调用具体方法的无参构造方法，生成实例并返回；</p>
+<p><strong>然后getConstructor0() 为获取匹配的构造方器；分三步：</strong></p>
+<p>　　1. 先获取所有的constructors, 然后通过进行参数类型比较；<br>　　2. 找到匹配后，通过 ReflectionFactory copy一份constructor返回；<br>　　3. 否则抛出 NoSuchMethodException;</p>
+<p><strong>privateGetDeclaredConstructors(), 获取所有的构造器主要步骤</strong>；</p>
+<p>　　1. 先尝试从缓存中获取；<br>　　2. 如果缓存没有，则从jvm中重新获取，并存入缓存，缓存使用软引用进行保存，保证内存可用；</p>
+<p>另外，使用 relactionData() 进行缓存保存</p>
+<p>获取Constructor后接下来就只需调用其相应构造器的 newInstance()，即返回实例了！</p>
+<p><strong>最后，用几句话总结反射的实现原理：</strong></p>
+<ol>
+<li><p>反射类及反射方法的获取，都是通过从列表中搜寻查找匹配的方法，所以查找性能会随类的大小方法多少而变化；</p>
+</li>
+<li><p>每个类都会有一个与之对应的Class实例，从而每个类都可以获取method反射方法，并作用到其他实例身上；</p>
+</li>
+<li><p>反射也是考虑了线程安全的，放心使用；</p>
+</li>
+<li><p>反射使用软引用relectionData缓存class信息，避免每次重新从jvm获取带来的开销；</p>
+</li>
+<li><p>反射调用多次生成新代理Accessor, 而通过字节码生存的则考虑了卸载功能，所以会使用独立的类加载器；</p>
+</li>
+<li><p>当找到需要的方法，都会copy一份出来，而不是使用原来的实例，从而保证数据隔离；</p>
+</li>
+<li><p>调度反射方法，最终是由jvm执行invoke0()执行；</p>
+</li>
+</ol>
+<h1 id="Jvm内存与操作系统内存之间的关系"><a href="#Jvm内存与操作系统内存之间的关系" class="headerlink" title="Jvm内存与操作系统内存之间的关系"></a>Jvm内存与操作系统内存之间的关系</h1><p>操作系统中有</p>
+<p><strong>栈内存（由操作系统管理）</strong></p>
+<p><strong>堆内存（由管理员管理）</strong></p>
+<p>JVM内存在操作系统的堆内存里，因为操作系统的栈是操作系统管理的，它随时会被回收。</p>
+<p>JVM中也有</p>
+<p><strong>栈内存</strong></p>
+<p>​    Java栈中存放的是一个个的栈帧，每个栈帧对应一个被调用的方法，在栈帧中包括**局部变量表(Local Variables)<strong>、</strong>操作数栈(Operand Stack)**、</p>
+<p>​    <strong>指向当前方法所属的类的运行时常量池（运行时常量池的概念在方法区部分会谈到）的引用</strong>(Reference to runtime constant pool)、</p>
+<p>​    **方法返回地址(Return Address)**和一些额外的附加信息。当线程执行一个方法时，就会随之创建一个对应的栈帧，并将建立的栈帧压栈。当方法执行完毕之后，便会将栈帧出栈。</p>
+<p><strong>本地方法栈（操作系统的栈内存）</strong></p>
+<p><strong>堆内存</strong></p>
+<p>​    Java中的堆是用来存储对象本身的以及数组（数组引用是存放在Java栈中的）。堆是被所有线程共享的，在JVM中只有一个堆。</p>
+<p><strong>方法区</strong></p>
+<p>​    与堆一样，是被线程共享的区域。在方法区中，存储了每个类的信息（包括类的名称、方法信息、字段信息）、静态变量、常量以及编译器编译后的代码等。</p>
+<p><strong>程序计数器</strong></p>
+<p>​    多线程的Java应用程序：为了让每个线程正常工作就提出了程序计数器（Programe Counter Register），每个线程都有自己的程序计数器这样当线程执行切换的时候就可以在上次执行的基础上继续执行，仅仅从一条线程线性执行的角度而言，代码是一条一条的往下执行的，这个时候就是程序计数器；JVM就是通过读取程序计数器的值来决定下一条需要执行的字节码指令，进而进行选择语句、循环、异常处理等；</p>
+<p>​    A线程正在执行HelloWorld.class的第三十五行。这时候CPU时间片被B线程抢走了，当A线程重新被分配到时间片时，他怎么知道我的class运行到哪了？这时候他可以看程序计数器在哪个位置。</p>
 
       </section>
 
       
       
+        <nav class="article-nav">
+          
+            <div class="article-nav-item layout-padding">
+  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
+    
+    <div class="card-text">
+      
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
+        </a>
+      
+      <div class="card-text--row">Newer</div>
+    </div>
+  </article>
+</div>
+          
+          
+            <div class="article-nav-item layout-padding">
+  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
+    
+    <div class="card-text">
+      
+        <a href="/2022/01/200120.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">JAVA：多线程</h2>
+        </a>
+      
+      <div class="card-text--row">Older</div>
+    </div>
+  </article>
+</div>
+          
+        </nav>
+      
 
-      
-      
+      <section class="page-message-container layout-padding">
+        
+
+
+  
+  
+
+  
+  
+
+
+      </section>
     </div>
     <div class="widget-info">
       <section class="widget-author widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
@@ -168,6 +289,20 @@
     </div>
   </div>
 </section>
+
+      
+<section class="widget-toc widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-toc" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M134.50666666 767.46666668H460.8c27.73333333 0 50.24000001 22.50666668 50.24000001 50.23999999v50.13333333c0 27.73333333-22.50666668 50.24000001-50.24000001 50.24000001H134.50666666c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.24000001v-50.13333333c0.10666668-27.73333333 22.50666668-50.24000001 50.24000001-50.24000001zM84.37333332 541.65333333h326.18666669c27.73333333 0 50.24000001 22.39999999 50.23999999 50.13333334v50.24000001c0 27.73333333-22.50666668 50.24000001-50.24000002 50.23999999H84.37333332c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.23999999v-50.24000001c0-27.73333333 22.50666668-50.13333334 50.24000001-50.13333334zM134.50666666 315.83999999H460.8c27.73333333 0 50.24000001 22.50666668 50.24000001 50.24000001v50.24000001c0 27.73333333-22.50666668 50.13333334-50.24000001 50.13333333H134.50666666c-27.73333333 0-50.24000001-22.39999999-50.23999999-50.13333333v-50.24000001c0.10666668-27.84000001 22.50666668-50.24000001 50.24000001-50.23999999zM209.81333332 89.91999999h326.18666671c27.73333333 0 50.24000001 22.39999999 50.23999997 50.13333335v50.23999999c0 27.73333333-22.50666668 50.24000001-50.24000001 50.24000001H209.81333332c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.24000001v-50.24000001c0-27.73333333 22.50666668-50.13333334 50.24000001-50.13333333zM692.05333333 623.36l274.66666669 176.00000002c23.36000001 14.93333333 30.08 45.97333334 15.14666666 69.33333332L954.77333334 910.93333333c-14.93333333 23.25333334-45.97333334 30.08-69.33333335 15.14666667l-274.66666666-176c-23.36000001-14.93333333-30.08-45.97333334-15.14666667-69.33333333l27.09333334-42.24000001c14.93333333-23.36000001 46.08000001-30.08 69.33333333-15.14666666z" fill="currentColor"></path>
+</svg>
+    <span>TOC</span>
+  </div>
+  <div class="widget-body">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E7%9A%84List%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-number">1.</span> <span class="toc-text">Java的List如何实现线程安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E4%B8%AD%E9%87%8D%E5%86%99%E5%92%8C%E9%87%8D%E8%BD%BD%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%88%E5%A4%9A%E6%80%81%E6%80%A7%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">JAVA中重写和重载的区别（多态性）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hashCode%E5%92%8Cequals%E6%96%B9%E6%B3%95%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">3.</span> <span class="toc-text">hashCode和equals方法的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E4%B8%ADString%E3%80%81StringBuffer%E3%80%81StringBuilder%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.</span> <span class="toc-text">Java中String、StringBuffer、StringBuilder的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E4%B8%AD%E6%8E%A5%E5%8F%A3%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">5.</span> <span class="toc-text">Java中接口和抽象类的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E5%8F%8D%E5%B0%84"><span class="toc-number">6.</span> <span class="toc-text">JAVA反射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%8E%9F%E7%90%86"><span class="toc-number">6.1.</span> <span class="toc-text">反射原理</span></a></li></ol></li></ol>
+  </div>
+</section>
+
 
       
 <section class="widet-notice widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
@@ -262,7 +397,6 @@
   </article>
 </div>
 
-
     <!-- footer container -->
 <footer id="footer" class="footer">
   <div class="footer-container">
@@ -312,34 +446,6 @@
 
   
   <!-- aplayer -->
-
-
-  <!-- aplayer 音频 start -->
-  <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
-  <script type="text/javascript" src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
-  <script type="text/javascript">
-    const aplayer = document.querySelectorAll(".aplayer-box");
-    aplayer && initaplayer(aplayer);
-    function initaplayer(els) {
-      let elsArr = Array.from(els);
-      elsArr.forEach(el => {
-        let params = {
-          container: el,
-          audio: { ...el.dataset },
-          theme: "#b7daff",
-          autoplay: false,
-          loop: false,
-          mutex: true,
-        }
-        if (el.dataset.lrc) {
-          params['lrcType'] = 3
-        }
-        new APlayer(params);
-      });
-    }
-  </script>
-  <!-- aplayer 音频 end -->
-  
 
 
 <!-- dplayer -->

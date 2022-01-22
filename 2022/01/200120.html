@@ -141,17 +141,17 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="JAVA创建线程的三种方法："><a href="#JAVA创建线程的三种方法：" class="headerlink" title="JAVA创建线程的三种方法："></a>JAVA创建线程的三种方法：</h1><p><strong>方法一 创建Thread类的子类</strong></p>
+        <h2 id="JAVA创建线程的三种方法："><a href="#JAVA创建线程的三种方法：" class="headerlink" title="JAVA创建线程的三种方法："></a>JAVA创建线程的三种方法：</h2><p><strong>方法一 创建Thread类的子类</strong></p>
 <p>​    1.创建一个Thread类的子类<br>​    2.在Thread类的子类中重写Thread类中的run方法，设置线程任务(开启线程要做什么)<br>​    3.创建Thread类的子类对象<br>​    4.调用Thread类中的方法start方法，开启新的线程，执行run方法</p>
 <p><strong>方法二 实现Runnable接口</strong></p>
 <p>​    1.创建一个Runnable接口的实现类<br>​    2.在实现类中重写Runnable接口的run方法，设置线程任务<br>​    3.创建一个Runnable接口的实现类对象<br>​    4.创建Thread类对象，构造方法中传递Runnable接口的实现类对象<br>​    5.调用Thread类中的start方法，开启新的线程执行方法</p>
 <p><strong>方法三 实现Callable接口</strong></p>
 <p><strong>方法四 线程池</strong></p>
-<h1 id="Java线程调度机制"><a href="#Java线程调度机制" class="headerlink" title="Java线程调度机制"></a>Java线程调度机制</h1><p><strong>1.抢占式线程调度，</strong>每个线程可能会有自己的优先级，但是优先及并不意味着高优先级的线程一定会被调度，而是由cup随机的选择，所谓抢占式的线程调度，就是说一个线程在执行自己的任务时，虽然任务还没有执行完，但是cpu会迫使它暂停，让其它线程占有cpu的使用权。</p>
+<h2 id="Java线程调度机制"><a href="#Java线程调度机制" class="headerlink" title="Java线程调度机制"></a>Java线程调度机制</h2><p><strong>1.抢占式线程调度，</strong>每个线程可能会有自己的优先级，但是优先及并不意味着高优先级的线程一定会被调度，而是由cup随机的选择，所谓抢占式的线程调度，就是说一个线程在执行自己的任务时，虽然任务还没有执行完，但是cpu会迫使它暂停，让其它线程占有cpu的使用权。</p>
 <p><strong>2.协作式线程调度，</strong>每个线程可以有自己的优先级，但优先级并不意味着高优先级的线程一定会被最先调度，而是由cpu时机选择的，所谓协作式的线程调度，就是说一个线程在执行自己的任务时，不允许被中途打断，一定等当前线程将任务执行完毕后才会释放对cpu的占有，其它线程才可以抢占该cpu。</p>
 <p><strong>Java在调度机制上采用的时抢占式的线程调度机制。</strong>（线程调度由操作系统决定）</p>
-<h1 id="Java线程与操作系统线程的关系"><a href="#Java线程与操作系统线程的关系" class="headerlink" title="Java线程与操作系统线程的关系"></a>Java线程与操作系统线程的关系</h1><h4 id="Java中的线程就是调用操作系统的线程"><a href="#Java中的线程就是调用操作系统的线程" class="headerlink" title="Java中的线程就是调用操作系统的线程"></a>Java中的线程就是调用操作系统的线程</h4><p>Java thread创建线程启动 -&gt; 调用JNI方法start0 -&gt; 在JVM中进行一系列的方法调用，最后调用pthread_create创建线程（linux中）</p>
-<h1 id="Java线程的状态有几种"><a href="#Java线程的状态有几种" class="headerlink" title="Java线程的状态有几种"></a>Java线程的状态有几种</h1><p><strong>新建(new Thread)</strong></p>
+<h2 id="Java线程与操作系统线程的关系"><a href="#Java线程与操作系统线程的关系" class="headerlink" title="Java线程与操作系统线程的关系"></a>Java线程与操作系统线程的关系</h2><h4 id="Java中的线程就是调用操作系统的线程"><a href="#Java中的线程就是调用操作系统的线程" class="headerlink" title="Java中的线程就是调用操作系统的线程"></a>Java中的线程就是调用操作系统的线程</h4><p>Java thread创建线程启动 -&gt; 调用JNI方法start0 -&gt; 在JVM中进行一系列的方法调用，最后调用pthread_create创建线程（linux中）</p>
+<h2 id="Java线程的状态有几种"><a href="#Java线程的状态有几种" class="headerlink" title="Java线程的状态有几种"></a>Java线程的状态有几种</h2><p><strong>新建(new Thread)</strong></p>
 <p>当创建Thread类的一个实例(对象)时，此线程进入新建状态(未被启动)</p>
 <p><strong>就绪(runnable)</strong></p>
 <p>线程已经被启动，正在等待被分配给CPU时间片，也就是说此时线程正在就绪队列中排队等候得到CPU资源。</p>
@@ -238,7 +238,7 @@
 </li>
 <li><p>RejectedExecutionHandler handler 拒绝策略</p>
 <ol>
-<li>handler:线程拒绝策略。当创建的线程超出maximumPoolSize，且缓冲队列已满时，新任务会拒绝，有以下取值：<br>　　ThreadPoolExecutor.AbortPolicy:丢弃任务并抛出RejectedExecutionException异常。<br>　　ThreadPoolExecutor.DiscardPolicy：也是丢弃任务，但是不抛出异常。<br>　　ThreadPoolExecutor.DiscardOldestPolicy：丢弃队列最前面的任务，然后重新尝试执行任务（重复此过程）<br>　　ThreadPoolExecutor.CallerRunsPolicy：由调用线程处理该任务</li>
+<li>handler:线程拒绝策略。当创建的线程超出maximumPoolSize，且缓冲队列已满时，新任务会拒绝，有以下取值：<br>　　ThreadPoolExecutor.AbortPolicy:丢弃任务并抛出RejectedExecutionException异常。<br>   　　ThreadPoolExecutor.DiscardPolicy：也是丢弃任务，但是不抛出异常。<br>   　　ThreadPoolExecutor.DiscardOldestPolicy：丢弃队列最前面的任务，然后重新尝试执行任务（重复此过程）<br>   　　ThreadPoolExecutor.CallerRunsPolicy：由调用线程处理该任务</li>
 </ol>
 </li>
 </ol>
@@ -278,8 +278,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/01/101920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">待看事项</h2>
+        <a href="/2022/01/230120.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">JAVA：常见问题汇总</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -336,7 +336,7 @@
         <svg class="icon icon-article" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <path d="M240.51564747 647.74217627h196.07203239c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806V165.10332731c0-33.18142087-30.16492806-60.32985613-60.32985612-60.32985611H245.04038668C225.43318342 104.7734712 210.35071939 119.85593522 210.35071939 139.46313845V617.57724821c0 16.59071043 13.57421762 30.16492806 30.16492808 30.16492806z m663.62841731-452.47392089v482.63884894c0 33.18142087-27.14843525 60.32985613-60.32985612 60.32985613H180.18579134c-33.18142087 0-60.32985613-27.14843525-60.32985612-60.32985613V195.26825538c-49.77213131 0-90.49478418 40.72265287-90.49478417 90.49478417v452.4739209c0 49.77213131 40.72265287 90.49478418 90.49478417 90.49478417h286.56681657c16.59071043 0 30.16492806 13.57421762 30.16492807 30.16492807s13.57421762 30.16492806 30.16492805 30.16492806h90.49478418c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806s13.57421762-30.16492806 30.16492807-30.16492807h286.56681657c49.77213131 0 90.49478418-40.72265287 90.49478417-90.49478417V285.76303955c0-49.77213131-40.72265287-90.49478418-90.49478417-90.49478417zM587.41232014 647.74217627h191.54729318c19.60720323 0 34.68966726-15.08246403 34.68966729-34.68966727V134.93839925c0-16.59071043-13.57421762-30.16492806-30.16492808-30.16492805H617.57724821c-30.16492806 0-60.32985613 27.14843525-60.32985612 60.32985611v452.4739209c0 16.59071043 13.57421762 30.16492806 30.16492805 30.16492806z" fill="currentColor"></path>
 </svg>
-        <span>25</span>
+        <span>26</span>
       </div>
       <div class="count-box--item">
         <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -363,7 +363,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">JAVA实现线程安全的方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CAS%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">CAS原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-number">3.</span> <span class="toc-text">JAVA线程池</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">JAVA创建线程的三种方法：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E6%9C%BA%E5%88%B6"><span class="toc-number">2.</span> <span class="toc-text">Java线程调度机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E7%BA%BF%E7%A8%8B%E4%B8%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">3.</span> <span class="toc-text">Java线程与操作系统线程的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81%E6%9C%89%E5%87%A0%E7%A7%8D"><span class="toc-number">4.</span> <span class="toc-text">Java线程的状态有几种</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">JAVA实现线程安全的方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CAS%E5%8E%9F%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">CAS原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-number">7.</span> <span class="toc-text">JAVA线程池</span></a></li></ol>
   </div>
 </section>
 
@@ -436,7 +436,7 @@
       
         <li class="categorys-list-item">
           <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">
-            JAVA基础 (6)
+            JAVA基础 (7)
           </a>
         </li>
       
