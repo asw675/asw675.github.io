@@ -202,6 +202,29 @@
 <p><strong>程序计数器</strong></p>
 <p>​    多线程的Java应用程序：为了让每个线程正常工作就提出了程序计数器（Programe Counter Register），每个线程都有自己的程序计数器这样当线程执行切换的时候就可以在上次执行的基础上继续执行，仅仅从一条线程线性执行的角度而言，代码是一条一条的往下执行的，这个时候就是程序计数器；JVM就是通过读取程序计数器的值来决定下一条需要执行的字节码指令，进而进行选择语句、循环、异常处理等；</p>
 <p>​    A线程正在执行HelloWorld.class的第三十五行。这时候CPU时间片被B线程抢走了，当A线程重新被分配到时间片时，他怎么知道我的class运行到哪了？这时候他可以看程序计数器在哪个位置。</p>
+<h2 id="Java中有几种基本数据类型？所占用的字节分别为多少？"><a href="#Java中有几种基本数据类型？所占用的字节分别为多少？" class="headerlink" title="Java中有几种基本数据类型？所占用的字节分别为多少？"></a>Java中有几种基本数据类型？所占用的字节分别为多少？</h2><p><strong>1、bit –比特位</strong>：位是计算机中存储数据的最小单位，指二进制数中的一个位数，其值为0或1<br><strong>2、byte –字节</strong>：字节是计算机存储容量的基本单位，一个字节由8位二进制数组成。在计算机内部，一个字节可以表示一个数据，也可以表示一个英文字母，两个字节可以表示一个汉字。<br>1Byte=8bit (1B＝8bit)<br>1KB=1024Byte(字节)=8*1024bit<br>1MB=1024KB<br>1GB=1024MB<br>1TB=1024GB</p>
+<p><strong>byte</strong> 8bit 默认为0，取值-128–127<br><strong>short</strong> 16bit 默认为0，取值-32768–32767<br><strong>int</strong> 32bit 默认为0，取值-21亿–21亿<br><strong>long</strong> 64bit 默认为0，取值-922亿亿–922亿亿<br><strong>double</strong> 64bit 默认为0.0d，一般数为整数是加上d用于区分<br><strong>float</strong> 32bit 默认为0.0ff<br><strong>char</strong> 16bit 默认’\u0000’<br><strong>boolean</strong> 1bit 默认false</p>
+<h2 id="HashSet的实现原理"><a href="#HashSet的实现原理" class="headerlink" title="HashSet的实现原理"></a>HashSet的实现原理</h2><p>HashSet实际上是一个HashMap实例，都是一个存放链表的数组。它不保证存储元素的迭代顺序；此类允许使用null元素。HashSet中不允许有重复元素，这是因为HashSet是基于HashMap实现的，HashSet中的元素都存放在HashMap的key上面，而value中的值都是统一的一个固定对象private static final Object PRESENT = new Object();</p>
+<h2 id="在Java中String类为什么要设计成final？"><a href="#在Java中String类为什么要设计成final？" class="headerlink" title="在Java中String类为什么要设计成final？"></a>在Java中String类为什么要设计成final？</h2><p>String 核心成员是一个char[]数组，也是final修饰的。可以用反射的方式修改数组内的值。</p>
+<p>并且String 没有暴露出任何内部成员字段和方法让其能够被轻易修改。</p>
+<p> 不可变的好处：安全，String是JAVA里最基本，最常用的数据类型，而不单单只是一个类，所以他必须是安全可靠的。</p>
+<p>例如法律，它们的含义必须是固定的。否则，不同的人去解释必然产生歧义，那这样这个法律就是不可靠的。</p>
+<h2 id="final关键字的功能概述"><a href="#final关键字的功能概述" class="headerlink" title="final关键字的功能概述"></a>final关键字的功能概述</h2><h4 id="1、用来修饰一个引用"><a href="#1、用来修饰一个引用" class="headerlink" title="1、用来修饰一个引用"></a>1、用来修饰一个引用</h4><ol>
+<li> 如果引用为基本数据类型，则该引用为常量，该值无法修改；</li>
+<li> 如果引用为引用数据类型，比如对象、数组，则该对象、数组本身可以修改，但指向该对象或数组的地址的引用不能修改。</li>
+<li> 如果引用时类的成员变量，则必须当场赋值，否则编译会报错。</li>
+</ol>
+<h4 id="2-用来修饰一个方法"><a href="#2-用来修饰一个方法" class="headerlink" title="2.用来修饰一个方法"></a>2.用来修饰一个方法</h4><p>  当使用final修饰方法时，这个方法将成为最终方法，无法被子类重写。但是，该方法仍然可以被继承。（子类可以用父类的final方法）</p>
+<h4 id="3-用来修饰类"><a href="#3-用来修饰类" class="headerlink" title="3.用来修饰类"></a>3.用来修饰类</h4><p> 当用final修改类时，该类成为最终类，无法被继承。简称为“断子绝孙类”。</p>
+<h2 id="JAVA泛型的作用"><a href="#JAVA泛型的作用" class="headerlink" title="JAVA泛型的作用"></a>JAVA泛型的作用</h2><p> Java泛型被引入的好处是安全简单。</p>
+<p>在Java SE 1.5之前，没有泛型的情况的下，通过对类型Object的引用来实现参数的“任意化”，“任意化”带来的缺点是要做显式的强制类型转换，而这种转换是要求开发者对实际参数类型可以预知的情况下进行的。对于强制类型转换错误的情况，编译器可能不提示错误，在运行的时候才出现异常，这是一个安全隐患。</p>
+<p>泛型的好处是在编译的时候检查类型安全，并且所有的强制转换都是自动和隐式的，提高代码的重用率。</p>
+<p>Java的泛型是伪泛型，因为，在编译期间，所有的泛型信息都会被擦除掉。</p>
+<h2 id="Java线程间通讯的几种方式"><a href="#Java线程间通讯的几种方式" class="headerlink" title="Java线程间通讯的几种方式"></a>Java线程间通讯的几种方式</h2><h4 id="一、使用同一个共享变量控制"><a href="#一、使用同一个共享变量控制" class="headerlink" title="一、使用同一个共享变量控制"></a>一、使用同一个共享变量控制</h4><p>​    注意做好线程安全，使用锁等。</p>
+<h4 id="二、PipedInputStream、PipedOutputStream"><a href="#二、PipedInputStream、PipedOutputStream" class="headerlink" title="二、PipedInputStream、PipedOutputStream"></a>二、PipedInputStream、PipedOutputStream</h4><p>​    使用流，JAVA中的流是单向的，所以需要有input和output。</p>
+<h4 id="三、利用BlockingQueue（生产者，消费者模型）"><a href="#三、利用BlockingQueue（生产者，消费者模型）" class="headerlink" title="三、利用BlockingQueue（生产者，消费者模型）"></a>三、利用BlockingQueue（生产者，消费者模型）</h4><p>（在多线程领域：所谓阻塞，在某些情况下会挂起线程（即阻塞），一旦条件满足，被挂起的线程又会自动被唤醒）</p>
+<p>​    <strong>当队列中没有数据的情况下，消费者端的所有线程都会被自动阻塞（挂起），直到有数据放入队列。</strong></p>
+<p>​    <strong>当队列中填满数据的情况下，生产者端的所有线程都会被自动阻塞（挂起），直到队列中有空的位置，线程被自动唤醒。</strong></p>
 
       </section>
 
@@ -214,8 +237,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/01/101920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">待看事项</h2>
+        <a href="/2022/01/250120.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">JAVA：TreeMap底层原理</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -272,7 +295,7 @@
         <svg class="icon icon-article" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <path d="M240.51564747 647.74217627h196.07203239c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806V165.10332731c0-33.18142087-30.16492806-60.32985613-60.32985612-60.32985611H245.04038668C225.43318342 104.7734712 210.35071939 119.85593522 210.35071939 139.46313845V617.57724821c0 16.59071043 13.57421762 30.16492806 30.16492808 30.16492806z m663.62841731-452.47392089v482.63884894c0 33.18142087-27.14843525 60.32985613-60.32985612 60.32985613H180.18579134c-33.18142087 0-60.32985613-27.14843525-60.32985612-60.32985613V195.26825538c-49.77213131 0-90.49478418 40.72265287-90.49478417 90.49478417v452.4739209c0 49.77213131 40.72265287 90.49478418 90.49478417 90.49478417h286.56681657c16.59071043 0 30.16492806 13.57421762 30.16492807 30.16492807s13.57421762 30.16492806 30.16492805 30.16492806h90.49478418c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806s13.57421762-30.16492806 30.16492807-30.16492807h286.56681657c49.77213131 0 90.49478418-40.72265287 90.49478417-90.49478417V285.76303955c0-49.77213131-40.72265287-90.49478418-90.49478417-90.49478417zM587.41232014 647.74217627h191.54729318c19.60720323 0 34.68966726-15.08246403 34.68966729-34.68966727V134.93839925c0-16.59071043-13.57421762-30.16492806-30.16492808-30.16492805H617.57724821c-30.16492806 0-60.32985613 27.14843525-60.32985612 60.32985611v452.4739209c0 16.59071043 13.57421762 30.16492806 30.16492805 30.16492806z" fill="currentColor"></path>
 </svg>
-        <span>26</span>
+        <span>27</span>
       </div>
       <div class="count-box--item">
         <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -299,7 +322,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E7%9A%84List%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-number">1.</span> <span class="toc-text">Java的List如何实现线程安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E4%B8%AD%E9%87%8D%E5%86%99%E5%92%8C%E9%87%8D%E8%BD%BD%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%88%E5%A4%9A%E6%80%81%E6%80%A7%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">JAVA中重写和重载的区别（多态性）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hashCode%E5%92%8Cequals%E6%96%B9%E6%B3%95%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">3.</span> <span class="toc-text">hashCode和equals方法的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E4%B8%ADString%E3%80%81StringBuffer%E3%80%81StringBuilder%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.</span> <span class="toc-text">Java中String、StringBuffer、StringBuilder的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E4%B8%AD%E6%8E%A5%E5%8F%A3%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">5.</span> <span class="toc-text">Java中接口和抽象类的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E5%8F%8D%E5%B0%84"><span class="toc-number">6.</span> <span class="toc-text">JAVA反射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%8E%9F%E7%90%86"><span class="toc-number">6.1.</span> <span class="toc-text">反射原理</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E7%9A%84List%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-number">1.</span> <span class="toc-text">Java的List如何实现线程安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E4%B8%AD%E9%87%8D%E5%86%99%E5%92%8C%E9%87%8D%E8%BD%BD%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%88%E5%A4%9A%E6%80%81%E6%80%A7%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">JAVA中重写和重载的区别（多态性）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hashCode%E5%92%8Cequals%E6%96%B9%E6%B3%95%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">3.</span> <span class="toc-text">hashCode和equals方法的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E4%B8%ADString%E3%80%81StringBuffer%E3%80%81StringBuilder%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.</span> <span class="toc-text">Java中String、StringBuffer、StringBuilder的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E4%B8%AD%E6%8E%A5%E5%8F%A3%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">5.</span> <span class="toc-text">Java中接口和抽象类的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E5%8F%8D%E5%B0%84"><span class="toc-number">6.</span> <span class="toc-text">JAVA反射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%8E%9F%E7%90%86"><span class="toc-number">6.1.</span> <span class="toc-text">反射原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E4%B8%AD%E6%9C%89%E5%87%A0%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%9F%E6%89%80%E5%8D%A0%E7%94%A8%E7%9A%84%E5%AD%97%E8%8A%82%E5%88%86%E5%88%AB%E4%B8%BA%E5%A4%9A%E5%B0%91%EF%BC%9F"><span class="toc-number">7.</span> <span class="toc-text">Java中有几种基本数据类型？所占用的字节分别为多少？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HashSet%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">8.</span> <span class="toc-text">HashSet的实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8Java%E4%B8%ADString%E7%B1%BB%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%AE%BE%E8%AE%A1%E6%88%90final%EF%BC%9F"><span class="toc-number">9.</span> <span class="toc-text">在Java中String类为什么要设计成final？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0"><span class="toc-number">10.</span> <span class="toc-text">final关键字的功能概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E6%B3%9B%E5%9E%8B%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">11.</span> <span class="toc-text">JAVA泛型的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E7%BA%BF%E7%A8%8B%E9%97%B4%E9%80%9A%E8%AE%AF%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-number">12.</span> <span class="toc-text">Java线程间通讯的几种方式</span></a></li></ol>
   </div>
 </section>
 
@@ -372,7 +395,7 @@
       
         <li class="categorys-list-item">
           <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">
-            JAVA基础 (7)
+            JAVA基础 (8)
           </a>
         </li>
       

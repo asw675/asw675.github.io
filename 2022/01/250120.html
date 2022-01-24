@@ -24,7 +24,7 @@
 
   
 
-  <title>用户态和内核态 | ReasonLee</title>
+  <title>JAVA：TreeMap底层原理 | ReasonLee</title>
 
   
 
@@ -102,20 +102,20 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">用户态和内核态</h1>
+          <h1 class="title-wrap">JAVA：TreeMap底层原理</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-01-14T07:20:14.000Z" itemprop="datePublished">2022-01-14</time>
+            <time  class="article-date" datetime="2022-01-24T17:20:12.000Z" itemprop="datePublished">2022-01-25</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📒 操作系统</a></li>
+    <li><a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">📒 JAVA基础</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">🏷️ 操作系统</a></li>
+    <li><a href="/tags/JAVA%E5%9F%BA%E7%A1%80/">🏷️ JAVA基础</a></li>
   
 </ul>
         </div>
@@ -139,26 +139,17 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h3 id="1、用户态和内核态的区别？"><a href="#1、用户态和内核态的区别？" class="headerlink" title="1、用户态和内核态的区别？"></a>1、用户态和内核态的区别？</h3><p>​    明白这两个概念之前，我们得知道用户空间和内核空间。</p>
-<p><strong>用户空间</strong>：指的就是用户可以操作和访问的空间，这个空间通常存放我们用户自己写的数据等。</p>
-<p><strong>内核空间</strong>：是系统内核来操作的一块空间，这块空间里面存放系统内核的函数、接口等。</p>
-<p>​    在用户空间下执行，我们把此时运行得程序的这种状态成为用户态，而当这段程序执行在内核的空间执行时，这种状态称为内核态。</p>
-<p>​    当一个任务(进程)执行系统调用而陷入内核代码中执行时，我们就称进程处于内核状态。此时处理器处于特权级最高的(0级)内核代码。当进程处于内核态时，执行的内核代码会使用当前的内核栈。每个进程都有自己的内核栈。</p>
-<p>​    当进程在执行用户自己的代码时，则称其处于用户态。即此时处理器在特权级最低的用户代码中运行。<strong>当正在执行用户程序而突然中断时，此时用户程序也可以象征性地处于进程的内核态。因为中断处理程序将使用当前进程的内核态。</strong></p>
-<h3 id="2、用户态和内核态的转换"><a href="#2、用户态和内核态的转换" class="headerlink" title="2、用户态和内核态的转换"></a>2、用户态和内核态的转换</h3><p>​    用户态切换到内核态的3种方式：<strong>a.系统调用 b.异常 c.外围设备的中断</strong></p>
-<ul>
-<li><strong>系统调用</strong></li>
-</ul>
-<p>​        这是用户进程主动要求切换到内核态的一种方式，用户进程通过系统调用申请操作系统提供的服务程序完成工作。</p>
-<p>​        而系统调用的机制其核心还是使用了操作系统为用户特别开放的一个中断来实现，该中断是程序人员自己开发出的一种正常的异常，这个异常具体就是调用int $0x80的汇编指令，这条汇编指令将产生向量为0x80的编程异常。（软中断）</p>
-<ul>
-<li><strong>异常</strong></li>
-</ul>
-<p>​    当CPU在执行运行在用户态的程序时，发现了某些事件不可知的异常，这是会触发由当前运行进程切换到处理此异常的内核相关程序中，也就到了内核态，比如缺页异常（硬中断）。</p>
-<ul>
-<li><strong>外围设备的中断</strong></li>
-</ul>
-<p>​    当外围设备完成用户请求的操作之后，会向CPU发出相应的中断信号，这时CPU会暂停执行下一条将要执行的指令<br>​    转而去执行中断信号的处理程序，如果先执行的指令是用户态下的程序，那么这个转换的过程自然也就发生了由用户态到内核态的切换。比如硬盘读写操作完成，系统会切换到硬盘读写的中断处理程序中执行后续操作等。</p>
+        <h2 id="TreeMap概述"><a href="#TreeMap概述" class="headerlink" title="TreeMap概述"></a>TreeMap概述</h2><ol>
+<li>TreeMap存储K-V键值对，通过红黑树（R-B tree）实现；</li>
+<li>TreeMap继承了NavigableMap接口，NavigableMap接口继承了SortedMap接口，可支持一系列的导航定位以及导航操作的方法，当然只是提供了接口，需要TreeMap自己去实现；</li>
+<li>TreeMap实现了Cloneable接口，可被克隆，实现了Serializable接口，可序列化；</li>
+<li>TreeMap因为是通过红黑树实现，红黑树结构天然支持排序，默认情况下通过Key值的自然顺序进行排序；</li>
+</ol>
+<p>​        <strong>TreeMap不是线程安全的</strong></p>
+<h2 id="Put方法"><a href="#Put方法" class="headerlink" title="Put方法"></a>Put方法</h2><p>​    就是红黑树的插入方法，时间复杂度为O(logn)</p>
+<h2 id="Get方法"><a href="#Get方法" class="headerlink" title="Get方法"></a>Get方法</h2><p>​    因为红黑树是一科二分搜索树，所以采用二分查找的方法，时间复杂度为O(logn)</p>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p>​    因为是一颗红黑树，所以整棵树是有序的，在一些排序的场合可以用到。</p>
+<p>​    默认按照key的字典顺序来排序，可以自定义排序。</p>
 
       </section>
 
@@ -171,8 +162,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/150920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Java 中垃圾回收机制中如何判断对象需要回收？常见的 GC 回收算法有哪些？</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -186,8 +177,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/140620.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">进程间通信的方式</h2>
+        <a href="/2022/01/230120.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">JAVA：常见问题汇总</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -256,7 +247,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">1、用户态和内核态的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text">2、用户态和内核态的转换</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TreeMap%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">TreeMap概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Put%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">Put方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Get%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">Get方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-number">4.</span> <span class="toc-text">优点</span></a></li></ol>
   </div>
 </section>
 
