@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#3367D6"/>
+  <link rel="apple-touch-icon" href="/icons-192.png">
+  <link rel="manifest" href="/manifest.json">
+  
+  <meta name="generator" content="Hexo 5.4.0">
+
+  
+    <meta name="description" content="偷偷写点东西">
+  
+
+  
+
+  
+    <meta name="author" content="ReasonLee">
+  
+
+  
+
+  
+
+  <title>Android：Handler机制 | ReasonLee</title>
+
+  
+
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@1.1.3/index.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlightjs@9.16.2/styles/monokai.css">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+<body>
+  <div class="root-container">
+    
+<!-- header container -->
+<header class="header-container post">
+  
+    <div class="post-image" style="background-image: url(https://wallpapers.com/images/high/toradora-taiga-aisaka-eating-ithmocq6tsax591p.jpg)"></div>
+  
+
+  <!-- navbar -->
+<nav class="navbar">
+  <div class="navbar-content">
+    <!-- logo -->
+    <div class="navbar-logo">
+      <a href="/">
+        
+          ReasonLee
+        
+      </a>
+    </div>
+    <!-- link -->
+    <div class="navbar-link">
+      <div class="navbar-btn">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <ul class="navbar-list">
+        
+          <li class="navbar-list-item"><a href="/">首页</a></li>
+        
+          <li class="navbar-list-item"><a href="/links">友链</a></li>
+        
+          <li class="navbar-list-item"><a href="/about">关于</a></li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+    <div class="header-content">
+      <div class="post-text layout-block">
+        <div class="layout-margin">
+          <h1 class="title-wrap">Android：Handler机制</h1>
+          <h2 class="title-sub-wrap">
+            <strong>ReasonLee</strong>
+            <span>发布于</span>
+            <time  class="article-date" datetime="2022-02-03T11:20:12.000Z" itemprop="datePublished">2022-02-03</time>
+          </h2>
+          <ul class="wrap-list dark">
+  
+    <li><a href="/categories/Android%E5%9F%BA%E7%A1%80/">📒 Android基础</a></li>
+  
+</ul>
+          <ul class="wrap-list dark">
+  
+    <li><a href="/tags/JAVA%E5%9F%BA%E7%A1%80/">🏷️ JAVA基础</a></li>
+  
+    <li><a href="/tags/Handler/">🏷️ Handler</a></li>
+  
+</ul>
+        </div>
+      </div>
+    </div>
+  
+
+  
+  
+  
+</header>
+
+    <!-- 文章 -->
+
+<!-- 文章内容 -->
+<div class="body-container">
+  <article class="content-container layout-block post-container">
+    <div class="article-info">
+      
+      
+      
+      
+      <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
+        <h2 id="Handler机制"><a href="#Handler机制" class="headerlink" title="Handler机制"></a>Handler机制</h2><p><strong>1. 作用</strong><br> 在多线程的应用场景中，将工作线程中需更新UI的操作信息 传递到 UI主线程，从而实现 工作线程对UI的更新处理，最终实现异步消息的处理 。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2845137-35ce095f62d20d32.png" alt="img"></p>
+<p><strong>2. 为什么要用 Handler消息传递机制？</strong><br> 多个线程并发更新UI的同时 保证线程安全。</p>
+<p><strong>3. 重要概念</strong></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2845137-07dda95667b0491e.png" alt="img"></p>
+<p><strong>4. 工作原理</strong></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2845137-1c0139e979458b14.png" alt="img"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2845137-bdf21061ce2da0fc.png" alt="img"></p>
+<p>线程（Thread）、循环器（Looper）、处理者（Handler）之间的对应关系如下：</p>
+<ul>
+<li>1个线程（Thread）只能绑定 1个循环器（Looper），但可以有多个处理者（Handler）</li>
+<li>1个循环器（Looper） 可绑定多个处理者（Handler）</li>
+<li>1个处理者（Handler） 只能绑定1个1个循环器（Looper）</li>
+</ul>
+<h2 id="Handler是如何实现延时消息的？"><a href="#Handler是如何实现延时消息的？" class="headerlink" title="Handler是如何实现延时消息的？"></a>Handler是如何实现延时消息的？</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;handler核心的发送消息的方法是sendMessage，有的朋友会说那post呢？<br><br>&nbsp;&nbsp;&nbsp;&nbsp;post的话其实算是一个handler的语法糖，传入runnable后帮助我们构建一个message。<br></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Causes the Runnable r to be added to the message queue.</span><br><span class="hljs-comment">     * The runnable will be run on the thread to which this handler is </span><br><span class="hljs-comment">     * attached. </span><br><span class="hljs-comment">     *  </span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> r The Runnable that will be executed.</span><br><span class="hljs-comment">     * </span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> Returns true if the Runnable was successfully placed in to the </span><br><span class="hljs-comment">     *         message queue.  Returns false on failure, usually because the</span><br><span class="hljs-comment">     *         looper processing the message queue is exiting.</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">post</span><span class="hljs-params">(Runnable r)</span></span><br><span class="hljs-function">    </span>&#123;<br>       <span class="hljs-keyword">return</span>  sendMessageDelayed(getPostMessage(r), <span class="hljs-number">0</span>);<br>    &#125;<br><br><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Message <span class="hljs-title">getPostMessage</span><span class="hljs-params">(Runnable r)</span> </span>&#123;<br>        Message m = Message.obtain();<br>        m.callback = r;<br>        <span class="hljs-keyword">return</span> m;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>可以看到getPostMessage里帮我们构建出一个message然后再调用sendMessageDelayed。</p>
+<p>接下来看sendMessage，类似于startActivity最终都会走到startActivityForResult一样，handler所有发送消息的方法最终都会走到sendMessageDelayed，只是delayMillis不同而已，<strong>这个delayMillis就是延时的时间</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Pushes a message onto the end of the message queue after all pending messages</span><br><span class="hljs-comment">     * before the current time. It will be received in &#123;<span class="hljs-doctag">@link</span> #handleMessage&#125;,</span><br><span class="hljs-comment">     * in the thread attached to this handler.</span><br><span class="hljs-comment">     *  </span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> Returns true if the message was successfully placed in to the </span><br><span class="hljs-comment">     *         message queue.  Returns false on failure, usually because the</span><br><span class="hljs-comment">     *         looper processing the message queue is exiting.</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">sendMessage</span><span class="hljs-params">(Message msg)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> sendMessageDelayed(msg, <span class="hljs-number">0</span>);<br>    &#125;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">sendMessageDelayed</span><span class="hljs-params">(Message msg, <span class="hljs-keyword">long</span> delayMillis)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (delayMillis &lt; <span class="hljs-number">0</span>) &#123;<br>            delayMillis = <span class="hljs-number">0</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> sendMessageAtTime(msg, SystemClock.uptimeMillis() + delayMillis);<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后这里会将DelayMillis加上当前开机的时间（这里可以理解就是这个time就是，现在的时间+需要延迟的时间=实际执行的时间），接下来进到sendMessageAtTime方法里面</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Enqueue a message into the message queue after all pending messages</span><br><span class="hljs-comment">     * before the absolute time (in milliseconds) &lt;var&gt;uptimeMillis&lt;/var&gt;.</span><br><span class="hljs-comment">     * &lt;b&gt;The time-base is &#123;<span class="hljs-doctag">@link</span> android.os.SystemClock#uptimeMillis&#125;.&lt;/b&gt;</span><br><span class="hljs-comment">     * Time spent in deep sleep will add an additional delay to execution.</span><br><span class="hljs-comment">     * You will receive it in &#123;<span class="hljs-doctag">@link</span> #handleMessage&#125;, in the thread attached</span><br><span class="hljs-comment">     * to this handler.</span><br><span class="hljs-comment">     * </span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> uptimeMillis The absolute time at which the message should be</span><br><span class="hljs-comment">     *         delivered, using the</span><br><span class="hljs-comment">     *         &#123;<span class="hljs-doctag">@link</span> android.os.SystemClock#uptimeMillis&#125; time-base.</span><br><span class="hljs-comment">     *         </span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> Returns true if the message was successfully placed in to the </span><br><span class="hljs-comment">     *         message queue.  Returns false on failure, usually because the</span><br><span class="hljs-comment">     *         looper processing the message queue is exiting.  Note that a</span><br><span class="hljs-comment">     *         result of true does not mean the message will be processed -- if</span><br><span class="hljs-comment">     *         the looper is quit before the delivery time of the message</span><br><span class="hljs-comment">     *         occurs then the message will be dropped.</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">sendMessageAtTime</span><span class="hljs-params">(Message msg, <span class="hljs-keyword">long</span> uptimeMillis)</span> </span>&#123;<br>        MessageQueue queue = mQueue;<br>        <span class="hljs-keyword">if</span> (queue == <span class="hljs-keyword">null</span>) &#123;<br>            RuntimeException e = <span class="hljs-keyword">new</span> RuntimeException(<br>                    <span class="hljs-keyword">this</span> + <span class="hljs-string">&quot; sendMessageAtTime() called with no mQueue&quot;</span>);<br>            Log.w(<span class="hljs-string">&quot;Looper&quot;</span>, e.getMessage(), e);<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> enqueueMessage(queue, msg, uptimeMillis);<br>    &#125;<br>    <br>    <br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">enqueueMessage</span><span class="hljs-params">(MessageQueue queue, Message msg, <span class="hljs-keyword">long</span> uptimeMillis)</span> </span>&#123;<br>        msg.target = <span class="hljs-keyword">this</span>;<br>        <span class="hljs-keyword">if</span> (mAsynchronous) &#123;<br>            msg.setAsynchronous(<span class="hljs-keyword">true</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> queue.enqueueMessage(msg, uptimeMillis);<br>    &#125;<br></code></pre></td></tr></table></figure>
+<p>其实到这里handler的任务就完成了，把message发送到messageQueue里面，每个消息都会带有一个uptimeMillis参数，这就是延时的时间。<br></p>
+<p>接下来我们看messageQueue里面queue.enqueueMessage这个方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs java"><br><span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">enqueueMessage</span><span class="hljs-params">(Message msg, <span class="hljs-keyword">long</span> when)</span> </span>&#123;<br>       <span class="hljs-keyword">if</span> (msg.target == <span class="hljs-keyword">null</span>) &#123;<br>           <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">&quot;Message must have a target.&quot;</span>);<br>       &#125;<br>       <span class="hljs-keyword">if</span> (msg.isInUse()) &#123;<br>           <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalStateException(msg + <span class="hljs-string">&quot; This message is already in use.&quot;</span>);<br>       &#125;<br><br>       <span class="hljs-keyword">synchronized</span> (<span class="hljs-keyword">this</span>) &#123;<br>           <span class="hljs-keyword">if</span> (mQuitting) &#123;<br>               IllegalStateException e = <span class="hljs-keyword">new</span> IllegalStateException(<br>                       msg.target + <span class="hljs-string">&quot; sending message to a Handler on a dead thread&quot;</span>);<br>               Log.w(TAG, e.getMessage(), e);<br>               msg.recycle();<br>               <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>           &#125;<br><br>           msg.markInUse();<br>           msg.when = when;<br>           Message p = mMessages;<br>           <span class="hljs-keyword">boolean</span> needWake;<br>           <span class="hljs-keyword">if</span> (p == <span class="hljs-keyword">null</span> || when == <span class="hljs-number">0</span> || when &lt; p.when) &#123;<br>               <span class="hljs-comment">// New head, wake up the event queue if blocked.</span><br>               msg.next = p;<br>               mMessages = msg;<br>               needWake = mBlocked;<br>           &#125; <span class="hljs-keyword">else</span> &#123;<br>               <span class="hljs-comment">// Inserted within the middle of the queue.  Usually we don&#x27;t have to wake</span><br>               <span class="hljs-comment">// up the event queue unless there is a barrier at the head of the queue</span><br>               <span class="hljs-comment">// and the message is the earliest asynchronous message in the queue.</span><br>               needWake = mBlocked &amp;&amp; p.target == <span class="hljs-keyword">null</span> &amp;&amp; msg.isAsynchronous();<br>               Message prev;<br>               <span class="hljs-keyword">for</span> (;;) &#123;<br>                   prev = p;<br>                   p = p.next;<br>                   <span class="hljs-keyword">if</span> (p == <span class="hljs-keyword">null</span> || when &lt; p.when) &#123;<br>                       <span class="hljs-keyword">break</span>;<br>                   &#125;<br>                   <span class="hljs-keyword">if</span> (needWake &amp;&amp; p.isAsynchronous()) &#123;<br>                       needWake = <span class="hljs-keyword">false</span>;<br>                   &#125;<br>               &#125;<br>               msg.next = p; <span class="hljs-comment">// invariant: p == prev.next</span><br>               prev.next = msg;<br>           &#125;<br><br>           <span class="hljs-comment">// We can assume mPtr != 0 because mQuitting is false.</span><br>           <span class="hljs-keyword">if</span> (needWake) &#123;<br>               nativeWake(mPtr);<br>           &#125;<br>       &#125;<br>       <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;<br>   &#125;<br></code></pre></td></tr></table></figure>
+<p>首先是进行msg的一些属性判断，handler发出的target值（这个target值就是handler自己）必须不为空，是为了通过target值来判断是哪个handler发过来的消息的。</p>
+<p>&nbsp; &nbsp;<strong>顺便说一说 并不是所有的msg，target值都必须不为空</strong><br> <strong>（handler的同步屏障就是一个target为空的msg，用来优先执行异步方法的）</strong><br>同步屏障有一个很重要的使用场所就是接受垂直同步Vsync信号，用来刷新页面view的。因为为了保证view的流畅度，所以每次刷新信号到来的时候，要把其他的任务先放一放，优先刷新页面。</p>
+<p>接下来主要就是将这个msg根据实际执行时间进行排序插入到queue里面（看里面的for循环）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">for</span> (;;) &#123;<br>    prev = p;<br>    p = p.next;<br>    <span class="hljs-keyword">if</span> (p == <span class="hljs-keyword">null</span> || when &lt; p.when) &#123;<br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (needWake &amp;&amp; p.isAsynchronous()) &#123;<br>        needWake = <span class="hljs-keyword">false</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>好了，现在queue也构建完成了，假设我现在第一条消息就是要延迟10秒，怎么办呢。实际走一边咯。</p>
+<p>假设我现在是looper，我要遍历这个messageQueue，那肯定要调用next方法。</p>
+<p>next()方法比较长，我只贴关于延时消息的核心部分。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">for</span> (;;) &#123;<br>          <span class="hljs-keyword">if</span> (nextPollTimeoutMillis != <span class="hljs-number">0</span>) &#123;<br>              Binder.flushPendingCommands();<br>          &#125;<br><br>          nativePollOnce(ptr, nextPollTimeoutMillis);<br><br>          <span class="hljs-keyword">synchronized</span> (<span class="hljs-keyword">this</span>) &#123;<br>              <span class="hljs-comment">// Try to retrieve the next message.  Return if found.</span><br>              <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> now = SystemClock.uptimeMillis();<br>              Message prevMsg = <span class="hljs-keyword">null</span>;<br>              Message msg = mMessages;<br>              <span class="hljs-keyword">if</span> (msg != <span class="hljs-keyword">null</span> &amp;&amp; msg.target == <span class="hljs-keyword">null</span>) &#123;<br>                  <span class="hljs-comment">// Stalled by a barrier.  Find the next asynchronous message in the queue.</span><br>                  <span class="hljs-keyword">do</span> &#123;<br>                      prevMsg = msg;<br>                      msg = msg.next;<br>                  &#125; <span class="hljs-keyword">while</span> (msg != <span class="hljs-keyword">null</span> &amp;&amp; !msg.isAsynchronous());<br>              &#125;<br>              <span class="hljs-keyword">if</span> (msg != <span class="hljs-keyword">null</span>) &#123;<br>                  <span class="hljs-keyword">if</span> (now &lt; msg.when) &#123;<br>                      <span class="hljs-comment">// Next message is not ready.  Set a timeout to wake up when it is ready.</span><br>                      nextPollTimeoutMillis = (<span class="hljs-keyword">int</span>) Math.min(msg.when - now, Integer.MAX_VALUE);<br>                  &#125;<br>                  ………………以下省略<br></code></pre></td></tr></table></figure>
+
+<p>可以看到这里也是一个for循环遍历队列，核心变量就是nextPollTimeoutMillis。可以看到，计算出nextPollTimeoutMillis后就调用nativiePollOnce这个native方法。这里的话大概可以猜到他的运行机制，因为他是根据执行时间进行排序的，那传入的这个nextPollTimeoutMillis应该就是休眠时间，类似于java的sleep(time)。休眠到下一次message的时候就执行。那如果我在这段时间又插入了一个新的message怎么办，所以handler每次插入message都会唤醒线程，重新计算插入后，再走一次这个休眠流程。</p>
+<p>nativiePollOnce这个native方法可以通过名字知道，他用的是linux中的epoll机制，具体是调用了epoll_wait这个方法。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">epoll_wait</span><span class="hljs-params">(<span class="hljs-keyword">int</span> epfd, struct epoll_event * events, intmaxevents, <span class="hljs-keyword">int</span> timeout)</span></span>;<br></code></pre></td></tr></table></figure>
+<p>这个epoll和select一样都是linux的一个I/O多路复用机制，主要原理就不深入了，这里大概了解一下I/O多路复用机制和它与Select的区别就行。</p>
+<p><strong>Linux里的I/O多路复用机制</strong>：举个例子就是我们钓鱼的时候，为了保证可以最短的时间钓到最多的鱼，我们同一时间摆放多个鱼竿，同时钓鱼。然后哪个鱼竿有鱼儿咬钩了，我们就把哪个鱼竿上面的鱼钓起来。这里就是把这些全部message放到这个机制里面，那个time到了，就执行那个message。</p>
+<p><strong>epoll与select的区别</strong>：epoll获取事件的时候采用空间换时间的方式，类似与事件驱动，有哪个事件要执行，就通知epoll，所以获取的时间复杂度是O（1），select的话则是只知道有事件发生了，要通过O（n）的事件去轮询找到这个事件。</p>
+<h2 id="关于-handler，在任何地方-new-handler-都是什么线程下"><a href="#关于-handler，在任何地方-new-handler-都是什么线程下" class="headerlink" title="关于 handler，在任何地方 new handler 都是什么线程下"></a><strong>关于 handler，在任何地方 new handler 都是什么线程下</strong></h2><p>1.不传递 Looper 创建 Handler：<code>Handler handler = new Handler();</code>上文就是 Handler 无参创建的源码，可以看到是通过 <code>Looper.myLooper()</code> 来获取 Looper 对象，也就是说<strong>对于不传递 Looper 对象的情况下，在哪个线程创建 Handler 默认获取的就是该线程的 Looper 对象，那么 Handler 的一系列操作都是在该线程进行的。</strong></p>
+<p>2.传递 Looper 对象创建 Handler：<code>Handler handler = new Handler(looper);</code>那么看看传入 Looper 的构造函数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Handler</span><span class="hljs-params">(Looper looper)</span> </span>&#123;<br>    <span class="hljs-keyword">this</span>(looper, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">false</span>);<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Handler</span><span class="hljs-params">(Looper looper, Callback callback)</span> </span>&#123;<br>    <span class="hljs-keyword">this</span>(looper, callback, <span class="hljs-keyword">false</span>);<br>&#125;<br><span class="hljs-comment">// 第一个参数是 looper 对象，第二个 callback 对象，第三个消息处理方式（是否异步）</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Handler</span><span class="hljs-params">(Looper looper, Callback callback, <span class="hljs-keyword">boolean</span> async)</span> </span>&#123;<br>    mLooper = looper;<br>    mQueue = looper.mQueue;<br>    mCallback = callback;<br>    mAsynchronous = async;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>可以看出来传递 Looper 对象 Handler 就直接使用了。所以<strong>对于传递 Looper 对象创建 Handler 的情况下，传递的 Looper 是哪个线程的，Handler 绑定的就是该线程。</strong></p>
+<h2 id="为什么在主线程可以直接使用-Handler？"><a href="#为什么在主线程可以直接使用-Handler？" class="headerlink" title="为什么在主线程可以直接使用 Handler？"></a><strong>为什么在主线程可以直接使用 Handler？</strong></h2><p>因为主线程中已经创建了 Looper 对象并开启了消息循环.</p>
+<h2 id="Looper-对象是如何绑定-MessageQueue-的？"><a href="#Looper-对象是如何绑定-MessageQueue-的？" class="headerlink" title="Looper 对象是如何绑定 MessageQueue 的？"></a><strong>Looper 对象是如何绑定 MessageQueue 的</strong>？</h2><p>Looper 有个一成员变量 mQueue，它就是 Looper 对象默认保存的 MessageQueue。</p>
+<h2 id="Handler-如何绑定-MessageQueue？"><a href="#Handler-如何绑定-MessageQueue？" class="headerlink" title="Handler 如何绑定 MessageQueue？"></a><strong>Handler 如何绑定 MessageQueue？</strong></h2><p> Handler 绑定的是 Looper 的 MessageQueue 对象，Looper 的 MessageQueue 对象是在 Looper 创建时就 new 的。</p>
+<h2 id="handler发消息给子线程，looper怎么启动？"><a href="#handler发消息给子线程，looper怎么启动？" class="headerlink" title="handler发消息给子线程，looper怎么启动？"></a>handler发消息给子线程，looper怎么启动？</h2><p>需要在子线程手动调用，然后可以手动传入looper，或者通过ThreadLocal.get获取当前子线程的looper。</p>
+<p>在每个Thread中包含一个ThreadLocalMap，ThreadLocalMap的key是ThreadLocal的对象，value是独享数据。</p>
+<h2 id="HandlerThread"><a href="#HandlerThread" class="headerlink" title="HandlerThread"></a>HandlerThread</h2><p>HandlerThread本质上是一个线程类，它继承了Thread；<br>HandlerThread有自己的内部Looper对象，可以进行looper循环；<br>通过获取HandlerThread的looper对象传递给Handler对象，可以在handleMessage方法中执行异步任务。<br>创建HandlerThread后必须先调用HandlerThread.start()方法，Thread会先调用run方法，创建Looper对象。</p>
+<h2 id="Looper"><a href="#Looper" class="headerlink" title="Looper"></a>Looper</h2><p>Looper通过Looper.prepare()创建 最终会 走到 prepareMainLooper()方法</p>
+<p>如果当前线程没有Looper才会新建一个Looper，否则是通过ThreadLocal拿，创建Looper的时候同时会把MessageQueue创建了</p>
+<p>looper的核心方法就是LoopOnce (Loop方法立有一个for死循环，里面就是执行这个)。这里会把msg从msgQueue拿出来，然后调用Handler的dispatchMessage -&gt; handleMessage 处理这个Message.</p>
+<p>拿出msg的方法就是msgQueue.next方法，这里也会判断nextPollTimeoutMillis，进行一个死循环，如果此时msg还没到时间，则刷新这个时间，然后继续循环。如果msg到时间了，则返回。</p>
+<h2 id="Android中为什么主线程不会因为Looper-loop-里的死循环卡死？"><a href="#Android中为什么主线程不会因为Looper-loop-里的死循环卡死？" class="headerlink" title="Android中为什么主线程不会因为Looper.loop()里的死循环卡死？"></a>Android中为什么主线程不会因为Looper.loop()里的死循环卡死？</h2><ol>
+<li>为这个死循环准备了一个新线程<br> 在进入死循环之前便创建了新binder线程，在代码ActivityThread.main()中：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>        ...<br>        Looper.prepareMainLooper();<br><br>        <span class="hljs-comment">//创建ActivityThread对象</span><br>        ActivityThread thread = <span class="hljs-keyword">new</span> ActivityThread();<br><br>        <span class="hljs-comment">//建立Binder通道 (创建新线程)</span><br>        thread.attach(<span class="hljs-keyword">false</span>);<br><br>        <span class="hljs-keyword">if</span>(sMainThreadHandler == <span class="hljs-keyword">null</span>)&#123;<br>           sMainThreadHandler = thread.getHandler();<br>        &#125;<br>        <span class="hljs-comment">// step2: 开始循环</span><br>        Loop.loop();<br><br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<span class="hljs-string">&quot;Main thread loop unexpectedly exited&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>thread.attach(false)；便会创建一个Binder线程（具体是指ApplicationThread，Binder的服务端，用于接收系统服务AMS发送来的事件），该Binder线程通过Handler将Message发送给主线程。</strong></p>
+<h4 id="主线程的死循环一直运行是不是特别消耗CPU资源呢？"><a href="#主线程的死循环一直运行是不是特别消耗CPU资源呢？" class="headerlink" title="主线程的死循环一直运行是不是特别消耗CPU资源呢？"></a>主线程的死循环一直运行是不是特别消耗CPU资源呢？</h4><p>因为采用的是epoll机制，以空间换时间，如果msg时间没到的话，线程是属于休眠状态的。</p>
+<h4 id="Activity的生命周期是怎么实现在死循环体外能够执行起来的？"><a href="#Activity的生命周期是怎么实现在死循环体外能够执行起来的？" class="headerlink" title="Activity的生命周期是怎么实现在死循环体外能够执行起来的？"></a>Activity的生命周期是怎么实现在死循环体外能够执行起来的？</h4><p>主线程创建了类 H 继承了 Handler专门执行生命周期等消息，在主线程创建时就创建了这个 Handler 用于处理 Binder 线程发送来的消息。</p>
+<p><strong>Activity的生命周期都是依靠主线程的Looper.loop，当收到不同Message时则采用相应措施：</strong></p>
+<p>在H.handleMessage(msg)方法中，根据接收到不同的msg，执行相应的生命周期。<br> 比如收到msg=H.LAUNCH_ACTIVITY，则调用ActivityThread.handleLaunchActivity()方法，最终会通过反射机制，创建Activity实例，然后再执行Activity.onCreate()等方法；<br> 再比如收到msg=H.PAUSE_ACTIVITY，则调用ActivityThread.handlePauseActivity()方法，最终会执行Activity.onPause()等方法。</p>
+<h2 id="Handler内存泄漏的问题"><a href="#Handler内存泄漏的问题" class="headerlink" title="Handler内存泄漏的问题"></a>Handler内存泄漏的问题</h2><p>Message在消息队列中延时了N分钟，然后才处理该消息。而这个消息引用了Handler对象，Handler对象又隐性地持有了Activity的对象，当发生GC是以为 message – handler – acitivity 的引用链导致Activity无法被回收，所以发生了内存泄露的问题。</p>
+<h3 id="解决："><a href="#解决：" class="headerlink" title="解决："></a>解决：</h3><ul>
+<li><strong>使用弱引用，我们可以把 Handler 对 Activity 弱引用，这样 GC 就能把 Activity 及时的回收</strong></li>
+<li><strong>及时清除消息，我们可以尝试在当前界面结束时将消息队列中未被处理的消息清除，从源头上解除了这条引用链，从而使 Activity 能被及时的回收。</strong></li>
+</ul>
+
+      </section>
+
+      
+      
+        <nav class="article-nav">
+          
+            <div class="article-nav-item layout-padding">
+  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
+    
+    <div class="card-text">
+      
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
+        </a>
+      
+      <div class="card-text--row">Newer</div>
+    </div>
+  </article>
+</div>
+          
+          
+            <div class="article-nav-item layout-padding">
+  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
+    
+    <div class="card-text">
+      
+        <a href="/2022/02/030920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">JVM：CMS和G1的区别</h2>
+        </a>
+      
+      <div class="card-text--row">Older</div>
+    </div>
+  </article>
+</div>
+          
+        </nav>
+      
+
+      <section class="page-message-container layout-padding">
+        
+
+
+  
+  
+
+  
+  
+
+
+      </section>
+    </div>
+    <div class="widget-info">
+      <section class="widget-author widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-body">
+    
+      <img src="https://img2.baidu.com/it/u=306228493,3347220292&amp;fm=26&amp;fmt=auto&amp;gp=0.jpg" class="soft-size--round soft-style--box" alt="Yusen">
+    
+    
+      <h2>Yusen</h2>
+    
+    
+      <p>惹啊</p>
+    
+
+    <div class="count-box">
+      <div class="count-box--item">
+        <svg class="icon icon-article" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M240.51564747 647.74217627h196.07203239c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806V165.10332731c0-33.18142087-30.16492806-60.32985613-60.32985612-60.32985611H245.04038668C225.43318342 104.7734712 210.35071939 119.85593522 210.35071939 139.46313845V617.57724821c0 16.59071043 13.57421762 30.16492806 30.16492808 30.16492806z m663.62841731-452.47392089v482.63884894c0 33.18142087-27.14843525 60.32985613-60.32985612 60.32985613H180.18579134c-33.18142087 0-60.32985613-27.14843525-60.32985612-60.32985613V195.26825538c-49.77213131 0-90.49478418 40.72265287-90.49478417 90.49478417v452.4739209c0 49.77213131 40.72265287 90.49478418 90.49478417 90.49478417h286.56681657c16.59071043 0 30.16492806 13.57421762 30.16492807 30.16492807s13.57421762 30.16492806 30.16492805 30.16492806h90.49478418c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806s13.57421762-30.16492806 30.16492807-30.16492807h286.56681657c49.77213131 0 90.49478418-40.72265287 90.49478417-90.49478417V285.76303955c0-49.77213131-40.72265287-90.49478418-90.49478417-90.49478417zM587.41232014 647.74217627h191.54729318c19.60720323 0 34.68966726-15.08246403 34.68966729-34.68966727V134.93839925c0-16.59071043-13.57421762-30.16492806-30.16492808-30.16492805H617.57724821c-30.16492806 0-60.32985613 27.14843525-60.32985612 60.32985611v452.4739209c0 16.59071043 13.57421762 30.16492806 30.16492805 30.16492806z" fill="currentColor"></path>
+</svg>
+        <span>30</span>
+      </div>
+      <div class="count-box--item">
+        <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M900.3614811 257.09082106h-339.81629553l-67.96326003-101.9448889c-19.41807444-29.12711113-48.54518557-43.69066667-82.52681443-43.69066667H123.6385189c-53.39970333 0-97.09036999 43.69066667-97.09037113 97.09036999v582.54222222c0 53.39970333 43.69066667 97.09036999 97.09037113 97.09037002h776.7229622c53.39970333 0 97.09036999-43.69066667 97.09037113-97.09037002V354.18119104c0-53.39970333-43.69066667-97.09036999-97.09037113-97.09036998z m-97.09036999 242.72592554H220.72888889c-24.27259221 0-48.54518557-24.27259221-48.54518556-48.54518556s24.27259221-48.54518557 48.54518556-48.54518444h582.54222222c24.27259221 0 48.54518557 24.27259221 48.54518556 48.54518444s-24.27259221 48.54518557-48.54518556 48.54518556z" fill="currentColor"></path>
+</svg>
+        9
+      </div>
+      <div class="count-box--item">
+        <svg class="icon icon-tags" viewBox="0 0 1098 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M283.42180005 272q0-28.38857157-20.09142843-48.48000001t-48.47999998-20.09142842-48.48000002 20.09142842-20.09142846 48.48000001 20.09142846 48.48 48.48000002 20.09142843 48.47999998-20.09142843 20.09142843-48.48zM855.0332285 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.03999997 263.58857157q-20.9142853 19.81714313-48.75428534 19.81714312-28.38857157 0-48.20571468-19.81714312l-383.04-383.58857157q-20.36571468-19.81714313-34.55999999-54.10285688t-14.19428534-62.6742853l0-222.85714313q0-27.84000002 20.36571469-48.20571469t48.2057147-20.36571466l222.85714313 0q28.38857157 0 62.6742853 14.19428529t54.65142842 34.55999999l383.04000001 382.49142843q19.81714313 20.9142853 19.81714314 48.75428532zM1060.74751475 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.04 263.58857157q-20.9142853 19.81714313-48.75428531 19.81714312-19.26857155 0-31.61142843-7.47428531t-28.38857159-24.13714314l251.79428534-251.7942853q19.81714313-19.81714313 19.81714308-48.20571469 0-27.84000002-19.81714308-48.75428531l-383.04000001-382.49142845q-20.36571468-20.36571468-54.65142842-34.55999999t-62.67428532-14.19428534l120 0q28.38857157 0 62.67428532 14.19428534t54.65142842 34.55999999l383.03999998 382.49142845q19.81714313 20.9142853 19.81714314 48.75428531z" fill="currentColor"></path>
+</svg>
+        14
+      </div>
+    </div>
+  </div>
+</section>
+
+      
+<section class="widget-toc widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-toc" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M134.50666666 767.46666668H460.8c27.73333333 0 50.24000001 22.50666668 50.24000001 50.23999999v50.13333333c0 27.73333333-22.50666668 50.24000001-50.24000001 50.24000001H134.50666666c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.24000001v-50.13333333c0.10666668-27.73333333 22.50666668-50.24000001 50.24000001-50.24000001zM84.37333332 541.65333333h326.18666669c27.73333333 0 50.24000001 22.39999999 50.23999999 50.13333334v50.24000001c0 27.73333333-22.50666668 50.24000001-50.24000002 50.23999999H84.37333332c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.23999999v-50.24000001c0-27.73333333 22.50666668-50.13333334 50.24000001-50.13333334zM134.50666666 315.83999999H460.8c27.73333333 0 50.24000001 22.50666668 50.24000001 50.24000001v50.24000001c0 27.73333333-22.50666668 50.13333334-50.24000001 50.13333333H134.50666666c-27.73333333 0-50.24000001-22.39999999-50.23999999-50.13333333v-50.24000001c0.10666668-27.84000001 22.50666668-50.24000001 50.24000001-50.23999999zM209.81333332 89.91999999h326.18666671c27.73333333 0 50.24000001 22.39999999 50.23999997 50.13333335v50.23999999c0 27.73333333-22.50666668 50.24000001-50.24000001 50.24000001H209.81333332c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.24000001v-50.24000001c0-27.73333333 22.50666668-50.13333334 50.24000001-50.13333333zM692.05333333 623.36l274.66666669 176.00000002c23.36000001 14.93333333 30.08 45.97333334 15.14666666 69.33333332L954.77333334 910.93333333c-14.93333333 23.25333334-45.97333334 30.08-69.33333335 15.14666667l-274.66666666-176c-23.36000001-14.93333333-30.08-45.97333334-15.14666667-69.33333333l27.09333334-42.24000001c14.93333333-23.36000001 46.08000001-30.08 69.33333333-15.14666666z" fill="currentColor"></path>
+</svg>
+    <span>TOC</span>
+  </div>
+  <div class="widget-body">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Handler%E6%9C%BA%E5%88%B6"><span class="toc-number">1.</span> <span class="toc-text">Handler机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Handler%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%BB%B6%E6%97%B6%E6%B6%88%E6%81%AF%E7%9A%84%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">Handler是如何实现延时消息的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-handler%EF%BC%8C%E5%9C%A8%E4%BB%BB%E4%BD%95%E5%9C%B0%E6%96%B9-new-handler-%E9%83%BD%E6%98%AF%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8B"><span class="toc-number">3.</span> <span class="toc-text">关于 handler，在任何地方 new handler 都是什么线程下</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%9C%A8%E4%B8%BB%E7%BA%BF%E7%A8%8B%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8-Handler%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">为什么在主线程可以直接使用 Handler？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Looper-%E5%AF%B9%E8%B1%A1%E6%98%AF%E5%A6%82%E4%BD%95%E7%BB%91%E5%AE%9A-MessageQueue-%E7%9A%84%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">Looper 对象是如何绑定 MessageQueue 的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Handler-%E5%A6%82%E4%BD%95%E7%BB%91%E5%AE%9A-MessageQueue%EF%BC%9F"><span class="toc-number">6.</span> <span class="toc-text">Handler 如何绑定 MessageQueue？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#handler%E5%8F%91%E6%B6%88%E6%81%AF%E7%BB%99%E5%AD%90%E7%BA%BF%E7%A8%8B%EF%BC%8Clooper%E6%80%8E%E4%B9%88%E5%90%AF%E5%8A%A8%EF%BC%9F"><span class="toc-number">7.</span> <span class="toc-text">handler发消息给子线程，looper怎么启动？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HandlerThread"><span class="toc-number">8.</span> <span class="toc-text">HandlerThread</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Looper"><span class="toc-number">9.</span> <span class="toc-text">Looper</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android%E4%B8%AD%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%BB%E7%BA%BF%E7%A8%8B%E4%B8%8D%E4%BC%9A%E5%9B%A0%E4%B8%BALooper-loop-%E9%87%8C%E7%9A%84%E6%AD%BB%E5%BE%AA%E7%8E%AF%E5%8D%A1%E6%AD%BB%EF%BC%9F"><span class="toc-number">10.</span> <span class="toc-text">Android中为什么主线程不会因为Looper.loop()里的死循环卡死？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Handler%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">11.</span> <span class="toc-text">Handler内存泄漏的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%EF%BC%9A"><span class="toc-number">11.1.</span> <span class="toc-text">解决：</span></a></li></ol></li></ol>
+  </div>
+</section>
+
+
+      
+<section class="widet-notice widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-notice" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M512 945.02305225v28.15620663a24.27259221 24.27259221 0 0 1-24.27259221 24.27259335H394.0352a48.54518557 48.54518557 0 0 1-41.74885888-23.78714112l-110.68302222-184.47170332a132.04290333 132.04290333 0 0 1-17.47626667-48.54518557h118.4502511a200.97706667 200.97706667 0 0 1 76.21594113 14.56355556l20.38897777 133.49925888a48.54518557 48.54518557 0 0 0 36.40888888 27.67075555l16.01991111 2.91271112a24.27259221 24.27259221 0 0 1 20.38897778 25.72894889zM997.45185223 463.45481443a194.18074112 194.18074112 0 0 1-38.8361489 116.50844445 24.75804445 24.75804445 0 0 1-36.4088889 0l-34.95253333-34.95253333a24.27259221 24.27259221 0 0 1-2.91271111-30.58346667 97.09036999 97.09036999 0 0 0 0-106.79940665 24.27259221 24.27259221 0 0 1 2.91271111-30.58346666l34.95253333-34.95253334a24.75804445 24.75804445 0 0 1 18.93262223-7.28177777 26.2144 26.2144 0 0 1 17.47626667 9.70903665A194.18074112 194.18074112 0 0 1 997.45185223 463.45481443z m-194.18074112-388.36148111v776.72296335a48.54518557 48.54518557 0 0 1-48.54518556 48.54518443h-28.64165888a48.54518557 48.54518557 0 0 1-33.98163001-14.07810332l-145.63555556-143.20829668A291.27111111 291.27111111 0 0 0 342.57730333 657.63555556H172.18370333a145.63555556 145.63555556 0 0 1-145.63555556-145.63555556v-97.09036999a145.63555556 145.63555556 0 0 1 145.63555556-145.63555556h170.3936a291.27111111 291.27111111 0 0 0 206.31703779-85.43952668l145.63555555-143.20829554a48.54518557 48.54518557 0 0 1 33.98162888-14.07810446H754.72592555a48.54518557 48.54518557 0 0 1 48.54518556 48.54518555z" fill="currentColor"></path>
+</svg>
+    <span>NOTICE</span>
+  </div>
+  <div class="widget-body">
+    <p>麻中麻</p>
+  </div>
+</section>
+
+
+      <section class="widget-categorys widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M900.3614811 257.09082106h-339.81629553l-67.96326003-101.9448889c-19.41807444-29.12711113-48.54518557-43.69066667-82.52681443-43.69066667H123.6385189c-53.39970333 0-97.09036999 43.69066667-97.09037113 97.09036999v582.54222222c0 53.39970333 43.69066667 97.09036999 97.09037113 97.09037002h776.7229622c53.39970333 0 97.09036999-43.69066667 97.09037113-97.09037002V354.18119104c0-53.39970333-43.69066667-97.09036999-97.09037113-97.09036998z m-97.09036999 242.72592554H220.72888889c-24.27259221 0-48.54518557-24.27259221-48.54518556-48.54518556s24.27259221-48.54518557 48.54518556-48.54518444h582.54222222c24.27259221 0 48.54518557 24.27259221 48.54518556 48.54518444s-24.27259221 48.54518557-48.54518556 48.54518556z" fill="currentColor"></path>
+</svg>
+    <span>CATEGORYS</span>
+  </div>
+  <div class="widget-body">
+    <ul class="categorys-list">
+      
+        <li class="categorys-list-item">
+          <a href="/categories/%E7%AE%97%E6%B3%95/">
+            算法 (2)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/operation-system/">
+            operation system (1)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/spring/">
+            spring (1)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/%E6%97%A5%E5%B8%B8/">
+            日常 (2)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+            计算机网络 (7)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/IM/">
+            IM (2)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+            操作系统 (3)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">
+            JAVA基础 (9)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/Android%E5%9F%BA%E7%A1%80/">
+            Android基础 (1)
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+</section>
+
+      <section class="widget-tags widget-item  layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-tags" viewBox="0 0 1098 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M283.42180005 272q0-28.38857157-20.09142843-48.48000001t-48.47999998-20.09142842-48.48000002 20.09142842-20.09142846 48.48000001 20.09142846 48.48 48.48000002 20.09142843 48.47999998-20.09142843 20.09142843-48.48zM855.0332285 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.03999997 263.58857157q-20.9142853 19.81714313-48.75428534 19.81714312-28.38857157 0-48.20571468-19.81714312l-383.04-383.58857157q-20.36571468-19.81714313-34.55999999-54.10285688t-14.19428534-62.6742853l0-222.85714313q0-27.84000002 20.36571469-48.20571469t48.2057147-20.36571466l222.85714313 0q28.38857157 0 62.6742853 14.19428529t54.65142842 34.55999999l383.04000001 382.49142843q19.81714313 20.9142853 19.81714314 48.75428532zM1060.74751475 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.04 263.58857157q-20.9142853 19.81714313-48.75428531 19.81714312-19.26857155 0-31.61142843-7.47428531t-28.38857159-24.13714314l251.79428534-251.7942853q19.81714313-19.81714313 19.81714308-48.20571469 0-27.84000002-19.81714308-48.75428531l-383.04000001-382.49142845q-20.36571468-20.36571468-54.65142842-34.55999999t-62.67428532-14.19428534l120 0q28.38857157 0 62.67428532 14.19428534t54.65142842 34.55999999l383.03999998 382.49142845q19.81714313 20.9142853 19.81714314 48.75428531z" fill="currentColor"></path>
+</svg>
+    <span>TAGS</span>
+  </div>
+  <div class="widget-body">
+    <div class="tags-cloud">
+      <a href="/tags/Handler/" style="font-size: 10px;" class="tags-cloud-0">Handler</a> <a href="/tags/IM/" style="font-size: 12.5px;" class="tags-cloud-3">IM</a> <a href="/tags/JAVA%E5%9F%BA%E7%A1%80/" style="font-size: 20px;" class="tags-cloud-10">JAVA基础</a> <a href="/tags/JAVA%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;" class="tags-cloud-0">JAVA多线程</a> <a href="/tags/JAVA%E5%B9%B6%E5%8F%91/" style="font-size: 12.5px;" class="tags-cloud-3">JAVA并发</a> <a href="/tags/JAVA%E9%9B%86%E5%90%88/" style="font-size: 10px;" class="tags-cloud-0">JAVA集合</a> <a href="/tags/JVM/" style="font-size: 15px;" class="tags-cloud-5">JVM</a> <a href="/tags/TCP/" style="font-size: 12.5px;" class="tags-cloud-3">TCP</a> <a href="/tags/operation-system/" style="font-size: 10px;" class="tags-cloud-0">operation system</a> <a href="/tags/spring/" style="font-size: 10px;" class="tags-cloud-0">spring</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 15px;" class="tags-cloud-5">操作系统</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 12.5px;" class="tags-cloud-3">日常</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 12.5px;" class="tags-cloud-3">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 17.5px;" class="tags-cloud-8">计算机网络</a>
+    </div>
+  </div>
+</section>
+    </div>
+  </article>
+</div>
+
+    <!-- footer container -->
+<footer id="footer" class="footer">
+  <div class="footer-container">
+    
+    <div class="social-icons">
+      
+        
+      
+        
+      
+        
+      
+        
+          <a href="https://github.com/asw675/" class="soft-size--primary soft-style--box" target="_blank" rel="noopener noreferrer">
+            <svg class="icon icon-github" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M64.6 512c0 195.6 125.4 361.9 300.1 422.9 23.5 5.9 19.9-10.8 19.9-22.2v-77.6c-135.8 15.9-141.3-74-150.5-89-18.5-31.5-61.9-39.5-49-54.5 31-15.9 62.5 4 98.9 58 26.4 39.1 77.9 32.5 104.1 26 5.7-23.5 17.9-44.5 34.7-60.9-140.7-25.2-199.4-111.1-199.4-213.3 0-49.5 16.4-95.1 48.4-131.8-20.4-60.6 1.9-112.4 4.9-120.1 58.2-5.2 118.5 41.6 123.3 45.3 33.1-8.9 70.8-13.7 112.9-13.7 42.4 0 80.3 4.9 113.5 13.9 11.3-8.6 67.3-48.8 121.4-43.9 2.9 7.7 24.7 58.3 5.5 118.1 32.5 36.8 49 82.8 49 132.4 0 102.3-59 188.3-200.2 213.2 23.5 23.3 38.1 55.5 38.1 91.1v112.7c0.8 9 0 17.9 15.1 17.9C832.7 877 960.4 709.4 960.4 512.1c0-247.5-200.6-447.9-447.9-447.9C265 64.1 64.6 264.5 64.6 512z"></path>
+</svg>
+          </a>
+        
+      
+        
+      
+    </div>
+     
+    <p>&copy; 2022 <a href="/" target="_blank">ReasonLee</a></p>
+
+    
+
+    <p>Powered by <a href="https://hexo.io" target="_blank" rel="noopener noreferrer">Hexo</a> Theme - <a href="https://github.com/miiiku/flex-block" target="_blank" rel="noopener noreferrer author">flex-block</a></p>
+
+    <p>
+      <a href="javascript:;" id="theme-light">🌞 浅色</a>
+      <a href="javascript:;" id="theme-dark">🌛 深色</a>
+      <a href="javascript:;" id="theme-auto">🤖️ 自动</a>
+    </p>
+  </div>
+</footer>
+  </div>
+
+  <div class="back-to-top-fixed soft-size--round soft-style--box">
+    <svg class="icon icon-back-to-top" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <path d="M725.333333 426.666667c-12.8 0-21.333333-4.266667-29.866667-12.8l-213.333333-213.333333c-17.066667-17.066667-17.066667-42.666667 0-59.733333s42.666667-17.066667 59.733333 0l213.333333 213.333333c17.066667 17.066667 17.066667 42.666667 0 59.733333C746.666667 422.4 738.133333 426.666667 725.333333 426.666667z"></path>
+      <path d="M298.666667 426.666667c-12.8 0-21.333333-4.266667-29.866667-12.8-17.066667-17.066667-17.066667-42.666667 0-59.733333l213.333333-213.333333c17.066667-17.066667 42.666667-17.066667 59.733333 0s17.066667 42.666667 0 59.733333l-213.333333 213.333333C320 422.4 311.466667 426.666667 298.666667 426.666667z"></path>
+      <path d="M512 896c-25.6 0-42.666667-17.066667-42.666667-42.666667L469.333333 170.666667c0-25.6 17.066667-42.666667 42.666667-42.666667s42.666667 17.066667 42.666667 42.666667l0 682.666667C554.666667 878.933333 537.6 896 512 896z"></path>
+    </svg>
+  </div>
+
+  
+  <!-- aplayer -->
+
+
+<!-- dplayer -->
+
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+  <!-- 尾部用户自定义相关内容 -->
+</body>
+</html>
