@@ -24,7 +24,7 @@
 
   
 
-  <title>SpringBoot学习 | ReasonLee</title>
+  <title>Android：Activity | ReasonLee</title>
 
   
 
@@ -102,20 +102,22 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">SpringBoot学习</h1>
+          <h1 class="title-wrap">Android：Activity</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2021-12-18T01:20:12.000Z" itemprop="datePublished">2021-12-18</time>
+            <time  class="article-date" datetime="2022-02-06T11:20:12.000Z" itemprop="datePublished">2022-02-06</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/spring/">📒 spring</a></li>
+    <li><a href="/categories/Android%E5%9F%BA%E7%A1%80/">📒 Android基础</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/spring/">🏷️ spring</a></li>
+    <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
+  
+    <li><a href="/tags/Activity/">🏷️ Activity</a></li>
   
 </ul>
         </div>
@@ -139,8 +141,82 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h4 id="Repository注解的作用："><a href="#Repository注解的作用：" class="headerlink" title="@Repository注解的作用："></a>@Repository注解的作用：</h4><h4 id="用在持久层的接口上，这个注解是将接口的一个实现类交给spring管理。"><a href="#用在持久层的接口上，这个注解是将接口的一个实现类交给spring管理。" class="headerlink" title="用在持久层的接口上，这个注解是将接口的一个实现类交给spring管理。"></a>用在持久层的接口上，这个注解是将接口的一个实现类交给spring管理。</h4><h4 id="Repository-value-”userDao”"><a href="#Repository-value-”userDao”" class="headerlink" title="@Repository(value=”userDao”)"></a>@Repository(value=”userDao”)</h4><p><strong>该注解是告诉Spring，让Spring创建一个名字叫“userDao”的UserDaoImpl实例。</strong></p>
-<p><strong>当Service需要使用Spring创建的名字叫“userDao”的UserDaoImpl实例时，就可以使用@Resource(name = “userDao”)注解告诉Spring，Spring把创建好的userDao注入给Service即可。</strong></p>
+        <h2 id="1、Activity生命周期"><a href="#1、Activity生命周期" class="headerlink" title="1、Activity生命周期"></a>1、Activity生命周期</h2><ul>
+<li><h4 id="onCreate-当Activity创建时执行"><a href="#onCreate-当Activity创建时执行" class="headerlink" title="onCreate()  当Activity创建时执行"></a>onCreate()  当Activity创建时执行</h4><ul>
+<li>当Activity被创建时的调用的方法。只在创建的时候调用一次。<br>可以在这个方法里面做一些初始化的工作，比如setContentView加载布局文件，初始化一些变量的值等。这个是开发中最常见的方法。</li>
+</ul>
+</li>
+<li><h4 id="onStart-当Activity可见时执行（可见了，但是看不到，没获得焦点）"><a href="#onStart-当Activity可见时执行（可见了，但是看不到，没获得焦点）" class="headerlink" title="onStart() 当Activity可见时执行（可见了，但是看不到，没获得焦点）"></a>onStart() 当Activity可见时执行（可见了，但是看不到，没获得焦点）</h4><ul>
+<li><p>在Activity暂停的时候再打开会调用start()，如果有个东西需要在程序按home键后暂停，然后再打开的时候就会用到。（在onstop里停止，然后在onstart打开，而不是onCreate）</p>
+</li>
+<li><p>设置View的监听器，获取View的宽高也是在这里执行的。</p>
+</li>
+</ul>
+</li>
+<li><h4 id="onResume-当Activity获取焦点是执行"><a href="#onResume-当Activity获取焦点是执行" class="headerlink" title="onResume() 当Activity获取焦点是执行"></a>onResume() 当Activity获取焦点是执行</h4><ul>
+<li><p>Activity已经获取焦点了，Activity处于可见的前台了。用户可以进行交互了在这个阶段。也可以理解为，必须获取焦点才能进行交互。</p>
+<p>假设甲Activity是可见的可交互的，但是这时我们的乙Activity（一个新的非全屏的Activity或者一个透明的Activity）至于栈顶时，即在任务栈里我们的乙位甲的上方，此刻我们的甲Activity就会处于Paused状态了，也就是可见但是没能进行交互。</p>
+</li>
+</ul>
+</li>
+<li><h4 id="onPause-当Activity失去焦点时执行"><a href="#onPause-当Activity失去焦点时执行" class="headerlink" title="onPause() 当Activity失去焦点时执行"></a>onPause() 当Activity失去焦点时执行</h4><ul>
+<li><p>Activity已经失去焦点了。用户没有办法在这个Activity进行操作了。一般来说当用户按下Home键或者按下Back键就会执行这个方法，这个方法执行后紧跟着都是执行onStop()<br> 如果是按下back键：onPause() → onStop() → onDestroy()<br> 如果是按下Home键：onPause() → onStop()</p>
+<p>onPause方法不能不能进行回收工作，简单说就是这里进行回收工作很可能会拖慢影响其他Activty的显示，后面会涉及到。<br> 回收和清理工作轻一点的科技交给onStop，重一些的交给onDestroy。</p>
+<p><strong>onPause里面不能放耗时操作，否则影响界面切换速度。</strong></p>
+</li>
+</ul>
+</li>
+<li><h4 id="onStop-当Activity不可见时执行"><a href="#onStop-当Activity不可见时执行" class="headerlink" title="onStop() 当Activity不可见时执行"></a>onStop() 当Activity不可见时执行</h4><ul>
+<li>Activity不可见了。<br>在这个方法我们可以进行一些比较简单的回收工作。</li>
+</ul>
+</li>
+<li><h4 id="onDestroy-当Activity销毁时执行"><a href="#onDestroy-当Activity销毁时执行" class="headerlink" title="onDestroy() 当Activity销毁时执行"></a>onDestroy() 当Activity销毁时执行</h4><ul>
+<li>Activity被销毁了，这个Activity死掉了，在这里我们可以做一些最终的回收和资源释放的工作。</li>
+</ul>
+</li>
+<li><h4 id="onRestart"><a href="#onRestart" class="headerlink" title="onRestart()"></a>onRestart()</h4><ul>
+<li>Activity正在重新启动，也就是从不可见变为可见的一个过程。<br> 当用户按下Home键然后有回到当前程序，就会执行这个方法，或者当用户从当前甲Activity打开一个新的Activity，然后又back键返回到甲Activity，又或者用户按下任务列表，然后选择了刚刚打开过的那个程序，那么这个方法也会执行</li>
+</ul>
+</li>
+<li><p>打开一个新的Activity：<br>onCreate → onStart → onResume</p>
+<p>按下Home键：<br>onPause → onStop</p>
+<h4 id="打开程序A，（启动默认的启动页MainActivity），按下任务列表，重新选择程序A"><a href="#打开程序A，（启动默认的启动页MainActivity），按下任务列表，重新选择程序A" class="headerlink" title="打开程序A，（启动默认的启动页MainActivity），按下任务列表，重新选择程序A"></a>打开程序A，（启动默认的启动页MainActivity），按下任务列表，重新选择程序A</h4><p>打开自然是： onCreate → onStart → onResume<br>按下任务列表：onPause → onStop<br>选择这个app：onRestart → onStart → onResume</p>
+<h4 id="打开甲Activity，然后打开乙Activity，接着按下Back键-（注意onPause和onStop之间）"><a href="#打开甲Activity，然后打开乙Activity，接着按下Back键-（注意onPause和onStop之间）" class="headerlink" title="打开甲Activity，然后打开乙Activity，接着按下Back键 （注意onPause和onStop之间）"></a>打开甲Activity，然后打开乙Activity，接着按下Back键 （注意onPause和onStop之间）</h4><p>打开甲:<br> 甲onCreate  → 甲onStart → 甲onResume</p>
+<p>接着打开乙：<br> 甲onPause<br>  → 乙onCreate<br>  → 乙onStart<br>  → 乙onResume<br> → 甲onStop<br> （此时界面停留在乙）</p>
+<p>接着按下Back：<br> 乙onPause<br>  甲onRestart<br>  甲onstart<br>  甲onResume<br> 乙onStop<br> 乙Destroy<br> (此时界面停留在甲)</p>
+</li>
+<li><h4 id="横竖屏切换"><a href="#横竖屏切换" class="headerlink" title="横竖屏切换"></a>横竖屏切换</h4><ul>
+<li>onPause–&gt;<br>onStop–&gt;<br>onDestroy–&gt;<br>onCreate–&gt;<br>onStart–&gt;<br>onRestoreInstanceState–&gt;<br>onResume–&gt;</li>
+</ul>
+</li>
+<li><h4 id="Dialog不会影响Activity的生命周期，所以一个Activity中有dialog的时候按home键的生命周期是："><a href="#Dialog不会影响Activity的生命周期，所以一个Activity中有dialog的时候按home键的生命周期是：" class="headerlink" title="Dialog不会影响Activity的生命周期，所以一个Activity中有dialog的时候按home键的生命周期是："></a>Dialog不会影响Activity的生命周期，所以一个Activity中有dialog的时候按home键的生命周期是：</h4><ul>
+<li>onCreate() -&gt; onStart() -&gt; onResume -&gt; onPause() -&gt; onStop() </li>
+<li>这里的onPause是按home后才出来的，和正常的没区别。</li>
+</ul>
+</li>
+</ul>
+<h2 id="2、进程的优先级分类"><a href="#2、进程的优先级分类" class="headerlink" title="2、进程的优先级分类"></a>2、进程的优先级分类</h2><h3 id="2-1-Foreground-process（前台进程）"><a href="#2-1-Foreground-process（前台进程）" class="headerlink" title="2.1. Foreground process（前台进程）"></a>2.1. Foreground process（前台进程）</h3><p>用户正在操作的应用程序所在的进程，就是前台进程。即当前Activity的onResume方法被执行了，可以响应点击事件。</p>
+<h3 id="2-2-Visible-process-（可视进程）"><a href="#2-2-Visible-process-（可视进程）" class="headerlink" title="2.2. Visible process   （可视进程）"></a>2.2. Visible process   （可视进程）</h3><p>应用程序的ui界面，用户还可以看到，但是不能操作了。（比如全透明了，比如一个非全屏的界面在我们的界面的上方）</p>
+<h3 id="2-3-Service-process-（服务进程）"><a href="#2-3-Service-process-（服务进程）" class="headerlink" title="2.3. Service process   （服务进程）"></a>2.3. Service process   （服务进程）</h3><p>当前操作的不是这个程序，但是这个程序有一个后台的 服务 还处于运行状态。</p>
+<h3 id="2-4-Background-process（后台进程）"><a href="#2-4-Background-process（后台进程）" class="headerlink" title="2.4. Background process（后台进程）"></a>2.4. Background process（后台进程）</h3><p>应用程序没有服务处于运行状态，也没有服务在运行，应用程序被最小化了，（activity执行了onStop方法，就是界面最小化）</p>
+<h3 id="2-5-Empty-process-（空进程）"><a href="#2-5-Empty-process-（空进程）" class="headerlink" title="2.5. Empty process   （空进程）"></a>2.5. Empty process   （空进程）</h3><p>没有任何四大组件在运行，所有的Activity都关闭了，任务栈清空了。（任务栈的概念我们后面有介绍）</p>
+<p><strong>当手机系统内容不足，那么手机会自动回收进程，从低级回收起。</strong></p>
+<h2 id="任务栈"><a href="#任务栈" class="headerlink" title="任务栈"></a>任务栈</h2><p><strong>standard 默认的启动模式,标准模式</strong></p>
+<p><strong>singletop 单一顶部模式（顶部不会重复）</strong></p>
+<p><strong>singleTask 单一任务栈，干掉头上的其他Activity</strong></p>
+<p><strong>singleInstance 单一实例(单例)，任务栈里面自已自己一个人</strong></p>
+<h2 id="Android-Activity之间传递数据"><a href="#Android-Activity之间传递数据" class="headerlink" title="Android Activity之间传递数据"></a>Android Activity之间传递数据</h2><ol>
+<li><h4 id="Intent，可以直接put数据和put-bundle"><a href="#Intent，可以直接put数据和put-bundle" class="headerlink" title="Intent，可以直接put数据和put bundle"></a>Intent，可以直接put数据和put bundle</h4></li>
+<li><h4 id="SharedPreferences"><a href="#SharedPreferences" class="headerlink" title="SharedPreferences"></a>SharedPreferences</h4><ul>
+<li>一个文件，用key value的方式保存数据</li>
+</ul>
+</li>
+</ol>
+<h2 id="两个Activity之间跳转时必然会执行的是哪几个方法？"><a href="#两个Activity之间跳转时必然会执行的是哪几个方法？" class="headerlink" title="两个Activity之间跳转时必然会执行的是哪几个方法？"></a>两个Activity之间跳转时必然会执行的是哪几个方法？</h2><p><strong>一般情况下比如说有两个activity,分别叫A,B。</strong></p>
+<p><strong>当在A 里面激活B 组件的时候, A会调用onPause()方法,然后B调用onCreate() ,onStart(), onResume()。</strong></p>
+<p><strong>这个时候B覆盖了A的窗体, A会调用onStop()方法。</strong></p>
+<p><strong>如果B是个透明的窗口,或者是对话框的样式, 就不会调用A的onStop()方法。</strong></p>
+<p><strong>如果B已经存在于Activity栈中，B就不会调用onCreate()方法。</strong></p>
 
       </section>
 
@@ -153,8 +229,8 @@
     
     <div class="card-text">
       
-        <a href="/2021/12/260920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">操作系统：什么是大端序和小端序</h2>
+        <a href="/2022/02/071920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：各个版本新特性</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -168,8 +244,8 @@
     
     <div class="card-text">
       
-        <a href="/2021/12/010920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">健身餐</h2>
+        <a href="/2022/02/031920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：Handler机制</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -238,7 +314,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81Activity%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.</span> <span class="toc-text">1、Activity生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E8%BF%9B%E7%A8%8B%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E5%88%86%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">2、进程的优先级分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Foreground-process%EF%BC%88%E5%89%8D%E5%8F%B0%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">2.1. Foreground process（前台进程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Visible-process-%EF%BC%88%E5%8F%AF%E8%A7%86%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">2.2. Visible process   （可视进程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Service-process-%EF%BC%88%E6%9C%8D%E5%8A%A1%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">2.3. Service process   （服务进程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-Background-process%EF%BC%88%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">2.4. Background process（后台进程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-Empty-process-%EF%BC%88%E7%A9%BA%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.5.</span> <span class="toc-text">2.5. Empty process   （空进程）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E6%A0%88"><span class="toc-number">3.</span> <span class="toc-text">任务栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-Activity%E4%B9%8B%E9%97%B4%E4%BC%A0%E9%80%92%E6%95%B0%E6%8D%AE"><span class="toc-number">4.</span> <span class="toc-text">Android Activity之间传递数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AAActivity%E4%B9%8B%E9%97%B4%E8%B7%B3%E8%BD%AC%E6%97%B6%E5%BF%85%E7%84%B6%E4%BC%9A%E6%89%A7%E8%A1%8C%E7%9A%84%E6%98%AF%E5%93%AA%E5%87%A0%E4%B8%AA%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">两个Activity之间跳转时必然会执行的是哪几个方法？</span></a></li></ol>
   </div>
 </section>
 
