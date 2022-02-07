@@ -24,7 +24,7 @@
 
   
 
-  <title>JVM：Java类加载过程 | ReasonLee</title>
+  <title>Android：Service | ReasonLee</title>
 
   
 
@@ -102,22 +102,22 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">JVM：Java类加载过程</h1>
+          <h1 class="title-wrap">Android：Service</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-01-19T01:20:12.000Z" itemprop="datePublished">2022-01-19</time>
+            <time  class="article-date" datetime="2022-02-08T11:20:12.000Z" itemprop="datePublished">2022-02-08</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">📒 JAVA基础</a></li>
+    <li><a href="/categories/Android%E5%9F%BA%E7%A1%80/">📒 Android基础</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/JAVA%E5%9F%BA%E7%A1%80/">🏷️ JAVA基础</a></li>
+    <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
   
-    <li><a href="/tags/JVM/">🏷️ JVM</a></li>
+    <li><a href="/tags/Service/">🏷️ Service</a></li>
   
 </ul>
         </div>
@@ -141,31 +141,31 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h3 id="JAVA类加载过程"><a href="#JAVA类加载过程" class="headerlink" title="JAVA类加载过程"></a>JAVA类加载过程</h3><p>类的生命周期：加载、链接（验证、准备、解析）、初始化、使用、卸载。</p>
-<p><img src="https://img2020.cnblogs.com/blog/808275/202003/808275-20200320130825074-181307935.png" alt="img"></p>
-<h4 id="加载："><a href="#加载：" class="headerlink" title="加载："></a>加载：</h4><p>加载是类加载过程的一个阶段，这两个概念一定不要混淆。在加载阶段, 虚拟机需要完成以下三件事情:</p>
-<p>（1）Java虚拟机将.class文件读入内存，并为之创建一个Class对象。</p>
-<p>（2）任何类被使用时系统都会为其创建一个且仅有一个Class对象。</p>
-<p>（3）这个Class对象描述了这个类创建出来的对象的所有信息，比如有哪些构造方法，都有哪些成员方法，都有哪些成员变量等。</p>
-<h4 id="链接："><a href="#链接：" class="headerlink" title="链接："></a>链接：</h4><p><strong>（1）验证</strong>：确保.CLass文件字节流中包含的信息符合当前虚拟机的要求。不会危害的自身安全。Eg:这个类的父类是否继承了不允许被继承的类(被finaI修饰的类)</p>
-<p><strong>（2）准备</strong>：准备阶段正式为类变量分配内存以及为类变量设置初始值。注意：这时分配内存的仅仅包括类变量（被static修饰的变量）不包括实例变量，实例变量会再对象实例初始化时分配内存。这里所说的初始值“通常情况”下是数据类型的零值。</p>
-<p><strong>（3）解析</strong>：将方法区中的字符引用转换成直接引用</p>
-<h4 id="初始化："><a href="#初始化：" class="headerlink" title="初始化："></a>初始化：</h4><p>对静态的变量（static）进行赋值,包括初始化代码块。</p>
-<h4 id="类的加载时机："><a href="#类的加载时机：" class="headerlink" title="类的加载时机："></a>类的加载时机：</h4><ol>
-<li>创建类的实例也就是new一个对象。</li>
-<li>访问某个类的或接口的静态变量 或者给静态变量赋值、</li>
-<li>调用某个类的静态方法</li>
-<li>反射（Class.forName(“com.sgd.test”)）</li>
-<li>初始化一个类的子类（首先会初始化父类）</li>
-<li>JVM启动时标明的启动类，即文件名和类名相同的那个类 </li>
-</ol>
-<p><img src="https://img2020.cnblogs.com/blog/808275/202003/808275-20200320130850948-1671288040.png" alt="img"></p>
-<h3 id="双亲委派机制"><a href="#双亲委派机制" class="headerlink" title="双亲委派机制"></a><strong>双亲委派机制</strong></h3><p>这里说明一下双亲委派机制：</p>
-<p> <img src="https://img2020.cnblogs.com/blog/808275/202003/808275-20200320130919370-686563880.png" alt="img"></p>
-<p>​    双亲委派机制，其工作原理的是，如果一个类加载器收到了类加载请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行，如果父类加载器还存在其父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的启动类加载器，如果父类加载器可以完成类加载任务，就成功返回，倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载，这就是双亲委派模式，即每个儿子都很懒，每次有活就丢给父亲去干，直到父亲说这件事我也干不了时，儿子自己才想办法去完成。</p>
-<p>   <strong>双亲委派机制的优势</strong>：</p>
-<p>​    采用双亲委派模式的是好处是Java类随着它的类加载器一起具备了一种带有优先级的层次关系，通过这种层级关可以避免类的重复加载，当父亲已经加载了该类时，就没有必要子ClassLoader再加载一次。</p>
-<p>​    其次是考虑到安全因素，java核心api中定义类型不会被随意替换，假设通过网络传递一个名为java.lang.Integer的类，通过双亲委托模式传递到启动类加载器，而启动类加载器在核心Java API发现这个名字的类，发现该类已被加载，并不会重新加载网络传递的过来的java.lang.Integer，而直接返回已加载过的Integer.class，这样便可以防止核心API库被随意篡改。</p>
+        <h2 id="Service的启动方式"><a href="#Service的启动方式" class="headerlink" title="Service的启动方式"></a>Service的启动方式</h2><ul>
+<li><h3 id="StartService"><a href="#StartService" class="headerlink" title="StartService"></a>StartService</h3><ul>
+<li><h4 id="AMS的流程："><a href="#AMS的流程：" class="headerlink" title="AMS的流程："></a>AMS的流程：</h4><p>1). 先看Service启动了没有：如果启动了就直接发指令，让应用端执行onStartCommand()。<br>2). 如果Service没有启动，就看它所在进程启动了没有：如果已经启动，就去启动Service，等Service启动了之后再发送指令让其执行onStartCommand。<br>3). 如果进程没有启动就去启动进程，等进程启动后再启动Service。</p>
+<h4 id="应用端的流程"><a href="#应用端的流程" class="headerlink" title="应用端的流程:"></a>应用端的流程:</h4><p>1). 先创建Service对象<br>2). 再赋予上下文<br>3). 最后调用生命周期<strong>onCreate()</strong> -&gt; <strong>onStartCommand()</strong> -&gt;<strong>onDestroy()</strong></p>
+<p>多次启动服务onCreate只会执行一次，onStartCommand会执行很多次</p>
+<p><img src="https://b2.kuibu.net/file/imgdisk/imgs/2022/02/e0a03a205edf6054.png"></p>
+</li>
+</ul>
+</li>
+<li><h3 id="BindService"><a href="#BindService" class="headerlink" title="BindService"></a>BindService</h3><ul>
+<li>binderService不会触发应用端的onStartCommand函数。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://b2.kuibu.net/file/imgdisk/imgs/2022/02/18fe7bf45bd83f26.png"></p>
+<p>根据上图，概况Binder流程如下：</p>
+<ul>
+<li>应用向AMS发起bindService调用。</li>
+<li>AMS首先检查有没有Service的binder句柄，如果有就直接把它回调给应用。</li>
+<li>如果没有，AMS就会向Service请求binder句柄。</li>
+<li>Service收到之后就会把自己的binder句柄发布到AMS。</li>
+<li>AMS再把这个binder句柄回调给应用。</li>
+<li>应用拿到这个binder句柄后就可以向Service发起binder调用了。</li>
+</ul>
+<p>生命周期 <strong>onCreate -&gt; onBind -&gt; onUnbind -&gt; onDestroy</strong></p>
 
       </section>
 
@@ -178,8 +178,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/200120.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">JAVA：多线程</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -193,8 +193,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/190120.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">JAVA：JMM模型</h2>
+        <a href="/2022/02/071920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：各个版本新特性</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -263,7 +263,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#JAVA%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">JAVA类加载过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6"><span class="toc-number">2.</span> <span class="toc-text">双亲委派机制</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Service%E7%9A%84%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">Service的启动方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#StartService"><span class="toc-number">1.1.</span> <span class="toc-text">StartService</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BindService"><span class="toc-number">1.2.</span> <span class="toc-text">BindService</span></a></li></ol></li></ol>
   </div>
 </section>
 
