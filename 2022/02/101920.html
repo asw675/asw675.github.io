@@ -24,7 +24,7 @@
 
   
 
-  <title>HTTP和HTTPS的区别 | ReasonLee</title>
+  <title>Android：ContentProvider | ReasonLee</title>
 
   
 
@@ -102,20 +102,22 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">HTTP和HTTPS的区别</h1>
+          <h1 class="title-wrap">Android：ContentProvider</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-01-11T01:20:14.000Z" itemprop="datePublished">2022-01-11</time>
+            <time  class="article-date" datetime="2022-02-10T11:20:12.000Z" itemprop="datePublished">2022-02-10</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">📒 计算机网络</a></li>
+    <li><a href="/categories/Android%E5%9F%BA%E7%A1%80/">📒 Android基础</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">🏷️ 计算机网络</a></li>
+    <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
+  
+    <li><a href="/tags/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/">🏷️ 四大组件</a></li>
   
 </ul>
         </div>
@@ -139,17 +141,25 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>一、HTTPS协议需要到证书颁发机构CA申请证书，HTTP不用申请证书；</p>
-<p>二、HTTP是超文本传输协议，属于应用层信息传输，HTTPS 则是具有SSL加密传安全性传输协议，对数据的传输进行加密，相当于HTTP的升级版；</p>
-<p>三、HTTP和HTTPS使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</p>
-<p>四、HTTP的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比HTTP协议安全。</p>
-<h2 id="HTTPS加密流程"><a href="#HTTPS加密流程" class="headerlink" title="HTTPS加密流程"></a>HTTPS加密流程</h2><p>HTTPS是通过SSL(安全套接层)和TLS(安全传输协议)的组合使用，加密TCP载荷即HTTP报文内容，同时通过不对称密钥方式认证身份，保证传输的安全可靠</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7ZtUN6"><img src="https://s4.ax1x.com/2022/01/11/7ZtUN6.png" alt="7ZtUN6.png"></a></p>
-<h4 id="数字证书认证"><a href="#数字证书认证" class="headerlink" title="数字证书认证"></a>数字证书认证</h4><p>由于公钥在下发的时候也容易被替换劫持，所以需要个第三方认证机构确认公钥的正确性</p>
-<p>CA：数字证书认证机构，是客户端服务端都认可的第三方机构，负责数字签名服务端公钥</p>
-<p>数字签名：签名就是一种证明身份的机制，是一种校验机制（简单说是用私钥加密内容的hash,公钥解密对比hash判断内容是否完整）</p>
-<p>数字证书：由一个可信的组织验证和签发的识别信息</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7Zta4K"><img src="https://s4.ax1x.com/2022/01/11/7Zta4K.png" alt="7Zta4K.png"></a></p>
+        <h2 id="ContentProvider"><a href="#ContentProvider" class="headerlink" title="ContentProvider"></a>ContentProvider</h2><p>作用：跨进程通讯</p>
+<ul>
+<li><code>ContentProvider</code>的底层原理 = <code>Android</code>中的<code>Binder</code>机制</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/HYVyz4"><img src="https://s4.ax1x.com/2022/02/10/HYVyz4.png" alt="HYVyz4.png"></a></p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>首先注册URI和contentProvider</p>
+<p>然后实现contentProvider的方法，和数据源绑定</p>
+<p>最后使用ContentResolver操作方法和数据</p>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><p><code>ContentProvider</code>为应用间的数据交互提供了一个安全的环境：允许把自己的应用数据根据需求开放给 其他应用 进行 <strong>增、删、改、查</strong>，而不用担心因为直接开放数据库权限而带来的安全问题</p>
+<h3 id="访问简单-amp-高效"><a href="#访问简单-amp-高效" class="headerlink" title="访问简单 &amp; 高效"></a>访问简单 &amp; 高效</h3><p>对比于其他对外共享数据的方式，数据访问方式会因数据存储的方式而不同：</p>
+<ul>
+<li>采用 文件方式 对外共享数据，需要进行文件操作读写数据；</li>
+<li>采用 <code>Sharedpreferences</code> 共享数据，需要使用 <code>sharedpreferences API</code>读写数据</li>
+</ul>
+<p>这使得访问数据变得复杂 &amp; 难度大。</p>
+<ul>
+<li>而采用<code>ContentProvider</code>方式，其 解耦了 底层数据的存储方式，使得无论底层数据存储采用何种方式，外界对数据的访问方式都是统一的，这使得<strong>访问简单 &amp; 高效</strong></li>
+</ul>
+<p>如一开始数据存储方式 采用 <code>SQLite</code> 数据库，后来把数据库换成 <code>MongoDB</code>，也不会对上层数据<code>ContentProvider</code>使用代码产生影响</p>
 
       </section>
 
@@ -162,8 +172,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/111520.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">HTTP总览</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -177,8 +187,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/101920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">IM心跳是怎么回事</h2>
+        <a href="/2022/02/091920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：BroadCast</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -247,7 +257,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS%E5%8A%A0%E5%AF%86%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">HTTPS加密流程</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ContentProvider"><span class="toc-number">1.</span> <span class="toc-text">ContentProvider</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">优点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8"><span class="toc-number">3.1.</span> <span class="toc-text">安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E7%AE%80%E5%8D%95-amp-%E9%AB%98%E6%95%88"><span class="toc-number">3.2.</span> <span class="toc-text">访问简单 &amp; 高效</span></a></li></ol></li></ol>
   </div>
 </section>
 

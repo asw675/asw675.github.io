@@ -24,7 +24,7 @@
 
   
 
-  <title>微软600题 --》 进度 160 / 600 --》 不会题 2/2 | ReasonLee</title>
+  <title>微软600题 --》 进度 180 / 600 --》 不会题 2/2 | ReasonLee</title>
 
   
 
@@ -102,7 +102,7 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">微软600题 --》 进度 160 / 600 --》 不会题 2/2</h1>
+          <h1 class="title-wrap">微软600题 --》 进度 180 / 600 --》 不会题 2/2</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
@@ -141,7 +141,7 @@
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
         <h4 id="要记：-hashmap-遍历"><a href="#要记：-hashmap-遍历" class="headerlink" title="要记： hashmap 遍历"></a>要记： hashmap 遍历</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java">Iterator iter = map.entrySet().iterator();<br><br>​        <span class="hljs-keyword">while</span>(iter.hasNext())&#123;<br><br>​            Map.Entry entry = (Map.Entry) iter.next();<br><br>​            entry.getValue(); entry.getKey();<br><br>​        &#125;<br></code></pre></td></tr></table></figure>
 
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/H8iEDS"><img src="https://s4.ax1x.com/2022/02/09/H8iEDS.png" alt="H8iEDS.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/HdxkMn"><img src="https://s4.ax1x.com/2022/02/12/HdxkMn.png" alt="HdxkMn.png"></a></p>
 <h2 id="1448-Count-good-nodes-in-binary-tree"><a href="#1448-Count-good-nodes-in-binary-tree" class="headerlink" title="1448 Count good nodes in binary tree"></a>1448 Count good nodes in binary tree</h2><p>用一个dfs可解决</p>
 <p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/count-good-nodes-in-binary-tree/">https://leetcode.com/problems/count-good-nodes-in-binary-tree/</a></p>
 <h4 id=""><a href="#" class="headerlink" title=""></a></h4><h2 id="1822-sign-of-product-of-an-array"><a href="#1822-sign-of-product-of-an-array" class="headerlink" title="1822. sign of product of an array"></a>1822. sign of product of an array</h2><p>算乘积的正负，不用直接乘（会溢出），直接乘大小即可（用分治的方法优化）</p>
@@ -635,6 +635,46 @@
 <p><strong>因为碰撞条件是 栈顶元素&gt;0且当前元素&lt;0 才碰撞，其他的条件则不碰撞，所以可以入栈。</strong></p>
 <p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/asteroid-collision/">https://leetcode.com/problems/asteroid-collision/</a></p>
 <h2 id="1896-Minimum-Cost-to-Change-the-Final-Value-of-Expression（不会）"><a href="#1896-Minimum-Cost-to-Change-the-Final-Value-of-Expression（不会）" class="headerlink" title="1896. Minimum Cost to Change the Final Value of Expression（不会）"></a><strong>1896. Minimum Cost to Change the Final Value of Expression（不会）</strong></h2><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-cost-to-change-the-final-value-of-expression/">https://leetcode.com/problems/minimum-cost-to-change-the-final-value-of-expression/</a></p>
+<p><strong>581. Shortest Unsorted Continuous Subarray</strong></p>
+<p><strong>假设把数组分成三段 A B C，A C是有序的，B是需要排序的</strong></p>
+<p><strong>设B的最小值为min 最大值为 max，则A的所有数都小于这个min，C的所有数都大于这个max</strong></p>
+<p><strong>所以从左到右维持一个max值，则C的边界则是最后一个 nums[i] &gt; max值的数，因为C后面是有序的了</strong></p>
+<p><strong>同理从右到左维持一个min值，则A的边界则是最后一个 nums[i] &lt; min值的数</strong></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/shortest-unsorted-continuous-subarray/">https://leetcode.com/problems/shortest-unsorted-continuous-subarray/</a></p>
+<p><strong>987. Vertical Order Traversal of a Binary Tree</strong></p>
+<p><strong>用一个hashmap保存每column的List，然后再从小到大输出</strong></p>
+<p><strong>需要注意的是需要进行层序遍历，用两个queue，一个放节点，一个放column</strong></p>
+<p><strong>还有就是每层遍历完，先用一个临时map存起来，然后排序后再放到主map</strong></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/">https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/</a></p>
+<p><strong>70. Climbing Stairs</strong></p>
+<p><strong>dp类型，dp[i]为当前的步数情况，则dp[i]可以由dp[i-1]得来也可以由dp[i-2]得来，所以dp[i] = dp[i-1] + dp[i-2]</strong></p>
+<p><strong>就是一个斐波那契数列</strong></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/climbing-stairs/">https://leetcode.com/problems/climbing-stairs/</a></p>
+<p><strong>1277. Count Square Submatrices with All Ones</strong></p>
+<p><strong>先用dp算出每个 i j 所能形成的最大正方形，然后将所有dp值加起来即是答案</strong></p>
+<p><strong>因为，举个例子 dp[i][j] = 3，那么 i j 是一个长为3 的正方形，它包括长为 1 2 3 的 3 个正方形，所以这里的dp值就是它包括的正方形数量</strong></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/count-square-submatrices-with-all-ones/">https://leetcode.com/problems/count-square-submatrices-with-all-ones/</a></p>
+<p><strong>556. Next Greater Element III</strong></p>
+<p>像31题一样，先把n转化为一个数组</p>
+<p>首先从右往左找，找第一对 i+1 &gt; i 的 pair</p>
+<p>然后交换，i 和 i 右边最小的数字且比 i 大的数 (从i+1 找到 num.length 、从左往右，最小数有多个，取最右边那个)</p>
+<p>最后reverse i 右边的数字 （不包括i）</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/next-greater-element-iii/">https://leetcode.com/problems/next-greater-element-iii/</a></p>
+<p><strong>611. Valid Triangle Number</strong></p>
+<p><strong>直接三重循环复杂度 会超</strong></p>
+<p><strong>所以用排序 + 二分把复杂度降到 n²logn</strong></p>
+<p><strong>先把数组排序，然后两重循环 i j ，然后从 j + 1 到 n - 1 找最大的 k &lt; i+j (三角形特性) 的数</strong></p>
+<p><strong>那么从 j + 1 - k的数都满足第三边，加到总数即可</strong></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/valid-triangle-number/">https://leetcode.com/problems/valid-triangle-number/</a></p>
+<p><strong>1861. Rotating the Box</strong></p>
+<p><strong>模拟过程即可，双指针，从尾部开始循环</strong></p>
+<p><strong>最后旋转box的时候注意</strong> res[j][box.length - 1 - i] = box[i][j]</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/rotating-the-box/">https://leetcode.com/problems/rotating-the-box/</a></p>
+<p><strong>239. Sliding Window Maximum</strong></p>
+<p><strong>使用单调队列</strong></p>
+<p><strong>双端队列，每次插入数据的时候，拿出队尾元素比较，如果大于队尾元素，则移除队尾元素，直到把所有小于该数的元素都移除后再插入</strong></p>
+<p><strong>这样就保证了队头元素就是队列最大值。</strong></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/sliding-window-maximum/">https://leetcode.com/problems/sliding-window-maximum/</a></p>
 
       </section>
 
@@ -691,7 +731,7 @@
         <svg class="icon icon-article" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <path d="M240.51564747 647.74217627h196.07203239c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806V165.10332731c0-33.18142087-30.16492806-60.32985613-60.32985612-60.32985611H245.04038668C225.43318342 104.7734712 210.35071939 119.85593522 210.35071939 139.46313845V617.57724821c0 16.59071043 13.57421762 30.16492806 30.16492808 30.16492806z m663.62841731-452.47392089v482.63884894c0 33.18142087-27.14843525 60.32985613-60.32985612 60.32985613H180.18579134c-33.18142087 0-60.32985613-27.14843525-60.32985612-60.32985613V195.26825538c-49.77213131 0-90.49478418 40.72265287-90.49478417 90.49478417v452.4739209c0 49.77213131 40.72265287 90.49478418 90.49478417 90.49478417h286.56681657c16.59071043 0 30.16492806 13.57421762 30.16492807 30.16492807s13.57421762 30.16492806 30.16492805 30.16492806h90.49478418c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806s13.57421762-30.16492806 30.16492807-30.16492807h286.56681657c49.77213131 0 90.49478418-40.72265287 90.49478417-90.49478417V285.76303955c0-49.77213131-40.72265287-90.49478418-90.49478417-90.49478417zM587.41232014 647.74217627h191.54729318c19.60720323 0 34.68966726-15.08246403 34.68966729-34.68966727V134.93839925c0-16.59071043-13.57421762-30.16492806-30.16492808-30.16492805H617.57724821c-30.16492806 0-60.32985613 27.14843525-60.32985612 60.32985611v452.4739209c0 16.59071043 13.57421762 30.16492806 30.16492805 30.16492806z" fill="currentColor"></path>
 </svg>
-        <span>33</span>
+        <span>35</span>
       </div>
       <div class="count-box--item">
         <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -703,7 +743,7 @@
         <svg class="icon icon-tags" viewBox="0 0 1098 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <path d="M283.42180005 272q0-28.38857157-20.09142843-48.48000001t-48.47999998-20.09142842-48.48000002 20.09142842-20.09142846 48.48000001 20.09142846 48.48 48.48000002 20.09142843 48.47999998-20.09142843 20.09142843-48.48zM855.0332285 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.03999997 263.58857157q-20.9142853 19.81714313-48.75428534 19.81714312-28.38857157 0-48.20571468-19.81714312l-383.04-383.58857157q-20.36571468-19.81714313-34.55999999-54.10285688t-14.19428534-62.6742853l0-222.85714313q0-27.84000002 20.36571469-48.20571469t48.2057147-20.36571466l222.85714313 0q28.38857157 0 62.6742853 14.19428529t54.65142842 34.55999999l383.04000001 382.49142843q19.81714313 20.9142853 19.81714314 48.75428532zM1060.74751475 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.04 263.58857157q-20.9142853 19.81714313-48.75428531 19.81714312-19.26857155 0-31.61142843-7.47428531t-28.38857159-24.13714314l251.79428534-251.7942853q19.81714313-19.81714313 19.81714308-48.20571469 0-27.84000002-19.81714308-48.75428531l-383.04000001-382.49142845q-20.36571468-20.36571468-54.65142842-34.55999999t-62.67428532-14.19428534l120 0q28.38857157 0 62.67428532 14.19428534t54.65142842 34.55999999l383.03999998 382.49142845q19.81714313 20.9142853 19.81714314 48.75428531z" fill="currentColor"></path>
 </svg>
-        17
+        18
       </div>
     </div>
   </div>
@@ -797,7 +837,7 @@
       
         <li class="categorys-list-item">
           <a href="/categories/Android%E5%9F%BA%E7%A1%80/">
-            Android基础 (4)
+            Android基础 (6)
           </a>
         </li>
       
@@ -814,7 +854,7 @@
   </div>
   <div class="widget-body">
     <div class="tags-cloud">
-      <a href="/tags/Activity/" style="font-size: 10px;" class="tags-cloud-0">Activity</a> <a href="/tags/Android%E5%9F%BA%E7%A1%80/" style="font-size: 17.5px;" class="tags-cloud-8">Android基础</a> <a href="/tags/Handler/" style="font-size: 10px;" class="tags-cloud-0">Handler</a> <a href="/tags/IM/" style="font-size: 12.5px;" class="tags-cloud-3">IM</a> <a href="/tags/JAVA%E5%9F%BA%E7%A1%80/" style="font-size: 20px;" class="tags-cloud-10">JAVA基础</a> <a href="/tags/JAVA%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;" class="tags-cloud-0">JAVA多线程</a> <a href="/tags/JAVA%E5%B9%B6%E5%8F%91/" style="font-size: 12.5px;" class="tags-cloud-3">JAVA并发</a> <a href="/tags/JAVA%E9%9B%86%E5%90%88/" style="font-size: 10px;" class="tags-cloud-0">JAVA集合</a> <a href="/tags/JVM/" style="font-size: 15px;" class="tags-cloud-5">JVM</a> <a href="/tags/Service/" style="font-size: 10px;" class="tags-cloud-0">Service</a> <a href="/tags/TCP/" style="font-size: 12.5px;" class="tags-cloud-3">TCP</a> <a href="/tags/operation-system/" style="font-size: 10px;" class="tags-cloud-0">operation system</a> <a href="/tags/spring/" style="font-size: 10px;" class="tags-cloud-0">spring</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 15px;" class="tags-cloud-5">操作系统</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 12.5px;" class="tags-cloud-3">日常</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 12.5px;" class="tags-cloud-3">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 20px;" class="tags-cloud-10">计算机网络</a>
+      <a href="/tags/Activity/" style="font-size: 10px;" class="tags-cloud-0">Activity</a> <a href="/tags/Android%E5%9F%BA%E7%A1%80/" style="font-size: 17.5px;" class="tags-cloud-8">Android基础</a> <a href="/tags/Handler/" style="font-size: 10px;" class="tags-cloud-0">Handler</a> <a href="/tags/IM/" style="font-size: 12.5px;" class="tags-cloud-3">IM</a> <a href="/tags/JAVA%E5%9F%BA%E7%A1%80/" style="font-size: 20px;" class="tags-cloud-10">JAVA基础</a> <a href="/tags/JAVA%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;" class="tags-cloud-0">JAVA多线程</a> <a href="/tags/JAVA%E5%B9%B6%E5%8F%91/" style="font-size: 12.5px;" class="tags-cloud-3">JAVA并发</a> <a href="/tags/JAVA%E9%9B%86%E5%90%88/" style="font-size: 10px;" class="tags-cloud-0">JAVA集合</a> <a href="/tags/JVM/" style="font-size: 15px;" class="tags-cloud-5">JVM</a> <a href="/tags/Service/" style="font-size: 10px;" class="tags-cloud-0">Service</a> <a href="/tags/TCP/" style="font-size: 12.5px;" class="tags-cloud-3">TCP</a> <a href="/tags/operation-system/" style="font-size: 10px;" class="tags-cloud-0">operation system</a> <a href="/tags/spring/" style="font-size: 10px;" class="tags-cloud-0">spring</a> <a href="/tags/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/" style="font-size: 12.5px;" class="tags-cloud-3">四大组件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 15px;" class="tags-cloud-5">操作系统</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 12.5px;" class="tags-cloud-3">日常</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 12.5px;" class="tags-cloud-3">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 20px;" class="tags-cloud-10">计算机网络</a>
     </div>
   </div>
 </section>

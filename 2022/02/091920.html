@@ -24,7 +24,7 @@
 
   
 
-  <title>HTTP和HTTPS的区别 | ReasonLee</title>
+  <title>Android：BroadCast | ReasonLee</title>
 
   
 
@@ -102,20 +102,22 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">HTTP和HTTPS的区别</h1>
+          <h1 class="title-wrap">Android：BroadCast</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-01-11T01:20:14.000Z" itemprop="datePublished">2022-01-11</time>
+            <time  class="article-date" datetime="2022-02-09T11:20:12.000Z" itemprop="datePublished">2022-02-09</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">📒 计算机网络</a></li>
+    <li><a href="/categories/Android%E5%9F%BA%E7%A1%80/">📒 Android基础</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">🏷️ 计算机网络</a></li>
+    <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
+  
+    <li><a href="/tags/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/">🏷️ 四大组件</a></li>
   
 </ul>
         </div>
@@ -139,17 +141,55 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>一、HTTPS协议需要到证书颁发机构CA申请证书，HTTP不用申请证书；</p>
-<p>二、HTTP是超文本传输协议，属于应用层信息传输，HTTPS 则是具有SSL加密传安全性传输协议，对数据的传输进行加密，相当于HTTP的升级版；</p>
-<p>三、HTTP和HTTPS使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</p>
-<p>四、HTTP的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比HTTP协议安全。</p>
-<h2 id="HTTPS加密流程"><a href="#HTTPS加密流程" class="headerlink" title="HTTPS加密流程"></a>HTTPS加密流程</h2><p>HTTPS是通过SSL(安全套接层)和TLS(安全传输协议)的组合使用，加密TCP载荷即HTTP报文内容，同时通过不对称密钥方式认证身份，保证传输的安全可靠</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7ZtUN6"><img src="https://s4.ax1x.com/2022/01/11/7ZtUN6.png" alt="7ZtUN6.png"></a></p>
-<h4 id="数字证书认证"><a href="#数字证书认证" class="headerlink" title="数字证书认证"></a>数字证书认证</h4><p>由于公钥在下发的时候也容易被替换劫持，所以需要个第三方认证机构确认公钥的正确性</p>
-<p>CA：数字证书认证机构，是客户端服务端都认可的第三方机构，负责数字签名服务端公钥</p>
-<p>数字签名：签名就是一种证明身份的机制，是一种校验机制（简单说是用私钥加密内容的hash,公钥解密对比hash判断内容是否完整）</p>
-<p>数字证书：由一个可信的组织验证和签发的识别信息</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7Zta4K"><img src="https://s4.ax1x.com/2022/01/11/7Zta4K.png" alt="7Zta4K.png"></a></p>
+        <h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><ul>
+<li><code>Android</code>中的广播使用了设计模式中的<strong>观察者模式</strong>：基于消息的发布 / 订阅事件模型，因此，Android将广播的<strong>发送者 和 接收者 解耦</strong>，使得系统方便集成，更易扩展<ul>
+<li>模型中有3个角色：<ol>
+<li><strong>消息订阅者</strong>（广播接收者）</li>
+<li><strong>消息发布者</strong>（广播发布者）</li>
+<li><strong>消息中心</strong>（<code>AMS</code>，即<code>Activity Manager Service</code>）</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<p>​        <a target="_blank" rel="noopener" href="https://imgtu.com/i/H8iW8I"><img src="https://s4.ax1x.com/2022/02/09/H8iW8I.png" alt="H8iW8I.png"></a></p>
+<h3 id="广播接收器注册"><a href="#广播接收器注册" class="headerlink" title="广播接收器注册"></a>广播接收器注册</h3><ul>
+<li><h4 id="静态注册"><a href="#静态注册" class="headerlink" title="静态注册"></a>静态注册</h4><ul>
+<li>注册方式：在AndroidManifest.xml里通过**<receive>**标签声明</li>
+<li>当此 <code>App</code>首次启动时，系统会<strong>自动</strong>实例化，并注册到系统中。（在PackageMangerService服务中）</li>
+<li>①android系统启动之后会解析系统特定目录下的apk文件，并执行解析；<br>②解析Manifest流程：Zygote进程 –&gt; SystemServer进程 –&gt; PackageManagerService服务 –&gt; scanDirLI方法 –&gt; scanPackageLI方法 –&gt; PackageParser.parserPackage方法；<br>③解析完成Manifest之后会将apk的Manifest信息保存在Settings对象中并持久化，删除软件时，信息会被删除，新安装的apk会重复调用scanDirLi；</li>
+<li>缺点耗电，占内存</li>
+</ul>
+</li>
+<li><h4 id="动态注册"><a href="#动态注册" class="headerlink" title="动态注册"></a>动态注册</h4><ul>
+<li>注册方式：在代码中调用<code>Context.registerReceiver（）</code>方法</li>
+<li>动态广播最好在<code>Activity</code> 的 <code>onResume()</code>注册、<code>onPause()</code>注销。否则会导致<strong>内存泄露。</strong></li>
+<li>不在onCreate()  &amp; onDestory() 或 onStart() &amp; onStop()注册、注销是因为：<br> 当系统因为内存不足（优先级更高的应用需要内存，请看上图红框）要回收Activity占用的资源时，Activity在执行完onPause()方法后就会被销毁，有些生命周期方法onStop()，onDestory()就不会执行。当再回到此Activity时，是从onCreate方法开始执行。（当这个任务栈里面有多个Activity且这个Activity不是顶层的时候，会出现这种情况）</li>
+</ul>
+</li>
+</ul>
+<h2 id="系统广播"><a href="#系统广播" class="headerlink" title="系统广播"></a><strong>系统广播</strong></h2><ul>
+<li>Android中内置了多个系统广播：只要涉及到手机的基本操作（如开机、网络状态变化、拍照等等），都会发出相应的广播</li>
+<li>每个广播都有特定的Intent - Filter（包括具体的action）<ul>
+<li>监听网络变化 android.net.conn.CONNECTIVITY_CHANGE  </li>
+<li>关闭或打开飞行模式 Intent.ACTION_AIRPLANE_MODE_CHANGED  </li>
+<li>充电时或电量发生变化 Intent.ACTION_BATTERY_CHANGED </li>
+<li> 电池电量低 Intent.ACTION_BATTERY_LOW </li>
+<li> 电池电量充足（即从电量低变化到饱满时会发出广播 Intent.ACTION_BATTERY_OKAY</li>
+<li>等等</li>
+</ul>
+</li>
+</ul>
+<h2 id="有序广播"><a href="#有序广播" class="headerlink" title="有序广播"></a><strong>有序广播</strong></h2><ol>
+<li>按照Priority属性值从大-小排序；有序广播的使用过程与普通广播非常类似，差异仅在于广播的发送方式：</li>
+</ol>
+<h2 id="局部广播"><a href="#局部广播" class="headerlink" title="局部广播"></a>局部广播</h2><p>App应用内的广播</p>
+<p>注册广播时将exported属性设置为<em>false</em>，使得非本App内部发出的此广播不被接收；</p>
+<p>在广播发送和接收时，增设相应权限permission，用于权限验证；</p>
+<p>发送广播时指定该广播接收器所在的包名，此广播将只会发送到此包中的App内与之相匹配的有效广播接收器中。</p>
+<p>或者使用 使用封装好的LocalBroadcastManager类</p>
+<h2 id="为什么普通广播中动态广播总是先于静态广播"><a href="#为什么普通广播中动态广播总是先于静态广播" class="headerlink" title="为什么普通广播中动态广播总是先于静态广播"></a>为什么普通广播中动态广播总是先于静态广播</h2><p>在AMS.broadcastIntentLocked方法中，动态广播和静态广播分别放在两个不同的List里面，处理广播的时候，先处理动态广播的List再处理静态广播的LIst。</p>
+<p>而有序广播则是按照优先级来执行，放在一个mOrderedBroadcasts有序广播队列中。</p>
 
       </section>
 
@@ -162,8 +202,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/111520.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">HTTP总览</h2>
+        <a href="/2022/02/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：ContentProvider</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -177,8 +217,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/101920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">IM心跳是怎么回事</h2>
+        <a href="/2022/02/081920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：Service</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -247,7 +287,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS%E5%8A%A0%E5%AF%86%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">HTTPS加密流程</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%BF%E6%92%AD%E6%8E%A5%E6%94%B6%E5%99%A8%E6%B3%A8%E5%86%8C"><span class="toc-number">1.1.</span> <span class="toc-text">广播接收器注册</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%B9%BF%E6%92%AD"><span class="toc-number">2.</span> <span class="toc-text">系统广播</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E5%BA%8F%E5%B9%BF%E6%92%AD"><span class="toc-number">3.</span> <span class="toc-text">有序广播</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E5%B9%BF%E6%92%AD"><span class="toc-number">4.</span> <span class="toc-text">局部广播</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%99%AE%E9%80%9A%E5%B9%BF%E6%92%AD%E4%B8%AD%E5%8A%A8%E6%80%81%E5%B9%BF%E6%92%AD%E6%80%BB%E6%98%AF%E5%85%88%E4%BA%8E%E9%9D%99%E6%80%81%E5%B9%BF%E6%92%AD"><span class="toc-number">5.</span> <span class="toc-text">为什么普通广播中动态广播总是先于静态广播</span></a></li></ol>
   </div>
 </section>
 
