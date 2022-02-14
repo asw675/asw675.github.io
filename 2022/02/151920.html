@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#3367D6"/>
+  <link rel="apple-touch-icon" href="/icons-192.png">
+  <link rel="manifest" href="/manifest.json">
+  
+  <meta name="generator" content="Hexo 5.4.0">
+
+  
+    <meta name="description" content="偷偷写点东西">
+  
+
+  
+
+  
+    <meta name="author" content="ReasonLee">
+  
+
+  
+
+  
+
+  <title>Android：ActivityThread | ReasonLee</title>
+
+  
+
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@1.1.3/index.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlightjs@9.16.2/styles/monokai.css">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+<body>
+  <div class="root-container">
+    
+<!-- header container -->
+<header class="header-container post">
+  
+    <div class="post-image" style="background-image: url(https://wallpapers.com/images/high/toradora-taiga-aisaka-eating-ithmocq6tsax591p.jpg)"></div>
+  
+
+  <!-- navbar -->
+<nav class="navbar">
+  <div class="navbar-content">
+    <!-- logo -->
+    <div class="navbar-logo">
+      <a href="/">
+        
+          ReasonLee
+        
+      </a>
+    </div>
+    <!-- link -->
+    <div class="navbar-link">
+      <div class="navbar-btn">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <ul class="navbar-list">
+        
+          <li class="navbar-list-item"><a href="/">首页</a></li>
+        
+          <li class="navbar-list-item"><a href="/links">友链</a></li>
+        
+          <li class="navbar-list-item"><a href="/about">关于</a></li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+    <div class="header-content">
+      <div class="post-text layout-block">
+        <div class="layout-margin">
+          <h1 class="title-wrap">Android：ActivityThread</h1>
+          <h2 class="title-sub-wrap">
+            <strong>ReasonLee</strong>
+            <span>发布于</span>
+            <time  class="article-date" datetime="2022-02-15T11:20:12.000Z" itemprop="datePublished">2022-02-15</time>
+          </h2>
+          <ul class="wrap-list dark">
+  
+    <li><a href="/categories/Android%E5%9F%BA%E7%A1%80/">📒 Android基础</a></li>
+  
+</ul>
+          <ul class="wrap-list dark">
+  
+    <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
+  
+</ul>
+        </div>
+      </div>
+    </div>
+  
+
+  
+  
+  
+</header>
+
+    <!-- 文章 -->
+
+<!-- 文章内容 -->
+<div class="body-container">
+  <article class="content-container layout-block post-container">
+    <div class="article-info">
+      
+      
+      
+      
+      <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
+        <h2 id="ActivityThread"><a href="#ActivityThread" class="headerlink" title="ActivityThread"></a>ActivityThread</h2><p>ActivityThread就是我们常说的主线程或UI线程，ActivityThread的main方法是整个APP的入口。</p>
+<h4 id="ActivityThread的初始化"><a href="#ActivityThread的初始化" class="headerlink" title="ActivityThread的初始化"></a>ActivityThread的初始化</h4><p>ActivityThread即Android的主线程，也就是UI线程，ActivityThread的main方法是一个APP的真正入口，MainLooper在它的main方法中被创建。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//ActivityThread的main方法</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br>    ...<br>    Looper.prepareMainLooper();<br>    ActivityThread thread = <span class="hljs-keyword">new</span> ActivityThread();<br>    <span class="hljs-comment">//在attach方法中会完成Application对象的初始化，然后调用Application的onCreate()方法</span><br>    thread.attach(<span class="hljs-keyword">false</span>);<br><br>    <span class="hljs-keyword">if</span> (sMainThreadHandler == <span class="hljs-keyword">null</span>) &#123;<br>        sMainThreadHandler = thread.getHandler();<br>    &#125;<br>    ...<br>    Looper.loop();<br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<span class="hljs-string">&quot;Main thread loop unexpectedly exited&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<h3 id="主线程Looper的初始化"><a href="#主线程Looper的初始化" class="headerlink" title="主线程Looper的初始化"></a>主线程Looper的初始化</h3><p>Looper.prepareMainLooper();相关的代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java">主线程Looper的初始化<br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">prepareMainLooper</span><span class="hljs-params">()</span> </span>&#123;<br>    prepare(<span class="hljs-keyword">false</span>);<br>    <span class="hljs-keyword">synchronized</span> (Looper.class) &#123;<br>        <span class="hljs-keyword">if</span> (sMainLooper != <span class="hljs-keyword">null</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalStateException(<span class="hljs-string">&quot;The main Looper has already been prepared.&quot;</span>);<br>        &#125;<br>        sMainLooper = myLooper();<br>    &#125;<br>&#125;<br><br>普通线程Looper的初始化<br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">prepare</span><span class="hljs-params">()</span> </span>&#123;<br>    prepare(<span class="hljs-keyword">true</span>);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> quitAllowed)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (sThreadLocal.get() != <span class="hljs-keyword">null</span>) &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<span class="hljs-string">&quot;Only one Looper may be created per thread&quot;</span>);<br>    &#125;<br>    sThreadLocal.set(<span class="hljs-keyword">new</span> Looper(quitAllowed));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>主线程Looper的初始化和普通线程Looper的初始化很相似，但还是有以下几个区别</p>
+<p>1.普通线程的Prepare()默认quitAllowed参数为true，表示允许退出，而主线程也就是ActivityThread的Looper参数为false，不允许退出。这里的quitAllowed参数，最终会传递给MessageQueue，当调用MessageQueue的quit方法时，会判断这个参数，如果是主线程，也就是quitAllowed参数为false时，会抛出异常。</p>
+<pre><code>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java">Looper的退时会判断quitAllowed<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">quit</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> safe)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (!mQuitAllowed) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalStateException(<span class="hljs-string">&quot;Main thread not allowed to quit.&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">synchronized</span> (<span class="hljs-keyword">this</span>) &#123;<br>            ...<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+</code></pre>
+<p>2.我们注意到主线程Looper初始化之后，赋值给了成员变量sMainLooper，这个成员的作用就是向其他线程提供主线程的Looper对象。这下我们就应该知道为什么Looper.getMainLooper()方法能获取主线程的Looper对象了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Looper <span class="hljs-title">getMainLooper</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">synchronized</span> (Looper.class) &#123;<br>        <span class="hljs-keyword">return</span> sMainLooper;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="主线程Handler的初始化"><a href="#主线程Handler的初始化" class="headerlink" title="主线程Handler的初始化"></a>主线程Handler的初始化</h3><p>在ActivityThread的main方法中我们注意到一行代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">ActivityThread thread = <span class="hljs-keyword">new</span> ActivityThread();<br>thread.attach(<span class="hljs-keyword">false</span>);<br><span class="hljs-keyword">if</span> (sMainThreadHandler == <span class="hljs-keyword">null</span>) &#123;<br>    sMainThreadHandler = thread.getHandler();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java">与之相关的代码如下：<br>ActivityThread的成员变量<br><span class="hljs-keyword">final</span> H mH = <span class="hljs-keyword">new</span> H();<br><br><span class="hljs-function"><span class="hljs-keyword">final</span> Handler <span class="hljs-title">getHandler</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> mH;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="主线程的Handler就是H"><a href="#主线程的Handler就是H" class="headerlink" title="主线程的Handler就是H"></a>主线程的Handler就是H</h4><p>从以上代码中可以看到，主线程的Handler作为ActivityThread的成员变量，是在ActivityThread的main方法被执行，ActivityThread被创建时而初始化，而接下来要说的ApplicationThread中的方法执行以及Activity的创建都依赖于主线程Handler。至此我们也就明白了，主线程（ActivityThread）的初始化是在它的main方法中，主线程的Handler以及MainLooper的初始化时机都是在ActivityThread创建的时候。</p>
+<h2 id="ApplicationThread及Activity的创建和启动"><a href="#ApplicationThread及Activity的创建和启动" class="headerlink" title="ApplicationThread及Activity的创建和启动"></a>ApplicationThread及Activity的创建和启动</h2><p>以上的代码和流程，就是对 MainLooper 和 ActivityThread 的初始化，我们接下来看一下 ActivityThread 的初始化及其对应的 attach 方法，在thread.attach方法中，ActivityManagerService通过attachApplication方法，将ApplicationThread对象绑定到ActivityManagerService，ApplicationThread是ActivityThread的私有内部类，实现了IBinder接口，用于ActivityThread和ActivityManagerService的所在进程间通信。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java">ActivityThread的attach方法：<br><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">attach</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> system)</span> </span>&#123;<br>    ...<br>    <span class="hljs-keyword">if</span> (!system) &#123;<br>        <span class="hljs-keyword">final</span> IActivityManager mgr = ActivityManager.getService();<br>        <span class="hljs-keyword">try</span> &#123;<br>            mgr.attachApplication(mAppThread);<br>        &#125; <span class="hljs-keyword">catch</span> (RemoteException ex) &#123;<br>            <span class="hljs-keyword">throw</span> ex.rethrowFromSystemServer();<br>        &#125;<span class="hljs-keyword">else</span>&#123;<br>            ...<br>        &#125;<br>    &#125;<br>&#125;<br><br>ActivityManagerService中的方法：<br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">attachApplication</span><span class="hljs-params">(IApplicationThread thread)</span> </span>&#123;<br>    <span class="hljs-keyword">synchronized</span> (<span class="hljs-keyword">this</span>) &#123;<br>        <span class="hljs-keyword">int</span> callingPid = Binder.getCallingPid();<br>        <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> origId = Binder.clearCallingIdentity();<br>        attachApplicationLocked(thread, callingPid);<br>        Binder.restoreCallingIdentity(origId);<br>    &#125;<br>&#125;<br><br>这里的个人理解是：在每个ActivityThread（APP）被创建的时候，<br>都需要向ActivityManagerService绑定（或者说是向远程服务AMS注册自己），<br>用于AMS管理ActivityThread中的所有四大组件的生命周期。<br></code></pre></td></tr></table></figure>
+
+
+<p>上述AMS的代码中attachApplicationLocked方法比较复杂，主要功能有两个，详见注释，这里忽略了很多代码细节，具体的流程可以看源码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java">AMS中的方法，主要功能有以下两步<br><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">attachApplicationLocked</span><span class="hljs-params">(IApplicationThread thread, <span class="hljs-keyword">int</span> pid)</span> </span>&#123;<br>    ...<br>    主要用于创建Application，用调用onCreate方法<br>  thread.bindApplication(...);<br>  ...<br>  主要用于创建Activity<br>    <span class="hljs-keyword">if</span> (mStackSupervisor.attachApplicationLocked(app)) &#123;<br>        ...<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p><strong>1.thread.bindApplication</strong>：主要用于创建Application，这里的thread对象是ApplicationThread在AMS中的代理对象，所以这里的bindApplication方法最终会调用ApplicationThread.bindApplication()方法，该方法会向ActivityThread的消息对应发送BIND_APPLICATION的消息，消息的处理最终会调用Application.onCreate()方法，这也说明Application.onCreate()方法的执行时机比任何Activity.onCreate()方法都早。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs java">ActivityThread中的bindApplication方法<br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">bindApplication</span><span class="hljs-params">(...)</span> </span>&#123;<br>    ...<br>    该消息的处理，会调用handleBindApplication方法<br>    sendMessage(H.BIND_APPLICATION, data);<br>&#125;<br>ActivityThread中的handleBindApplication方法<br><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">handleBindApplication</span><span class="hljs-params">(AppBindData data)</span> </span>&#123;<br>    ...<br>    <span class="hljs-keyword">try</span> &#123;<br>        Application app = data.info.makeApplication(data.restrictedBackupMode, <span class="hljs-keyword">null</span>);<br>        mInitialApplication = app;<br>        ...<br>        <span class="hljs-keyword">try</span> &#123;<br>            mInstrumentation.callApplicationOnCreate(app);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>        &#125;<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>    &#125;<br>&#125;<br>    <br>LoadedApk中的方法，用于创建Application<br><span class="hljs-function"><span class="hljs-keyword">public</span> Application <span class="hljs-title">makeApplication</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> forceDefaultAppClass, Instrumentation instrumentation)</span> </span>&#123;<br>    如果存在Application的实例，则直接返回，这也说明Application是个单例<br>    <span class="hljs-keyword">if</span> (mApplication != <span class="hljs-keyword">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> mApplication;<br>    &#125;<br><br>    Application app = <span class="hljs-keyword">null</span>;<br>    ...这里通过反射初始化Application<br><br>    <span class="hljs-keyword">if</span> (instrumentation != <span class="hljs-keyword">null</span>) &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            调用Application的onCreate方法<br>            instrumentation.callApplicationOnCreate(app);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> app;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>**2.mStackSupervisor.attachApplicationLocked(app)**：用于创建Activity，mStackSupervisor是AMS的成员变量，为Activity堆栈管理辅助类实例，该方法最终会调用ApplicationThread类的scheduleLaunchActivity方法，该方法也是类似于第一步，向ActivityThread的消息队列发送创建Activity的消息，最终在ActivityThread中完成创建Activity的操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">attachApplicationLocked</span><span class="hljs-params">(ProcessRecord app)</span> <span class="hljs-keyword">throws</span> RemoteException </span>&#123;<br>    ...<br>    <span class="hljs-keyword">if</span> (realStartActivityLocked(hr, app, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">true</span>)) &#123;<br>        ...<br>    &#125;          <br>    ...<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">final</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">realStartActivityLocked</span><span class="hljs-params">(ActivityRecord r, ProcessRecord app,</span></span><br><span class="hljs-function"><span class="hljs-params">        <span class="hljs-keyword">boolean</span> andResume, <span class="hljs-keyword">boolean</span> checkConfig)</span> <span class="hljs-keyword">throws</span> RemoteException </span>&#123;<br>    ...<br>    <span class="hljs-keyword">try</span> &#123;<br>        调用ApplicationThread的scheduleLaunchActivity用于启动一个Activity<br>        app.thread.scheduleLaunchActivity(...);<br>    &#125; <span class="hljs-keyword">catch</span> (RemoteException e) &#123;<br>    &#125;<br>&#125;<br><br>ApplicationThread的scheduleLaunchActivity方法会向ActivityThread发送LAUNCH_ACTIVITY信息，用于启动一个Activity，<br></code></pre></td></tr></table></figure>
+
+
+<h4 id="APP的启动可以简单总结为一下几个流程："><a href="#APP的启动可以简单总结为一下几个流程：" class="headerlink" title="APP的启动可以简单总结为一下几个流程："></a>APP的启动可以简单总结为一下几个流程：</h4><blockquote>
+<p>加载BootLoader –&gt; 初始化内核 –&gt; 启动init进程 –&gt; init进程fork出Zygote进程 –&gt; Zygote进程fork出SystemServer进程</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/HcgCuT"><img src="https://s4.ax1x.com/2022/02/15/HcgCuT.png" alt="HcgCuT.png"></a></p>
+<ul>
+<li>系统中的所有进程都是由Zygote进程fork出来的</li>
+<li>SystemServer进程是系统进程，很多系统服务，例如ActivityManagerService、PackageManagerService、WindowManagerService…都是存在该进程被创建后启动</li>
+<li>ActivityManagerServices（AMS）：是一个服务端对象，负责所有的Activity的生命周期，AMS通过Binder与Activity通信，而AMS与Zygote之间是通过Socket通信</li>
+<li>ActivityThread：本篇的主角，UI线程/主线程，它的main()方法是APP的真正入口</li>
+<li>ApplicationThread：一个实现了IBinder接口的ActivityThread内部类，用于ActivityThread和AMS的所在进程间通信</li>
+<li>Instrumentation：可以理解为ActivityThread的一个工具类，在ActivityThread中初始化，一个进程只存在一个Instrumentation对象，在每个Activity初始化时，会通过Activity的Attach方法，将该引用传递给Activity。Activity所有生命周期的方法都有该类来执行</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/HcgAUJ"><img src="https://s4.ax1x.com/2022/02/15/HcgAUJ.png" alt="HcgAUJ.png"></a></p>
+<ol>
+<li>点击桌面APP图标时，Launcher的startActivity()方法，通过Binder通信，调用system_server进程中AMS服务的startActivity方法，发起启动请求</li>
+<li>system_server进程接收到请求后，向Zygote进程发送创建进程的请求</li>
+<li>Zygote进程fork出App进程，并执行ActivityThread的main方法，创建ActivityThread线程，初始化MainLooper，主线程Handler，同时初始化ApplicationThread用于和AMS通信交互</li>
+<li>App进程，通过Binder向sytem_server进程发起attachApplication请求，这里实际上就是APP进程通过Binder调用sytem_server进程中AMS的attachApplication方法，上面我们已经分析过，AMS的attachApplication方法的作用是将ApplicationThread对象与AMS绑定</li>
+<li>system_server进程在收到attachApplication的请求，进行一些准备工作后，再通过binder IPC向App进程发送handleBindApplication请求（初始化Application并调用onCreate方法）和scheduleLaunchActivity请求（创建启动Activity）</li>
+<li>App进程的binder线程（ApplicationThread）在收到请求后，通过handler向主线程发送BIND_APPLICATION和LAUNCH_ACTIVITY消息，这里注意的是AMS和主线程并不直接通信，而是AMS和主线程的内部类ApplicationThread通过Binder通信，ApplicationThread再和主线程通过Handler消息交互。 ( 这里猜测这样的设计意图可能是为了统一管理主线程与AMS的通信，并且不向AMS暴露主线程中的其他公开方法)</li>
+<li>主线程在收到Message后，创建Application并调用onCreate方法，再通过反射机制创建目标Activity，并回调Activity.onCreate()等方法</li>
+<li>到此，App便正式启动，开始进入Activity生命周期，执行完onCreate/onStart/onResume方法，UI渲染后显示APP主界面</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java">主线程Handler接收到创建Activity的消息LAUNCH_ACTIVITY后，最终会调用performLaunchActivity方法<br>performLaunchActivity方法会通过反射去创建一个Activity，然后会调用Activity的各个生命周期方法<br><span class="hljs-function"><span class="hljs-keyword">private</span> Activity <span class="hljs-title">performLaunchActivity</span><span class="hljs-params">(ActivityClientRecord r, Intent customIntent)</span> </span>&#123;<br>    ...<br>    ContextImpl appContext = createBaseContextForActivity(r);<br>    Activity activity = <span class="hljs-keyword">null</span>;<br>    <span class="hljs-keyword">try</span> &#123;<br>        这里是反射创建Activity<br>        java.lang.ClassLoader cl = appContext.getClassLoader();<br>        activity = mInstrumentation.newActivity(<br>                cl, component.getClassName(), r.intent);<br>        StrictMode.incrementExpectedActivityCount(activity.getClass());<br>        r.intent.setExtrasClassLoader(cl);<br>        r.intent.prepareToEnterProcess();<br>        <span class="hljs-keyword">if</span> (r.state != <span class="hljs-keyword">null</span>) &#123;<br>            r.state.setClassLoader(cl);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">try</span> &#123;<br>        这里注意，又调用了一次Application的创建方法，但是前面分析过，Application是个单例，所以这里的实际上是获取Application实例，但是这里为什么会再次调用创建Application的方法呢？<br>        <br>        Application app = r.packageInfo.makeApplication(<span class="hljs-keyword">false</span>, mInstrumentation);<br>        ...<br>    &#125; <br>    ...<br>    <span class="hljs-keyword">return</span> activity;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+      </section>
+
+      
+      
+        <nav class="article-nav">
+          
+            <div class="article-nav-item layout-padding">
+  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
+    
+    <div class="card-text">
+      
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
+        </a>
+      
+      <div class="card-text--row">Newer</div>
+    </div>
+  </article>
+</div>
+          
+          
+            <div class="article-nav-item layout-padding">
+  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
+    
+    <div class="card-text">
+      
+        <a href="/2022/02/111920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：Fragment</h2>
+        </a>
+      
+      <div class="card-text--row">Older</div>
+    </div>
+  </article>
+</div>
+          
+        </nav>
+      
+
+      <section class="page-message-container layout-padding">
+        
+
+
+  
+  
+
+  
+  
+
+
+      </section>
+    </div>
+    <div class="widget-info">
+      <section class="widget-author widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-body">
+    
+      <img src="https://img2.baidu.com/it/u=306228493,3347220292&amp;fm=26&amp;fmt=auto&amp;gp=0.jpg" class="soft-size--round soft-style--box" alt="Yusen">
+    
+    
+      <h2>Yusen</h2>
+    
+    
+      <p>惹啊</p>
+    
+
+    <div class="count-box">
+      <div class="count-box--item">
+        <svg class="icon icon-article" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M240.51564747 647.74217627h196.07203239c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806V165.10332731c0-33.18142087-30.16492806-60.32985613-60.32985612-60.32985611H245.04038668C225.43318342 104.7734712 210.35071939 119.85593522 210.35071939 139.46313845V617.57724821c0 16.59071043 13.57421762 30.16492806 30.16492808 30.16492806z m663.62841731-452.47392089v482.63884894c0 33.18142087-27.14843525 60.32985613-60.32985612 60.32985613H180.18579134c-33.18142087 0-60.32985613-27.14843525-60.32985612-60.32985613V195.26825538c-49.77213131 0-90.49478418 40.72265287-90.49478417 90.49478417v452.4739209c0 49.77213131 40.72265287 90.49478418 90.49478417 90.49478417h286.56681657c16.59071043 0 30.16492806 13.57421762 30.16492807 30.16492807s13.57421762 30.16492806 30.16492805 30.16492806h90.49478418c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806s13.57421762-30.16492806 30.16492807-30.16492807h286.56681657c49.77213131 0 90.49478418-40.72265287 90.49478417-90.49478417V285.76303955c0-49.77213131-40.72265287-90.49478418-90.49478417-90.49478417zM587.41232014 647.74217627h191.54729318c19.60720323 0 34.68966726-15.08246403 34.68966729-34.68966727V134.93839925c0-16.59071043-13.57421762-30.16492806-30.16492808-30.16492805H617.57724821c-30.16492806 0-60.32985613 27.14843525-60.32985612 60.32985611v452.4739209c0 16.59071043 13.57421762 30.16492806 30.16492805 30.16492806z" fill="currentColor"></path>
+</svg>
+        <span>37</span>
+      </div>
+      <div class="count-box--item">
+        <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M900.3614811 257.09082106h-339.81629553l-67.96326003-101.9448889c-19.41807444-29.12711113-48.54518557-43.69066667-82.52681443-43.69066667H123.6385189c-53.39970333 0-97.09036999 43.69066667-97.09037113 97.09036999v582.54222222c0 53.39970333 43.69066667 97.09036999 97.09037113 97.09037002h776.7229622c53.39970333 0 97.09036999-43.69066667 97.09037113-97.09037002V354.18119104c0-53.39970333-43.69066667-97.09036999-97.09037113-97.09036998z m-97.09036999 242.72592554H220.72888889c-24.27259221 0-48.54518557-24.27259221-48.54518556-48.54518556s24.27259221-48.54518557 48.54518556-48.54518444h582.54222222c24.27259221 0 48.54518557 24.27259221 48.54518556 48.54518444s-24.27259221 48.54518557-48.54518556 48.54518556z" fill="currentColor"></path>
+</svg>
+        9
+      </div>
+      <div class="count-box--item">
+        <svg class="icon icon-tags" viewBox="0 0 1098 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M283.42180005 272q0-28.38857157-20.09142843-48.48000001t-48.47999998-20.09142842-48.48000002 20.09142842-20.09142846 48.48000001 20.09142846 48.48 48.48000002 20.09142843 48.47999998-20.09142843 20.09142843-48.48zM855.0332285 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.03999997 263.58857157q-20.9142853 19.81714313-48.75428534 19.81714312-28.38857157 0-48.20571468-19.81714312l-383.04-383.58857157q-20.36571468-19.81714313-34.55999999-54.10285688t-14.19428534-62.6742853l0-222.85714313q0-27.84000002 20.36571469-48.20571469t48.2057147-20.36571466l222.85714313 0q28.38857157 0 62.6742853 14.19428529t54.65142842 34.55999999l383.04000001 382.49142843q19.81714313 20.9142853 19.81714314 48.75428532zM1060.74751475 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.04 263.58857157q-20.9142853 19.81714313-48.75428531 19.81714312-19.26857155 0-31.61142843-7.47428531t-28.38857159-24.13714314l251.79428534-251.7942853q19.81714313-19.81714313 19.81714308-48.20571469 0-27.84000002-19.81714308-48.75428531l-383.04000001-382.49142845q-20.36571468-20.36571468-54.65142842-34.55999999t-62.67428532-14.19428534l120 0q28.38857157 0 62.67428532 14.19428534t54.65142842 34.55999999l383.03999998 382.49142845q19.81714313 20.9142853 19.81714314 48.75428531z" fill="currentColor"></path>
+</svg>
+        18
+      </div>
+    </div>
+  </div>
+</section>
+
+      
+<section class="widget-toc widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-toc" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M134.50666666 767.46666668H460.8c27.73333333 0 50.24000001 22.50666668 50.24000001 50.23999999v50.13333333c0 27.73333333-22.50666668 50.24000001-50.24000001 50.24000001H134.50666666c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.24000001v-50.13333333c0.10666668-27.73333333 22.50666668-50.24000001 50.24000001-50.24000001zM84.37333332 541.65333333h326.18666669c27.73333333 0 50.24000001 22.39999999 50.23999999 50.13333334v50.24000001c0 27.73333333-22.50666668 50.24000001-50.24000002 50.23999999H84.37333332c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.23999999v-50.24000001c0-27.73333333 22.50666668-50.13333334 50.24000001-50.13333334zM134.50666666 315.83999999H460.8c27.73333333 0 50.24000001 22.50666668 50.24000001 50.24000001v50.24000001c0 27.73333333-22.50666668 50.13333334-50.24000001 50.13333333H134.50666666c-27.73333333 0-50.24000001-22.39999999-50.23999999-50.13333333v-50.24000001c0.10666668-27.84000001 22.50666668-50.24000001 50.24000001-50.23999999zM209.81333332 89.91999999h326.18666671c27.73333333 0 50.24000001 22.39999999 50.23999997 50.13333335v50.23999999c0 27.73333333-22.50666668 50.24000001-50.24000001 50.24000001H209.81333332c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.24000001v-50.24000001c0-27.73333333 22.50666668-50.13333334 50.24000001-50.13333333zM692.05333333 623.36l274.66666669 176.00000002c23.36000001 14.93333333 30.08 45.97333334 15.14666666 69.33333332L954.77333334 910.93333333c-14.93333333 23.25333334-45.97333334 30.08-69.33333335 15.14666667l-274.66666666-176c-23.36000001-14.93333333-30.08-45.97333334-15.14666667-69.33333333l27.09333334-42.24000001c14.93333333-23.36000001 46.08000001-30.08 69.33333333-15.14666666z" fill="currentColor"></path>
+</svg>
+    <span>TOC</span>
+  </div>
+  <div class="widget-body">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ActivityThread"><span class="toc-number">1.</span> <span class="toc-text">ActivityThread</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E7%BA%BF%E7%A8%8BLooper%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.1.</span> <span class="toc-text">主线程Looper的初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E7%BA%BF%E7%A8%8BHandler%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.2.</span> <span class="toc-text">主线程Handler的初始化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ApplicationThread%E5%8F%8AActivity%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E5%90%AF%E5%8A%A8"><span class="toc-number">2.</span> <span class="toc-text">ApplicationThread及Activity的创建和启动</span></a></li></ol>
+  </div>
+</section>
+
+
+      
+<section class="widet-notice widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-notice" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M512 945.02305225v28.15620663a24.27259221 24.27259221 0 0 1-24.27259221 24.27259335H394.0352a48.54518557 48.54518557 0 0 1-41.74885888-23.78714112l-110.68302222-184.47170332a132.04290333 132.04290333 0 0 1-17.47626667-48.54518557h118.4502511a200.97706667 200.97706667 0 0 1 76.21594113 14.56355556l20.38897777 133.49925888a48.54518557 48.54518557 0 0 0 36.40888888 27.67075555l16.01991111 2.91271112a24.27259221 24.27259221 0 0 1 20.38897778 25.72894889zM997.45185223 463.45481443a194.18074112 194.18074112 0 0 1-38.8361489 116.50844445 24.75804445 24.75804445 0 0 1-36.4088889 0l-34.95253333-34.95253333a24.27259221 24.27259221 0 0 1-2.91271111-30.58346667 97.09036999 97.09036999 0 0 0 0-106.79940665 24.27259221 24.27259221 0 0 1 2.91271111-30.58346666l34.95253333-34.95253334a24.75804445 24.75804445 0 0 1 18.93262223-7.28177777 26.2144 26.2144 0 0 1 17.47626667 9.70903665A194.18074112 194.18074112 0 0 1 997.45185223 463.45481443z m-194.18074112-388.36148111v776.72296335a48.54518557 48.54518557 0 0 1-48.54518556 48.54518443h-28.64165888a48.54518557 48.54518557 0 0 1-33.98163001-14.07810332l-145.63555556-143.20829668A291.27111111 291.27111111 0 0 0 342.57730333 657.63555556H172.18370333a145.63555556 145.63555556 0 0 1-145.63555556-145.63555556v-97.09036999a145.63555556 145.63555556 0 0 1 145.63555556-145.63555556h170.3936a291.27111111 291.27111111 0 0 0 206.31703779-85.43952668l145.63555555-143.20829554a48.54518557 48.54518557 0 0 1 33.98162888-14.07810446H754.72592555a48.54518557 48.54518557 0 0 1 48.54518556 48.54518555z" fill="currentColor"></path>
+</svg>
+    <span>NOTICE</span>
+  </div>
+  <div class="widget-body">
+    <p>麻中麻</p>
+  </div>
+</section>
+
+
+      <section class="widget-categorys widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M900.3614811 257.09082106h-339.81629553l-67.96326003-101.9448889c-19.41807444-29.12711113-48.54518557-43.69066667-82.52681443-43.69066667H123.6385189c-53.39970333 0-97.09036999 43.69066667-97.09037113 97.09036999v582.54222222c0 53.39970333 43.69066667 97.09036999 97.09037113 97.09037002h776.7229622c53.39970333 0 97.09036999-43.69066667 97.09037113-97.09037002V354.18119104c0-53.39970333-43.69066667-97.09036999-97.09037113-97.09036998z m-97.09036999 242.72592554H220.72888889c-24.27259221 0-48.54518557-24.27259221-48.54518556-48.54518556s24.27259221-48.54518557 48.54518556-48.54518444h582.54222222c24.27259221 0 48.54518557 24.27259221 48.54518556 48.54518444s-24.27259221 48.54518557-48.54518556 48.54518556z" fill="currentColor"></path>
+</svg>
+    <span>CATEGORYS</span>
+  </div>
+  <div class="widget-body">
+    <ul class="categorys-list">
+      
+        <li class="categorys-list-item">
+          <a href="/categories/%E7%AE%97%E6%B3%95/">
+            算法 (2)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/operation-system/">
+            operation system (1)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/spring/">
+            spring (1)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/%E6%97%A5%E5%B8%B8/">
+            日常 (2)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+            计算机网络 (7)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/IM/">
+            IM (2)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+            操作系统 (3)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">
+            JAVA基础 (9)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/Android%E5%9F%BA%E7%A1%80/">
+            Android基础 (8)
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+</section>
+
+      <section class="widget-tags widget-item  layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-tags" viewBox="0 0 1098 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M283.42180005 272q0-28.38857157-20.09142843-48.48000001t-48.47999998-20.09142842-48.48000002 20.09142842-20.09142846 48.48000001 20.09142846 48.48 48.48000002 20.09142843 48.47999998-20.09142843 20.09142843-48.48zM855.0332285 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.03999997 263.58857157q-20.9142853 19.81714313-48.75428534 19.81714312-28.38857157 0-48.20571468-19.81714312l-383.04-383.58857157q-20.36571468-19.81714313-34.55999999-54.10285688t-14.19428534-62.6742853l0-222.85714313q0-27.84000002 20.36571469-48.20571469t48.2057147-20.36571466l222.85714313 0q28.38857157 0 62.6742853 14.19428529t54.65142842 34.55999999l383.04000001 382.49142843q19.81714313 20.9142853 19.81714314 48.75428532zM1060.74751475 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.04 263.58857157q-20.9142853 19.81714313-48.75428531 19.81714312-19.26857155 0-31.61142843-7.47428531t-28.38857159-24.13714314l251.79428534-251.7942853q19.81714313-19.81714313 19.81714308-48.20571469 0-27.84000002-19.81714308-48.75428531l-383.04000001-382.49142845q-20.36571468-20.36571468-54.65142842-34.55999999t-62.67428532-14.19428534l120 0q28.38857157 0 62.67428532 14.19428534t54.65142842 34.55999999l383.03999998 382.49142845q19.81714313 20.9142853 19.81714314 48.75428531z" fill="currentColor"></path>
+</svg>
+    <span>TAGS</span>
+  </div>
+  <div class="widget-body">
+    <div class="tags-cloud">
+      <a href="/tags/Activity/" style="font-size: 10px;" class="tags-cloud-0">Activity</a> <a href="/tags/Android%E5%9F%BA%E7%A1%80/" style="font-size: 17.5px;" class="tags-cloud-8">Android基础</a> <a href="/tags/Handler/" style="font-size: 10px;" class="tags-cloud-0">Handler</a> <a href="/tags/IM/" style="font-size: 12.5px;" class="tags-cloud-3">IM</a> <a href="/tags/JAVA%E5%9F%BA%E7%A1%80/" style="font-size: 20px;" class="tags-cloud-10">JAVA基础</a> <a href="/tags/JAVA%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;" class="tags-cloud-0">JAVA多线程</a> <a href="/tags/JAVA%E5%B9%B6%E5%8F%91/" style="font-size: 12.5px;" class="tags-cloud-3">JAVA并发</a> <a href="/tags/JAVA%E9%9B%86%E5%90%88/" style="font-size: 10px;" class="tags-cloud-0">JAVA集合</a> <a href="/tags/JVM/" style="font-size: 15px;" class="tags-cloud-5">JVM</a> <a href="/tags/Service/" style="font-size: 10px;" class="tags-cloud-0">Service</a> <a href="/tags/TCP/" style="font-size: 12.5px;" class="tags-cloud-3">TCP</a> <a href="/tags/operation-system/" style="font-size: 10px;" class="tags-cloud-0">operation system</a> <a href="/tags/spring/" style="font-size: 10px;" class="tags-cloud-0">spring</a> <a href="/tags/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/" style="font-size: 12.5px;" class="tags-cloud-3">四大组件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 15px;" class="tags-cloud-5">操作系统</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 12.5px;" class="tags-cloud-3">日常</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 12.5px;" class="tags-cloud-3">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 20px;" class="tags-cloud-10">计算机网络</a>
+    </div>
+  </div>
+</section>
+    </div>
+  </article>
+</div>
+
+    <!-- footer container -->
+<footer id="footer" class="footer">
+  <div class="footer-container">
+    
+    <div class="social-icons">
+      
+        
+      
+        
+      
+        
+      
+        
+          <a href="https://github.com/asw675/" class="soft-size--primary soft-style--box" target="_blank" rel="noopener noreferrer">
+            <svg class="icon icon-github" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M64.6 512c0 195.6 125.4 361.9 300.1 422.9 23.5 5.9 19.9-10.8 19.9-22.2v-77.6c-135.8 15.9-141.3-74-150.5-89-18.5-31.5-61.9-39.5-49-54.5 31-15.9 62.5 4 98.9 58 26.4 39.1 77.9 32.5 104.1 26 5.7-23.5 17.9-44.5 34.7-60.9-140.7-25.2-199.4-111.1-199.4-213.3 0-49.5 16.4-95.1 48.4-131.8-20.4-60.6 1.9-112.4 4.9-120.1 58.2-5.2 118.5 41.6 123.3 45.3 33.1-8.9 70.8-13.7 112.9-13.7 42.4 0 80.3 4.9 113.5 13.9 11.3-8.6 67.3-48.8 121.4-43.9 2.9 7.7 24.7 58.3 5.5 118.1 32.5 36.8 49 82.8 49 132.4 0 102.3-59 188.3-200.2 213.2 23.5 23.3 38.1 55.5 38.1 91.1v112.7c0.8 9 0 17.9 15.1 17.9C832.7 877 960.4 709.4 960.4 512.1c0-247.5-200.6-447.9-447.9-447.9C265 64.1 64.6 264.5 64.6 512z"></path>
+</svg>
+          </a>
+        
+      
+        
+      
+    </div>
+     
+    <p>&copy; 2022 <a href="/" target="_blank">ReasonLee</a></p>
+
+    
+
+    <p>Powered by <a href="https://hexo.io" target="_blank" rel="noopener noreferrer">Hexo</a> Theme - <a href="https://github.com/miiiku/flex-block" target="_blank" rel="noopener noreferrer author">flex-block</a></p>
+
+    <p>
+      <a href="javascript:;" id="theme-light">🌞 浅色</a>
+      <a href="javascript:;" id="theme-dark">🌛 深色</a>
+      <a href="javascript:;" id="theme-auto">🤖️ 自动</a>
+    </p>
+  </div>
+</footer>
+  </div>
+
+  <div class="back-to-top-fixed soft-size--round soft-style--box">
+    <svg class="icon icon-back-to-top" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <path d="M725.333333 426.666667c-12.8 0-21.333333-4.266667-29.866667-12.8l-213.333333-213.333333c-17.066667-17.066667-17.066667-42.666667 0-59.733333s42.666667-17.066667 59.733333 0l213.333333 213.333333c17.066667 17.066667 17.066667 42.666667 0 59.733333C746.666667 422.4 738.133333 426.666667 725.333333 426.666667z"></path>
+      <path d="M298.666667 426.666667c-12.8 0-21.333333-4.266667-29.866667-12.8-17.066667-17.066667-17.066667-42.666667 0-59.733333l213.333333-213.333333c17.066667-17.066667 42.666667-17.066667 59.733333 0s17.066667 42.666667 0 59.733333l-213.333333 213.333333C320 422.4 311.466667 426.666667 298.666667 426.666667z"></path>
+      <path d="M512 896c-25.6 0-42.666667-17.066667-42.666667-42.666667L469.333333 170.666667c0-25.6 17.066667-42.666667 42.666667-42.666667s42.666667 17.066667 42.666667 42.666667l0 682.666667C554.666667 878.933333 537.6 896 512 896z"></path>
+    </svg>
+  </div>
+
+  
+  <!-- aplayer -->
+
+
+<!-- dplayer -->
+
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+  <!-- 尾部用户自定义相关内容 -->
+</body>
+</html>

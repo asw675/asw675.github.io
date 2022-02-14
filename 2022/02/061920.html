@@ -217,6 +217,34 @@
 <p><strong>这个时候B覆盖了A的窗体, A会调用onStop()方法。</strong></p>
 <p><strong>如果B是个透明的窗口,或者是对话框的样式, 就不会调用A的onStop()方法。</strong></p>
 <p><strong>如果B已经存在于Activity栈中，B就不会调用onCreate()方法。</strong></p>
+<h2 id="startActivity流程"><a href="#startActivity流程" class="headerlink" title="startActivity流程"></a>startActivity流程</h2><ul>
+<li><p>所有的startActivity - &gt; 最终会走到</p>
+<ul>
+<li>startActivtiyForResult(@RequiresPermission Intent intent, int requestCode,@Nullable Bundle options)</li>
+</ul>
+</li>
+<li><p>然后会掉用mInstrumentation.execStartActivity方法</p>
+<ul>
+<li><strong>Instrumentation</strong> 是用来管理Activtiy生命周期的一个对象，主要负责呼叫Activity的生命周期．Instrumentation是在ActivityThread的thread.attach里被创建的。</li>
+<li>最主要的一个方法就是 ActivityManagerNative.getDefault() .startActivity() 这个方法主要是给通过Binder来通知系统我要调到那个Activity。（Native层）<ul>
+<li>ActivityManagerNative.getDefault() 启动就是返回一个IActivityManager　，IActivityManager是一个接口　ActivityManagerProxy是IActivityManager具体实现类，ActivityManagerNative.getDefault() .<strong>startActivity()就是调用ActivityManagerProxy的startActivity方法</strong></li>
+</ul>
+</li>
+<li>顺便会走checkStartActivityResult方法<strong>检查各种权限</strong></li>
+</ul>
+</li>
+<li><p>然后通过Binder将信息传到<strong>AMS</strong>里，调用AMS的startActivity -&gt; startActivityAsUser -&gt; startActivityLocked -&gt; startActivityUnchecked</p>
+</li>
+<li><p><strong>ActivityStackSupervisor类与ActivityStack类配合使用.</strong> ActivityStackSupervisor负责管理Task和Stack, 而ActivityStack负责管理在Stack和Task中的Activity. 因此, 对于Stack和Task的操作, AMS使用ActivityStackSupervisor进行管理; 对于Activity的操作, AMS使用ActivityStack进行管理. 两者相互调用, 最终完成启动Activity.</p>
+<p>ActivityStackSupervisor类与ActivityStack类的调用流程:</p>
+<p>​    ActivityStackSupervisor#resumeFocusedStackTopActivityLocked<br>​    ActivityStack#resumeTopActivityUncheckedLocked<br>​    ActivityStack#resumeTopActivityInnerLocked<br>​    ActivityStackSupervisor#startSpecificActivityLocked</p>
+<p>核心在于ActivityStack类的resumeTopActivityInnerLocked方法, 根据ActivityRecord和ActivityOptions完成Activity的切换, 移至栈顶, 最后调用ActivityStackSupervisor类的startSpecificActivityLocked方法, 执行启动.</p>
+<p><strong>ActivityStackSupervisor类</strong>的startSpecificActivityLocked方法调用<strong>realStartActivityLocked</strong>方法, 执行真正的启动Activity.</p>
+</li>
+<li><p>然后走到<strong>ApplicationThread类的scheduleLaunchActivity方法</strong>处理Activity启动ApplicationThread是ActivityThread</p>
+<p><strong>scheduleLaunchActivity</strong> -&gt; (通过 sendMessage(H.LAUNCH_ACTIVITY, r);发送到handleMessage　执行 handleLaunchActivity(r, null, “LAUNCH_ACTIVITY”)）-&gt;&gt;   <strong>handleLaunchActivity</strong> -&gt; <strong>performLaunchActivity</strong>　</p>
+</li>
+</ul>
 
       </section>
 
@@ -287,7 +315,7 @@
         <svg class="icon icon-article" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <path d="M240.51564747 647.74217627h196.07203239c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806V165.10332731c0-33.18142087-30.16492806-60.32985613-60.32985612-60.32985611H245.04038668C225.43318342 104.7734712 210.35071939 119.85593522 210.35071939 139.46313845V617.57724821c0 16.59071043 13.57421762 30.16492806 30.16492808 30.16492806z m663.62841731-452.47392089v482.63884894c0 33.18142087-27.14843525 60.32985613-60.32985612 60.32985613H180.18579134c-33.18142087 0-60.32985613-27.14843525-60.32985612-60.32985613V195.26825538c-49.77213131 0-90.49478418 40.72265287-90.49478417 90.49478417v452.4739209c0 49.77213131 40.72265287 90.49478418 90.49478417 90.49478417h286.56681657c16.59071043 0 30.16492806 13.57421762 30.16492807 30.16492807s13.57421762 30.16492806 30.16492805 30.16492806h90.49478418c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806s13.57421762-30.16492806 30.16492807-30.16492807h286.56681657c49.77213131 0 90.49478418-40.72265287 90.49478417-90.49478417V285.76303955c0-49.77213131-40.72265287-90.49478418-90.49478417-90.49478417zM587.41232014 647.74217627h191.54729318c19.60720323 0 34.68966726-15.08246403 34.68966729-34.68966727V134.93839925c0-16.59071043-13.57421762-30.16492806-30.16492808-30.16492805H617.57724821c-30.16492806 0-60.32985613 27.14843525-60.32985612 60.32985611v452.4739209c0 16.59071043 13.57421762 30.16492806 30.16492805 30.16492806z" fill="currentColor"></path>
 </svg>
-        <span>36</span>
+        <span>37</span>
       </div>
       <div class="count-box--item">
         <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -314,7 +342,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81Activity%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.</span> <span class="toc-text">1、Activity生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E8%BF%9B%E7%A8%8B%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E5%88%86%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">2、进程的优先级分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Foreground-process%EF%BC%88%E5%89%8D%E5%8F%B0%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">2.1. Foreground process（前台进程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Visible-process-%EF%BC%88%E5%8F%AF%E8%A7%86%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">2.2. Visible process   （可视进程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Service-process-%EF%BC%88%E6%9C%8D%E5%8A%A1%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">2.3. Service process   （服务进程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-Background-process%EF%BC%88%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">2.4. Background process（后台进程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-Empty-process-%EF%BC%88%E7%A9%BA%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.5.</span> <span class="toc-text">2.5. Empty process   （空进程）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E6%A0%88"><span class="toc-number">3.</span> <span class="toc-text">任务栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-Activity%E4%B9%8B%E9%97%B4%E4%BC%A0%E9%80%92%E6%95%B0%E6%8D%AE"><span class="toc-number">4.</span> <span class="toc-text">Android Activity之间传递数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AAActivity%E4%B9%8B%E9%97%B4%E8%B7%B3%E8%BD%AC%E6%97%B6%E5%BF%85%E7%84%B6%E4%BC%9A%E6%89%A7%E8%A1%8C%E7%9A%84%E6%98%AF%E5%93%AA%E5%87%A0%E4%B8%AA%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">两个Activity之间跳转时必然会执行的是哪几个方法？</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81Activity%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.</span> <span class="toc-text">1、Activity生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E8%BF%9B%E7%A8%8B%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E5%88%86%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">2、进程的优先级分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Foreground-process%EF%BC%88%E5%89%8D%E5%8F%B0%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">2.1. Foreground process（前台进程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Visible-process-%EF%BC%88%E5%8F%AF%E8%A7%86%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">2.2. Visible process   （可视进程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Service-process-%EF%BC%88%E6%9C%8D%E5%8A%A1%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">2.3. Service process   （服务进程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-Background-process%EF%BC%88%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">2.4. Background process（后台进程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-Empty-process-%EF%BC%88%E7%A9%BA%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">2.5.</span> <span class="toc-text">2.5. Empty process   （空进程）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E6%A0%88"><span class="toc-number">3.</span> <span class="toc-text">任务栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-Activity%E4%B9%8B%E9%97%B4%E4%BC%A0%E9%80%92%E6%95%B0%E6%8D%AE"><span class="toc-number">4.</span> <span class="toc-text">Android Activity之间传递数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AAActivity%E4%B9%8B%E9%97%B4%E8%B7%B3%E8%BD%AC%E6%97%B6%E5%BF%85%E7%84%B6%E4%BC%9A%E6%89%A7%E8%A1%8C%E7%9A%84%E6%98%AF%E5%93%AA%E5%87%A0%E4%B8%AA%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">两个Activity之间跳转时必然会执行的是哪几个方法？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#startActivity%E6%B5%81%E7%A8%8B"><span class="toc-number">6.</span> <span class="toc-text">startActivity流程</span></a></li></ol>
   </div>
 </section>
 
@@ -393,7 +421,7 @@
       
         <li class="categorys-list-item">
           <a href="/categories/Android%E5%9F%BA%E7%A1%80/">
-            Android基础 (7)
+            Android基础 (8)
           </a>
         </li>
       
