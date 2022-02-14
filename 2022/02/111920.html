@@ -24,7 +24,7 @@
 
   
 
-  <title>JAVA：JMM模型 | ReasonLee</title>
+  <title>Android：Fragment | ReasonLee</title>
 
   
 
@@ -102,22 +102,20 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">JAVA：JMM模型</h1>
+          <h1 class="title-wrap">Android：Fragment</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-01-18T17:20:12.000Z" itemprop="datePublished">2022-01-19</time>
+            <time  class="article-date" datetime="2022-02-11T11:20:12.000Z" itemprop="datePublished">2022-02-11</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">📒 JAVA基础</a></li>
+    <li><a href="/categories/Android%E5%9F%BA%E7%A1%80/">📒 Android基础</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/JAVA%E5%9F%BA%E7%A1%80/">🏷️ JAVA基础</a></li>
-  
-    <li><a href="/tags/JAVA%E5%B9%B6%E5%8F%91/">🏷️ JAVA并发</a></li>
+    <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
   
 </ul>
         </div>
@@ -141,25 +139,40 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <p>JMM（JAVA内存模型，Java memory Model）本身是一种抽象的概念并不真实存在，它描述的是一组规则和规范，通过这组规范，定义了程序中各个变量（包括实例字段，静态字段和构成数组对象的元素）的访问方式</p>
-<p>JMM 关于同步的规定：</p>
-<p>1:线程解锁前，必须把共享变量的值刷新回主内存</p>
-<p>2:线程加锁前，必须读区主内存的最新值到自己的工作内存</p>
-<p>3:加锁解锁是同一把锁</p>
-<p>JMM特性：</p>
-<p><strong>1:可见性</strong></p>
-<p><strong>2:原子性</strong></p>
-<p><strong>3:有序性（禁止指令重排）</strong>     </p>
-<p><strong>有序性：</strong></p>
-<p>计算机在执行程序时，为了提高性能，编译器和处理器常常会对指令进行重排序一般分为以下三种：</p>
-<p>源代码—》编译器的优化重拍—》指令并行的重拍—》内存系统的重拍—》最终执行的命令</p>
-<p>单线程环境里面确保代码执行结果和代码顺序执行的结果一致</p>
-<p>处理器在进行重排序时必须要考虑指令之间的数据依赖性(指令重排数据依赖性)</p>
-<p>多线程环境中线程交替执行，由于编译器优化重排的存在，两个线程使用的变量能否保证一致性是无法确定的，结果无法预测</p>
-<p><strong>原子性：</strong></p>
-<p>不可分割，完整性，也即某个线程正在做某个业务时，中间不可以被加塞，或者分割，需要整体完整，要么同时成功，要么同时失败。保证数据的完整一致性</p>
-<p><strong>可见性：</strong></p>
-<p>由于JVM运行程序的实体是线程，而每个线程在创建时jvm都会为其创建一个工作内存（有些地方成为栈空间），工作内存是每个线程的私有数据区域，而java内存模型规定，所有变量都存在主内存中，主内存是共享内存区域，所有线程都可以访问，但线程对数据的操作必须在工作内存中进行，所以需要先将变量从主内存中拷贝到自己的工作内存中。然后在对其进行操作，操作完成后，再将变量写回到主内存中，不能直接操作主内存的变量。因此，不同的线程不能访问对方线程的工作内存，线程间的通信都是在主内存中进行的</p>
+        <h2 id="Fragment生命周期"><a href="#Fragment生命周期" class="headerlink" title="Fragment生命周期"></a>Fragment生命周期</h2><p>Fragment必须是依存与Activity而存在的，因此Activity的生命周期会直接影响到Fragment的生命周期。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/HdxHoT"><img src="https://s4.ax1x.com/2022/02/12/HdxHoT.png" alt="HdxHoT.png"></a></p>
+<h2 id="Fragment使用方式"><a href="#Fragment使用方式" class="headerlink" title="Fragment使用方式"></a>Fragment使用方式</h2><h3 id="静态"><a href="#静态" class="headerlink" title="静态"></a>静态</h3><p>​    把Fragment当成一个View，在布局视图里用。</p>
+<h3 id="动态"><a href="#动态" class="headerlink" title="动态"></a>动态</h3><p>​    使用FragmentTransaction.replace动态的添加Fragment</p>
+<h3 id="Fragment有自己的回退栈，调用FragmentTransaction-addToBackStack"><a href="#Fragment有自己的回退栈，调用FragmentTransaction-addToBackStack" class="headerlink" title="Fragment有自己的回退栈，调用FragmentTransaction.addToBackStack"></a>Fragment有自己的回退栈，调用<strong>FragmentTransaction.addToBackStack</strong></h3><h3 id="使用，可以覆盖，更改Activity的回退键操作"><a href="#使用，可以覆盖，更改Activity的回退键操作" class="headerlink" title="使用，可以覆盖，更改Activity的回退键操作"></a>使用，可以覆盖，更改Activity的回退键操作</h3><h2 id="Fragment与Activity通信"><a href="#Fragment与Activity通信" class="headerlink" title="Fragment与Activity通信"></a>Fragment与Activity通信</h2><p>因为所有的Fragment都是依附于Activity的，所以通信起来并不复杂，大概归纳为：</p>
+<ul>
+<li><p>如果你Activity中包含自己管理的Fragment的引用，可以通过引用直接访问所有的Fragment的public方法</p>
+</li>
+<li><p>如果Activity中未保存任何Fragment的引用，那么没关系，每个Fragment都有一个唯一的TAG或者ID,可以通过getFragmentManager.findFragmentByTag()或者findFragmentById()获得任何Fragment实例，然后进行操作。</p>
+</li>
+<li><p>在Fragment中可以通过getActivity得到当前绑定的Activity的实例，然后进行操作。</p>
+</li>
+</ul>
+<p>Fragment与Fragment通讯应借用他们的管理者Activity，不要直接进行通讯。</p>
+<h2 id="Fragment不同情况下的生命周期"><a href="#Fragment不同情况下的生命周期" class="headerlink" title="Fragment不同情况下的生命周期"></a>Fragment不同情况下的生命周期</h2><h3 id="1、Fragment在Activity中replace"><a href="#1、Fragment在Activity中replace" class="headerlink" title="1、Fragment在Activity中replace"></a>1、Fragment在Activity中replace</h3><p>新替换的Fragment：onAttach &gt; onCreate &gt; onCreateView &gt; onViewCreated &gt; onActivityCreated &gt; onStart &gt; onResume</p>
+<p>被替换的Fragment：onPause &gt; onStop &gt; onDestroyView &gt; onDestroy &gt; onDetach</p>
+<h3 id="2、Fragment在Activity中replace，并addToBackStack"><a href="#2、Fragment在Activity中replace，并addToBackStack" class="headerlink" title="2、Fragment在Activity中replace，并addToBackStack"></a>2、Fragment在Activity中replace，并addToBackStack</h3><p>新替换的Fragment（没有在BackStack中）：onAttach &gt; onCreate &gt; onCreateView &gt; onViewCreated &gt; onActivityCreated &gt; onStart &gt; onResume</p>
+<p>新替换的Fragment（已经在BackStack中）：onCreateView &gt; onViewCreated &gt; onActivityCreated &gt; onStart &gt; onResume</p>
+<p>被替换的Fragment：onPause &gt; onStop &gt; onDestroyView</p>
+<h3 id="3、Fragment在ViewPager中切换"><a href="#3、Fragment在ViewPager中切换" class="headerlink" title="3、Fragment在ViewPager中切换"></a>3、Fragment在ViewPager中切换</h3><p>这里有很多种情况，我们先将切换前的的Fragment称为PreviousFragment，简称PF；切换后的Fragment称为NextFragment，简称NF；其他Fragment称为OtherFragment，简称OF。</p>
+<p>（在ViewPager中setUserVisibleHint能反映出Fragment是否被切换到后台或前台，所以在这里也当作生命周期）</p>
+<h4 id="A、如果相关的Fragment没有被加载过："><a href="#A、如果相关的Fragment没有被加载过：" class="headerlink" title="A、如果相关的Fragment没有被加载过："></a>A、如果相关的Fragment没有被加载过：</h4><p>NF： setUserVisibleHint(false) &gt; onAttach &gt; onCreate &gt; setUserVisibleHint(true) &gt; onCreateView &gt; onViewCreated &gt; onActivityCreated &gt; onStart &gt; onResume</p>
+<p>OF跟NF相邻： setUserVisibleHint(false) &gt; onAttach &gt; onCreate &gt; onCreateView &gt; onViewCreated &gt; onActivityCreated &gt; onStart &gt; onResume</p>
+<h4 id="B、如果相关的Fragment已经被加载过："><a href="#B、如果相关的Fragment已经被加载过：" class="headerlink" title="B、如果相关的Fragment已经被加载过："></a>B、如果相关的Fragment已经被加载过：</h4><p>NF跟PF相邻  ：setUserVisibleHint(true)</p>
+<p>NF跟PF不相邻：setUserVisibleHint(true) &gt; onCreateView &gt; onViewCreated &gt; onActivityCreated &gt; onStart &gt; onResume</p>
+<p>PF跟NF相邻  ：setUserVisibleHint(false)</p>
+<p>PF跟NF不相邻：setUserVisibleHint(false) &gt; onPause &gt; onStop &gt; onDestroyView</p>
+<p>OF跟PF相邻：onPause &gt; onStop &gt; onDestroyView</p>
+<p>OF跟NF相邻：onCreateView &gt; onViewCreated &gt; onActivityCreated &gt; onStart &gt; onResume</p>
+<p>OF夹在PF和NF中间：不调用任何生命周期方法</p>
+<h4 id="C、如果重写了FragmentPagerAdapter的destroyItem方法，并且相关Fragment已经加载过："><a href="#C、如果重写了FragmentPagerAdapter的destroyItem方法，并且相关Fragment已经加载过：" class="headerlink" title="C、如果重写了FragmentPagerAdapter的destroyItem方法，并且相关Fragment已经加载过："></a>C、如果重写了FragmentPagerAdapter的destroyItem方法，并且相关Fragment已经加载过：</h4><p>则相互切换时只会调用setUserVisibleHint</p>
+<h3 id="4、Fragment进入了运行状态："><a href="#4、Fragment进入了运行状态：" class="headerlink" title="4、Fragment进入了运行状态："></a>4、Fragment进入了运行状态：</h3><p>Fragment在上述的各种情况下进入了onResume后，则进入了运行状态，以下4个生命周期方法将跟随所属的Activity一起被调用：</p>
+<p>onPause &gt; onStop &gt; onStart &gt; onResume</p>
+<h3 id="5、关于Fragment的onActivityResult方法："><a href="#5、关于Fragment的onActivityResult方法：" class="headerlink" title="5、关于Fragment的onActivityResult方法："></a>5、关于Fragment的onActivityResult方法：</h3><p>使用Fragment的startActivity方法时，FragmentActivity的onActivityResult方法会回调相应的Fragment的onActivityResult方法，所以在重写FragmentActivity的onActivityResult方法时，注意调super.onActivityResult。</p>
 
       </section>
 
@@ -172,8 +185,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/190920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">JVM：Java类加载过程</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -187,8 +200,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/180920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">算法：TopK问题</h2>
+        <a href="/2022/02/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：ContentProvider</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -257,7 +270,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Fragment%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.</span> <span class="toc-text">Fragment生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fragment%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">Fragment使用方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81"><span class="toc-number">2.1.</span> <span class="toc-text">静态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81"><span class="toc-number">2.2.</span> <span class="toc-text">动态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fragment%E6%9C%89%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%9E%E9%80%80%E6%A0%88%EF%BC%8C%E8%B0%83%E7%94%A8FragmentTransaction-addToBackStack"><span class="toc-number">2.3.</span> <span class="toc-text">Fragment有自己的回退栈，调用FragmentTransaction.addToBackStack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%EF%BC%8C%E5%8F%AF%E4%BB%A5%E8%A6%86%E7%9B%96%EF%BC%8C%E6%9B%B4%E6%94%B9Activity%E7%9A%84%E5%9B%9E%E9%80%80%E9%94%AE%E6%93%8D%E4%BD%9C"><span class="toc-number">2.4.</span> <span class="toc-text">使用，可以覆盖，更改Activity的回退键操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fragment%E4%B8%8EActivity%E9%80%9A%E4%BF%A1"><span class="toc-number">3.</span> <span class="toc-text">Fragment与Activity通信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fragment%E4%B8%8D%E5%90%8C%E6%83%85%E5%86%B5%E4%B8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">4.</span> <span class="toc-text">Fragment不同情况下的生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81Fragment%E5%9C%A8Activity%E4%B8%ADreplace"><span class="toc-number">4.1.</span> <span class="toc-text">1、Fragment在Activity中replace</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81Fragment%E5%9C%A8Activity%E4%B8%ADreplace%EF%BC%8C%E5%B9%B6addToBackStack"><span class="toc-number">4.2.</span> <span class="toc-text">2、Fragment在Activity中replace，并addToBackStack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81Fragment%E5%9C%A8ViewPager%E4%B8%AD%E5%88%87%E6%8D%A2"><span class="toc-number">4.3.</span> <span class="toc-text">3、Fragment在ViewPager中切换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81Fragment%E8%BF%9B%E5%85%A5%E4%BA%86%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81%EF%BC%9A"><span class="toc-number">4.4.</span> <span class="toc-text">4、Fragment进入了运行状态：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E5%85%B3%E4%BA%8EFragment%E7%9A%84onActivityResult%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-number">4.5.</span> <span class="toc-text">5、关于Fragment的onActivityResult方法：</span></a></li></ol></li></ol>
   </div>
 </section>
 
