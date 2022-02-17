@@ -24,7 +24,7 @@
 
   
 
-  <title>HTTP和HTTPS的区别 | ReasonLee</title>
+  <title>Android：ActivityManagerService | ReasonLee</title>
 
   
 
@@ -102,20 +102,20 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">HTTP和HTTPS的区别</h1>
+          <h1 class="title-wrap">Android：ActivityManagerService</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-01-11T01:20:14.000Z" itemprop="datePublished">2022-01-11</time>
+            <time  class="article-date" datetime="2022-02-17T11:20:12.000Z" itemprop="datePublished">2022-02-17</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">📒 计算机网络</a></li>
+    <li><a href="/categories/Android%E5%9F%BA%E7%A1%80/">📒 Android基础</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">🏷️ 计算机网络</a></li>
+    <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
   
 </ul>
         </div>
@@ -139,17 +139,19 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>一、HTTPS协议需要到证书颁发机构CA申请证书，HTTP不用申请证书；</p>
-<p>二、HTTP是超文本传输协议，属于应用层信息传输，HTTPS 则是具有SSL加密传安全性传输协议，对数据的传输进行加密，相当于HTTP的升级版；</p>
-<p>三、HTTP和HTTPS使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</p>
-<p>四、HTTP的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比HTTP协议安全。</p>
-<h2 id="HTTPS加密流程"><a href="#HTTPS加密流程" class="headerlink" title="HTTPS加密流程"></a>HTTPS加密流程</h2><p>HTTPS是通过SSL(安全套接层)和TLS(安全传输协议)的组合使用，加密TCP载荷即HTTP报文内容，同时通过不对称密钥方式认证身份，保证传输的安全可靠</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7ZtUN6"><img src="https://s4.ax1x.com/2022/01/11/7ZtUN6.png" alt="7ZtUN6.png"></a></p>
-<h4 id="数字证书认证"><a href="#数字证书认证" class="headerlink" title="数字证书认证"></a>数字证书认证</h4><p>由于公钥在下发的时候也容易被替换劫持，所以需要个第三方认证机构确认公钥的正确性</p>
-<p>CA：数字证书认证机构，是客户端服务端都认可的第三方机构，负责数字签名服务端公钥</p>
-<p>数字签名：签名就是一种证明身份的机制，是一种校验机制（简单说是用私钥加密内容的hash,公钥解密对比hash判断内容是否完整）</p>
-<p>数字证书：由一个可信的组织验证和签发的识别信息</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7Zta4K"><img src="https://s4.ax1x.com/2022/01/11/7Zta4K.png" alt="7Zta4K.png"></a></p>
+        <h2 id="AMS简介"><a href="#AMS简介" class="headerlink" title="AMS简介"></a>AMS简介</h2><p>ActivityManagerService（以下简称：AMS）是android系统的一个系统服务，是应用进程的管理服务端，直接的控制了应用程序的各个行为，保证了系统中不同的应用程序之间能够和谐的合理的进行调度运行。AMS主要的职责就是对Android四大组件（Activity，Service，ContentProvider，Broadcast）进行管理。</p>
+<h2 id="App启动"><a href="#App启动" class="headerlink" title="App启动"></a>App启动</h2><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/H4w5ct"><img src="https://s4.ax1x.com/2022/02/17/H4w5ct.png" alt="H4w5ct.png"></a></p>
+<ol>
+<li>系统启动时，会先启动kernel模块</li>
+<li>kenel模块中会启动init进程，而init进程会解析init.rc文件并启动一系列native服务。</li>
+<li>Zygote进程预加载和初始化一些核心类库，便于之后的应用进程的代码共享。</li>
+<li>Zygote启动（fork）系统服务进程system_server</li>
+<li>System_Server进程中会发布一系列的系统服务，而AMS就是其中之一，并在之后的生命周期中运行在system_server的进程中。</li>
+<li>AMS启动（fork）出一系列的应用进程。</li>
+</ol>
+<p><strong>应用对AMS的通信都是最终通过ActivityManagerProxy直接访问的AMS。而AMS向应用的通信，则需要通过ApplicationThread然后将异步消息通过Handler发送到应用的主线程中执行。</strong></p>
+<h2 id="AMS的进程管理"><a href="#AMS的进程管理" class="headerlink" title="AMS的进程管理"></a>AMS的进程管理</h2><p>Ams在进程管理中起到的作用就是为了low memery kill的实现进行服务。AMS会在各个应用进程的活动组件运行的过程中实时的进行动态的调整进程的oom_adj值，并通过socket（lmkd）最终传递给kernel。</p>
+<h2 id="关于Binder"><a href="#关于Binder" class="headerlink" title="关于Binder"></a>关于Binder</h2><p>Ams实现了IBinder接口，所以它是一个Binder，这意味着它不但可以用于进程间通信，还是一个线程。因为一个Binder就是一个线程。 </p>
 
       </section>
 
@@ -162,8 +164,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/111520.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">HTTP总览</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -177,8 +179,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/101920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">IM心跳是怎么回事</h2>
+        <a href="/2022/02/151920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：ActivityThread</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -247,7 +249,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS%E5%8A%A0%E5%AF%86%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">HTTPS加密流程</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#AMS%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">AMS简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#App%E5%90%AF%E5%8A%A8"><span class="toc-number">2.</span> <span class="toc-text">App启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AMS%E7%9A%84%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">AMS的进程管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EBinder"><span class="toc-number">4.</span> <span class="toc-text">关于Binder</span></a></li></ol>
   </div>
 </section>
 
