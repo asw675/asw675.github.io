@@ -24,7 +24,7 @@
 
   
 
-  <title>JVM：CMS和G1的区别 | ReasonLee</title>
+  <title>Android：View绘制流程 | ReasonLee</title>
 
   
 
@@ -102,22 +102,20 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">JVM：CMS和G1的区别</h1>
+          <h1 class="title-wrap">Android：View绘制流程</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-02-03T01:20:12.000Z" itemprop="datePublished">2022-02-03</time>
+            <time  class="article-date" datetime="2022-03-02T11:20:12.000Z" itemprop="datePublished">2022-03-02</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">📒 JAVA基础</a></li>
+    <li><a href="/categories/Android%E5%9F%BA%E7%A1%80/">📒 Android基础</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/JAVA%E5%9F%BA%E7%A1%80/">🏷️ JAVA基础</a></li>
-  
-    <li><a href="/tags/JVM/">🏷️ JVM</a></li>
+    <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
   
 </ul>
         </div>
@@ -141,38 +139,29 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="CMS收集器和G1收集器的区别"><a href="#CMS收集器和G1收集器的区别" class="headerlink" title="CMS收集器和G1收集器的区别"></a>CMS收集器和G1收集器的区别</h2><h4 id="区别一：-使用范围不一样"><a href="#区别一：-使用范围不一样" class="headerlink" title="区别一： 使用范围不一样"></a>区别一： 使用范围不一样</h4><p>CMS收集器是老年代的收集器，可以配合新生代的Serial和ParNew收集器一起使用<br> G1收集器收集范围是老年代和新生代。不需要结合其他收集器使用</p>
-<h4 id="区别二：-STW的时间"><a href="#区别二：-STW的时间" class="headerlink" title="区别二： STW的时间"></a>区别二： STW的时间</h4><p>CMS收集器以最小的停顿时间为目标的收集器。</p>
-<p>G1收集器可预测垃圾回收的停顿时间（建立可预测的停顿时间模型）</p>
-<h4 id="区别三：-垃圾碎片"><a href="#区别三：-垃圾碎片" class="headerlink" title="区别三： 垃圾碎片"></a>区别三： 垃圾碎片</h4><p>CMS收集器是使用“标记-清除”算法进行的垃圾回收，容易产生内存碎片</p>
-<p>G1收集器使用的是“标记-整理”算法，进行了空间整合，降低了内存空间碎片。</p>
-<h4 id="区别四：-垃圾回收的过程不一样"><a href="#区别四：-垃圾回收的过程不一样" class="headerlink" title="区别四： 垃圾回收的过程不一样"></a>区别四： 垃圾回收的过程不一样</h4><p><img src="https://upload-images.jianshu.io/upload_images/10819106-3ada1f0a939574ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/672/format/webp" alt="img"></p>
-<h3 id="CMS回收垃圾的4个阶段"><a href="#CMS回收垃圾的4个阶段" class="headerlink" title="CMS回收垃圾的4个阶段"></a>CMS回收垃圾的4个阶段</h3><p><strong>初始标记阶段</strong>：会让线程全部停止，也就是 Stop the World 状态<br><strong>并发标记阶段</strong>：对所有的对象进行追踪，这个阶段最耗费时。但这个阶段是和系统并发运行的，所以不会对系统运行造成影响<br><strong>重新标记阶段</strong>：由于第二阶段是并发执行的，一边标记垃圾对象，一边创建新对象，老对象会变成垃圾对象。 所以第三阶段也会进入 Stop the World 状态，并且重新标记，标记的是第二阶段中变动过的少数对象，所以运行速度很快<br><strong>并发清理阶段</strong>： 这个阶段也是会耗费很多时间，但由于是并发运行的，所以对系统不会造成很大的影响</p>
-<h3 id="CMS的总结和优缺点"><a href="#CMS的总结和优缺点" class="headerlink" title="CMS的总结和优缺点"></a><strong>CMS的总结和优缺点</strong></h3><p>CMS采用 标记-清理 的算法，标记出垃圾对象，清除垃圾对象。算法是基于老年代执行的，因为新生代产生无法接受该算法产生的碎片垃圾。</p>
-<p><strong>优点</strong>：并发收集，低停顿</p>
-<p><strong>不足</strong>：</p>
+        <h2 id="MeasureSpec"><a href="#MeasureSpec" class="headerlink" title="MeasureSpec"></a>MeasureSpec</h2><p>MeasureSpec相当于是View的测量说明，其中封装了测量模式(SpecMode)和测量规格(SpecSize)。</p>
+<h4 id="测量模式-SpecMode-有三种类型："><a href="#测量模式-SpecMode-有三种类型：" class="headerlink" title="测量模式(SpecMode)有三种类型："></a>测量模式(SpecMode)有三种类型：</h4><ul>
+<li><h4 id="EXACTLY"><a href="#EXACTLY" class="headerlink" title="EXACTLY"></a>EXACTLY</h4></li>
+</ul>
+<p>父容器已经检测出View所需要的精确大小，这个时候View的最终大小就是<code>SpecSize</code>所指定的值。它对应于<code>LayoutParams</code>中的<code>match_parent</code>和具体的数值这两种模式。</p>
 <ul>
-<li>无法处理浮动垃圾，并发收集会造成内存碎片过多</li>
-<li>由于并发标记和并发清理阶段都是并发执行，所以会额外消耗CPU资源</li>
+<li><h4 id="AT-MOST"><a href="#AT-MOST" class="headerlink" title="AT_MOST"></a>AT_MOST</h4></li>
 </ul>
-<h2 id="G1回收器的特点"><a href="#G1回收器的特点" class="headerlink" title="G1回收器的特点"></a>G1回收器的特点</h2><p>G1的出现就是为了替换jdk1.5种出现的CMS,这一点已经在jdk9的时候实现了，jdk9默认使用了G1回收器，移除了所有CMS相关的内容。G1和CMS相比，有几个特点：</p>
-<ol>
-<li>控制回收垃圾的时间：这个是G1的优势，可以控制回收垃圾的时间，还可以建立停顿的时间模型，选择一组合适的Regions作为回收目标，达到实时收集的目的</li>
-<li>空间整理：和CMS一样采用标记-清理的算法，但是G1不会产生空间碎片，这样就有效的使用了连续空间，不会导致连续空间不足提前造成GC的触发</li>
-</ol>
-<p>G1把Java内存拆分成多等份，多个域（Region），逻辑上存在新生代和老年代的概念，但是没有严格区分。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/10819106-fd6fe23616eadba9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/624/format/webp" alt="img"></p>
-<h3 id="大对象的处理"><a href="#大对象的处理" class="headerlink" title="大对象的处理"></a>大对象的处理</h3><p>除了上面优点之外，还有一个优点，那就是对大对象的处理。在CMS内存中，如果一个对象过大，进入S1、S2区域的时候大于改分配的区域，对象会直接进入老年代。G1处理大对象时会判断对象是否大于一个Region大小的50%，如果大于50%就会横跨多个Region进行存放</p>
-<h3 id="G1回收垃圾的4个阶段"><a href="#G1回收垃圾的4个阶段" class="headerlink" title="G1回收垃圾的4个阶段"></a>G1回收垃圾的4个阶段</h3><ul>
-<li>初始标记</li>
-<li>并发标记</li>
-<li>最终标记</li>
-<li>筛选回收</li>
+<p>父容器指定了一个可用大小即<code>SpecSize</code>，View的大小不能大于这个值，具体是什么值要看不同View的具体实现。它对应于<code>LayoutParams</code>中的<code>wrap_content</code>。</p>
+<ul>
+<li><h4 id="UNSPECIFIED"><a href="#UNSPECIFIED" class="headerlink" title="UNSPECIFIED"></a>UNSPECIFIED</h4><p>父容器不对View有任何限制，要多大给多大，这种情况一般用于系统内部，表示一种测量状态。</p>
+</li>
 </ul>
-<p><strong>初始标记：</strong>标记GC Roots 可以直接关联的对象，该阶段需要线程停顿但是耗时短</p>
-<p><strong>并发标记：</strong>寻找存活的对象，可以与其他程序并发执行，耗时较长</p>
-<p><strong>最终标记：</strong>并发标记期间用户程序会导致标记记录产生变动（好比一个阿姨一边清理垃圾，另一个人一边扔垃圾）虚拟机会将这段时间的变化记录在Remembered Set Logs 中。最终标记阶段会向Remembered Set合并并发标记阶段的变化。这个阶段需要线程停顿，也可以并发执行</p>
-<p><strong>筛选回收：</strong>对每个Region的回收成本进行排序，按照用户自定义的回收时间来制定回收计划</p>
+<p>一个<code>View</code>的<code>MeasureSpec</code>由父布局<code>MeasureSpec</code>和自身的<code>LayoutParams</code>共同产生。父布局的<code>MeasureSpec</code>从何而来？从父布局的父布局而来。最顶层的布局是<code>DecorView</code>，常用的<code>setContent(view)</code>便是设置<code>DecorView</code>。<code>DecorView</code>的<code>MeasureSpec</code>是通过<code>ViewRootImpl</code>中的<code>getRootMeasureSpec</code>方法得到的。</p>
+<h2 id="Measure"><a href="#Measure" class="headerlink" title="Measure"></a>Measure</h2><p><code>onMeasure</code>方法最终是调用<code>getDefaultSize</code>方法得到实际的测量值。当子<code>View</code>的<code>LayoutParams</code>为<code>wrap_content</code>时，最终的SpecMode都是<code>AT_MOST</code>，SpecSize为父容器剩余空间大小。在<code>getDefaultSize</code>方法中，对于<code>AT_MOST</code>和<code>EXACTLY</code>均是直接使用父容器传进来的值，这可能不是我们想要的值，所以自定义<code>View</code>时要重写<code>onMeasure</code>方法处理<code>AT_MOST</code>，否则使用<code>wrap_content</code>相当于使用<code>match_parent</code>。</p>
+<p>对于<code>ViewGroup</code>，测量完自己还要调用子<code>View</code>的<code>measure</code>方法，各个子元素再递归去执行这个过程。</p>
+<h2 id="Layout"><a href="#Layout" class="headerlink" title="Layout"></a>Layout</h2><p>Layout的作用是<code>ViewGroup</code>用来确定子元素的位置，当<code>ViewGroup</code>的位置被确定以后，它在<code>onLayout</code>中会遍历所有的子元素并调用其<code>layout</code>方法，在<code>layout</code>方法中<code>onLayout</code>方法又会被调用。<code>onlayout</code>方法是抽象方法，所以自定义<code>ViewGroup</code>时需要实现这个方法确定子元素的布局。常用的<code>LinearLayout</code>以及<code>RelativeLayout</code>方法均重写了这个方法。</p>
+<h2 id="Draw"><a href="#Draw" class="headerlink" title="Draw"></a>Draw</h2><p>draw 过程中一共分成7步，其中两步我们直接直接跳过不分析了。</p>
+<p>第一步：<code>drawBackground(canvas)</code>： 作用就是绘制 View 的背景。</p>
+<p>第三步：<code>onDraw(canvas)</code> ：绘制 View 的内容。View 的内容是根据自己需求自己绘制的，所以方法是一个空方法，View的继承类自己复写实现绘制内容。</p>
+<p>第三步：<code>dispatchDraw（canvas）</code>：遍历子View进行绘制内容。在 View 里面是一个空实现，ViewGroup 里面才会有实现。在自定义 ViewGroup 一般不用复写这个方法，因为它在里面的实现帮我们实现了子 View 的绘制过程，基本满足需求。</p>
+<p>第四步：<code>onDrawForeground(canvas)</code>：对前景色跟滚动条进行绘制。</p>
+<p>第五步：<code>drawDefaultFocusHighlight(canvas)</code>：绘制默认焦点高亮</p>
 
       </section>
 
@@ -185,8 +174,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/02/031920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：Handler机制</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -200,8 +189,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/250120.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">JAVA：TreeMap底层原理</h2>
+        <a href="/2022/02/171920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：ActivityManagerService</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -270,7 +259,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CMS%E6%94%B6%E9%9B%86%E5%99%A8%E5%92%8CG1%E6%94%B6%E9%9B%86%E5%99%A8%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">CMS收集器和G1收集器的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CMS%E5%9B%9E%E6%94%B6%E5%9E%83%E5%9C%BE%E7%9A%844%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="toc-number">1.1.</span> <span class="toc-text">CMS回收垃圾的4个阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMS%E7%9A%84%E6%80%BB%E7%BB%93%E5%92%8C%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text">CMS的总结和优缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#G1%E5%9B%9E%E6%94%B6%E5%99%A8%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">2.</span> <span class="toc-text">G1回收器的特点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A7%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%A4%84%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">大对象的处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#G1%E5%9B%9E%E6%94%B6%E5%9E%83%E5%9C%BE%E7%9A%844%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="toc-number">2.2.</span> <span class="toc-text">G1回收垃圾的4个阶段</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MeasureSpec"><span class="toc-number">1.</span> <span class="toc-text">MeasureSpec</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Measure"><span class="toc-number">2.</span> <span class="toc-text">Measure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Layout"><span class="toc-number">3.</span> <span class="toc-text">Layout</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Draw"><span class="toc-number">4.</span> <span class="toc-text">Draw</span></a></li></ol>
   </div>
 </section>
 
