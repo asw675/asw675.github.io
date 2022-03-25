@@ -24,7 +24,7 @@
 
   
 
-  <title>Android：ContentProvider | ReasonLee</title>
+  <title>Android：View滑动冲突 | ReasonLee</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Android：ContentProvider</h1>
+          <h1 class="title-wrap">Android：View滑动冲突</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-02-10T11:20:12.000Z" itemprop="datePublished">2022-02-10</time>
+            <time  class="article-date" datetime="2022-03-23T11:20:12.000Z" itemprop="datePublished">2022-03-23</time>
           </h2>
           <ul class="wrap-list dark">
   
@@ -116,8 +116,6 @@
           <ul class="wrap-list dark">
   
     <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
-  
-    <li><a href="/tags/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/">🏷️ 四大组件</a></li>
   
 </ul>
         </div>
@@ -141,25 +139,31 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="ContentProvider"><a href="#ContentProvider" class="headerlink" title="ContentProvider"></a>ContentProvider</h2><p>作用：跨进程通讯</p>
-<ul>
-<li><code>ContentProvider</code>的底层原理 = <code>Android</code>中的<code>Binder</code>机制</li>
+        <h2 id="滑动冲突的常见场景"><a href="#滑动冲突的常见场景" class="headerlink" title="滑动冲突的常见场景"></a>滑动冲突的常见场景</h2><ul>
+<li><strong>外层与内层滑动方向不一致</strong>，外层ViewGroup是可以横向滑动的，内层View是可以竖向滑动的（类似ViewPager，每个页面里面是ListView）<ul>
+<li>这里ViewPager已经为我们处理了滑动冲突，所以实际可以正常使用，但是这种滑动冲突是存在的。</li>
+<li>这种情况下<strong>我们可以根据当前滑动方向，水平还是垂直来判断这个事件到底该交给谁来处理。</strong>。一般情况下根据水平和竖直方向滑动的距离差就可以判断方向，当然也可以根据滑动路径形成的夹角（或者说是斜率），水平和竖直方向滑动速度差来判断。（ViewPager也是这样处理的）</li>
 </ul>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/HYVyz4"><img src="https://s4.ax1x.com/2022/02/10/HYVyz4.png" alt="HYVyz4.png"></a></p>
-<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>首先注册URI和contentProvider</p>
-<p>然后实现contentProvider的方法，和数据源绑定</p>
-<p>最后使用ContentResolver操作方法和数据</p>
-<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><p><code>ContentProvider</code>为应用间的数据交互提供了一个安全的环境：允许把自己的应用数据根据需求开放给 其他应用 进行 <strong>增、删、改、查</strong>，而不用担心因为直接开放数据库权限而带来的安全问题</p>
-<h3 id="访问简单-amp-高效"><a href="#访问简单-amp-高效" class="headerlink" title="访问简单 &amp; 高效"></a>访问简单 &amp; 高效</h3><p>对比于其他对外共享数据的方式，数据访问方式会因数据存储的方式而不同：</p>
-<ul>
-<li>采用 文件方式 对外共享数据，需要进行文件操作读写数据；</li>
-<li>采用 <code>Sharedpreferences</code> 共享数据，需要使用 <code>sharedpreferences API</code>读写数据</li>
+</li>
+<li><strong>外层与内层滑动方向一致</strong>，外层ViewGroup是可以竖向滑动的，内层View同样也是竖向滑动的（类似ScrollView包裹ListView）<ul>
+<li>这种情况下需要根据场景来判断，举个例子就是大List包裹小List的时候，一般焦点在大List上或者小List滑动见底（无法继续滑动）的时候，则滑动大List，在小List上且小List能够滑动，则滑动小List。</li>
 </ul>
-<p>这使得访问数据变得复杂 &amp; 难度大。</p>
-<ul>
-<li>而采用<code>ContentProvider</code>方式，其 解耦了 底层数据的存储方式，使得无论底层数据存储采用何种方式，外界对数据的访问方式都是统一的，这使得<strong>访问简单 &amp; 高效</strong></li>
+</li>
 </ul>
-<p>如一开始数据存储方式 采用 <code>SQLite</code> 数据库，后来把数据库换成 <code>MongoDB</code>，也不会对上层数据<code>ContentProvider</code>使用代码产生影响</p>
+<p>​    </p>
+<h2 id="滑动冲突解决套路"><a href="#滑动冲突解决套路" class="headerlink" title="滑动冲突解决套路"></a>滑动冲突解决套路</h2><ul>
+<li><h4 id="外部拦截法："><a href="#外部拦截法：" class="headerlink" title="外部拦截法："></a>外部拦截法：</h4><ul>
+<li>父View根据需要对事件进行拦截。逻辑处理放在父View的onInterceptTouchEvent方法中。我们只需要重写父View的onInterceptTouchEvent方法，并根据逻辑需要做相应的拦截即可。</li>
+</ul>
+</li>
+<li><h4 id="内部拦截法："><a href="#内部拦截法：" class="headerlink" title="内部拦截法："></a>内部拦截法：</h4><ul>
+<li><p>即父View不拦截任何事件，所有事件都传递给子View，子View根据需要决定是自己消费事件还是给父View处理。这需要子View使用requestDisallowInterceptTouchEvent方法才能正常工作。</p>
+</li>
+<li><p>外层与内层滑动方向一致多采用这种方法，因为大list包裹小list，需优先判断小list。</p>
+</li>
+</ul>
+</li>
+</ul>
 
       </section>
 
@@ -172,8 +176,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/02/111920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：Fragment</h2>
+        <a href="/2022/03/241920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：ARouter</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -187,8 +191,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/02/091920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：BroadCast</h2>
+        <a href="/2022/03/221920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：View事件分发</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -257,7 +261,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ContentProvider"><span class="toc-number">1.</span> <span class="toc-text">ContentProvider</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">优点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8"><span class="toc-number">3.1.</span> <span class="toc-text">安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E7%AE%80%E5%8D%95-amp-%E9%AB%98%E6%95%88"><span class="toc-number">3.2.</span> <span class="toc-text">访问简单 &amp; 高效</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81%E7%9A%84%E5%B8%B8%E8%A7%81%E5%9C%BA%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">滑动冲突的常见场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3%E5%A5%97%E8%B7%AF"><span class="toc-number">2.</span> <span class="toc-text">滑动冲突解决套路</span></a></li></ol>
   </div>
 </section>
 

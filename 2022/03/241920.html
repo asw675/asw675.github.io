@@ -24,7 +24,7 @@
 
   
 
-  <title>Android：ContentProvider | ReasonLee</title>
+  <title>Android：ARouter | ReasonLee</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Android：ContentProvider</h1>
+          <h1 class="title-wrap">Android：ARouter</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-02-10T11:20:12.000Z" itemprop="datePublished">2022-02-10</time>
+            <time  class="article-date" datetime="2022-03-24T11:20:12.000Z" itemprop="datePublished">2022-03-24</time>
           </h2>
           <ul class="wrap-list dark">
   
@@ -116,8 +116,6 @@
           <ul class="wrap-list dark">
   
     <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
-  
-    <li><a href="/tags/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/">🏷️ 四大组件</a></li>
   
 </ul>
         </div>
@@ -141,25 +139,25 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="ContentProvider"><a href="#ContentProvider" class="headerlink" title="ContentProvider"></a>ContentProvider</h2><p>作用：跨进程通讯</p>
-<ul>
-<li><code>ContentProvider</code>的底层原理 = <code>Android</code>中的<code>Binder</code>机制</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/HYVyz4"><img src="https://s4.ax1x.com/2022/02/10/HYVyz4.png" alt="HYVyz4.png"></a></p>
-<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>首先注册URI和contentProvider</p>
-<p>然后实现contentProvider的方法，和数据源绑定</p>
-<p>最后使用ContentResolver操作方法和数据</p>
-<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><p><code>ContentProvider</code>为应用间的数据交互提供了一个安全的环境：允许把自己的应用数据根据需求开放给 其他应用 进行 <strong>增、删、改、查</strong>，而不用担心因为直接开放数据库权限而带来的安全问题</p>
-<h3 id="访问简单-amp-高效"><a href="#访问简单-amp-高效" class="headerlink" title="访问简单 &amp; 高效"></a>访问简单 &amp; 高效</h3><p>对比于其他对外共享数据的方式，数据访问方式会因数据存储的方式而不同：</p>
-<ul>
-<li>采用 文件方式 对外共享数据，需要进行文件操作读写数据；</li>
-<li>采用 <code>Sharedpreferences</code> 共享数据，需要使用 <code>sharedpreferences API</code>读写数据</li>
-</ul>
-<p>这使得访问数据变得复杂 &amp; 难度大。</p>
-<ul>
-<li>而采用<code>ContentProvider</code>方式，其 解耦了 底层数据的存储方式，使得无论底层数据存储采用何种方式，外界对数据的访问方式都是统一的，这使得<strong>访问简单 &amp; 高效</strong></li>
-</ul>
-<p>如一开始数据存储方式 采用 <code>SQLite</code> 数据库，后来把数据库换成 <code>MongoDB</code>，也不会对上层数据<code>ContentProvider</code>使用代码产生影响</p>
+        <h2 id="Route注解"><a href="#Route注解" class="headerlink" title="Route注解"></a>Route注解</h2><p>使用ARouter的时候，都需要在Activity上加上@Route的注解对此Activity进行注册</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Route(path = &quot;/main/main&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainActivity</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AppCompatActivity</span> </span>&#123;<br><br><span class="hljs-meta">@Override</span><br><span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onCreate</span><span class="hljs-params">(Bundle savedInstanceState)</span> </span>&#123;<br>    <span class="hljs-keyword">super</span>.onCreate(savedInstanceState);<br>    setContentView(R.layout.activity_main);<br>&#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>路由框架会在项目的编译器扫描所有添加@Route注解的Activity类，然后将route注解中的path地址和Activity.class文件一一对应保存，如直接保存在map中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//类似如下效果</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> HashMap&lt;String, ClassBean&gt; <span class="hljs-title">routeInfo</span><span class="hljs-params">()</span> </span>&#123;<br>    HashMap&lt;String, ClassBean&gt; route = <span class="hljs-keyword">new</span> HashMap&lt;String, ClassBean&gt;();<br>    route.put(<span class="hljs-string">&quot;/main/main&quot;</span>, MainActivity.class);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样我们想在app模块的MainActivity跳转到login模块的LoginActivity，那么便只需调用如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//不同模块之间启动Activity</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">login</span><span class="hljs-params">(String name, String password)</span> </span>&#123;<br>    HashMap&lt;String, ClassBean&gt; route = routeInfo();<br>    LoginActivity.class classBean = route.get(<span class="hljs-string">&quot;/login/login&quot;</span>);<br>    Intent intent = <span class="hljs-keyword">new</span> Intent(<span class="hljs-keyword">this</span>, classBean);<br>    intent.putExtra(<span class="hljs-string">&quot;name&quot;</span>, name);<br>    intent.putExtra(<span class="hljs-string">&quot;password&quot;</span>, password);<br>    startActivity(intent);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>我们在代码里加入的@Route注解，会在编译时期通过apt生成一些存储path和activityClass映射关系的类文件，然后app进程启动的时候会拿到这些类文件，把保存这些映射关系的数据读到内存里(保存在map里)，然后在进行路由跳转的时候，通过build()方法传入要到达页面的路由地址，ARouter会通过它自己存储的路由表找到路由地址对应的Activity.class(activity.class = map.get(path))，然后new Intent()，当调用ARouter的withString()方法它的内部会调用intent.putExtra(String name, String value)，调用navigation()方法，它的内部会调用startActivity(intent)进行跳转，这样便可以实现两个相互没有依赖的module顺利的启动对方的Activity了。</p>
+<h2 id="ARouter映射关系如何生成"><a href="#ARouter映射关系如何生成" class="headerlink" title="ARouter映射关系如何生成"></a>ARouter映射关系如何生成</h2><p>使用APT和javapoet技术</p>
+<p>APT是Annotation Processing Tool的简称,即注解处理工具。由图可知，apt是在编译期对代码中指定的注解进行解析，然后做一些其他处理（如通过javapoet生成新的Java文件）。</p>
+<p>第一步，定义注解</p>
+<p>第二步，在Activity上使用注解</p>
+<p>第三步，编写注解处理器，在编译器找到加入注解的类文件，进行处理</p>
+<p>第四步：通过javapoet生成java类：processorRoute(rootElements)</p>
+<p>​        分别生成参数 -&gt; 生成函数 -&gt; 生成函数体 -&gt; 生成$Root$类 -&gt; 生成java文件</p>
 
       </section>
 
@@ -172,8 +170,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/02/111920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：Fragment</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -187,8 +185,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/02/091920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：BroadCast</h2>
+        <a href="/2022/03/231920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：View滑动冲突</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -257,7 +255,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ContentProvider"><span class="toc-number">1.</span> <span class="toc-text">ContentProvider</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">优点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8"><span class="toc-number">3.1.</span> <span class="toc-text">安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E7%AE%80%E5%8D%95-amp-%E9%AB%98%E6%95%88"><span class="toc-number">3.2.</span> <span class="toc-text">访问简单 &amp; 高效</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Route%E6%B3%A8%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">Route注解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ARouter%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90"><span class="toc-number">2.</span> <span class="toc-text">ARouter映射关系如何生成</span></a></li></ol>
   </div>
 </section>
 
