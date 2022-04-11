@@ -24,7 +24,7 @@
 
   
 
-  <title>Android：各个版本新特性 | ReasonLee</title>
+  <title>Android：Binder | ReasonLee</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Android：各个版本新特性</h1>
+          <h1 class="title-wrap">Android：Binder</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-02-07T11:20:12.000Z" itemprop="datePublished">2022-02-07</time>
+            <time  class="article-date" datetime="2022-04-12T11:20:12.000Z" itemprop="datePublished">2022-04-12</time>
           </h2>
           <ul class="wrap-list dark">
   
@@ -139,82 +139,55 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <ul>
-<li><h3 id="Android-5-x"><a href="#Android-5-x" class="headerlink" title="Android 5.x"></a>Android 5.x</h3><ul>
-<li><h4 id="Material-design"><a href="#Material-design" class="headerlink" title="Material design"></a>Material design</h4><ul>
-<li>Material design算是Android 系统风格的里程碑，其3D UI风格新颖，贴近人机交互；</li>
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Binder是Android系统进程间通信（IPC）方式之一。Linux已经拥有管道，system V IPC，socket等IPC手段，却还要倚赖Binder来实现进程间通信，说明Binder具有无可比拟的优势。深入了解Binder并将之与传统IPC做对比有助于我们深入领会进程间通信的实现和性能优化。</p>
+<h2 id="Binder-通信模型"><a href="#Binder-通信模型" class="headerlink" title="Binder 通信模型"></a>Binder 通信模型</h2><p>​    Binder框架定义了四个角色：Server，Client，ServiceManager（以后简称SMgr）以及Binder驱动。其中Server，Client，SMgr运行于用户空间，驱动运行于内核空间。</p>
+<h4 id="Binder-驱动"><a href="#Binder-驱动" class="headerlink" title="Binder 驱动"></a>Binder 驱动</h4><p>​    和路由器一样，Binder驱动虽然默默无闻，却是通信的核心。尽管名叫‘驱动’，实际上和硬件设备没有任何关系，只是实现方式和设备驱动程序是一样的：它工作于内核态，提供open()，mmap()，poll()，ioctl()等标准文件操作，以字符驱动设备中的misc设备注册在设备目录/dev下，用户通过/dev/binder访问该它。</p>
+<p>​    <strong>驱动负责进程之间Binder通信的建立</strong>，<strong>Binder在进程之间的传递，Binder引用计数管理，数据包在进程之间的传递和交互等一系列底层支持</strong>。</p>
+<p>​    驱动和应用程序之间定义了一套接口协议，主要功能由ioctl()接口实现，不提供read()，write()接口，因为ioctl()灵活方便，且能够一次调用实现先写后读以满足同步交互，而不必分别调用write()和read()。Binder驱动的代码位于linux目录的drivers/misc/binder.c中。</p>
+<h4 id="ServiceManager-与实名Binder"><a href="#ServiceManager-与实名Binder" class="headerlink" title="ServiceManager 与实名Binder"></a>ServiceManager 与实名Binder</h4><p>​    和DNS类似，<strong>SMgr的作用是将字符形式的Binder名字转化成Client中对该Binder的引用，使得Client能够通过Binder名字获得对Server中Binder实体的引用。</strong>注册了名字的Binder叫实名Binder，就象每个网站除了有IP地址外还有自己的网址。Server创建了Binder实体，为其取一个字符形式，可读易记的名字，将这个Binder连同名字以数据包的形式通过Binder驱动发送给SMgr，通知SMgr注册一个名叫张三的Binder，它位于某个Server中。</p>
+<p>​    <strong>驱动为这个穿过进程边界的Binder 创建位于内核中的实体节点 以及 SMgr对实体的引用，将名字及新建的引用打包传递给SMgr。SMgr收数据包后，从中取出名字和引用填入一张查找表中。</strong></p>
+<p>​    细心的读者可能会发现其中的蹊跷：<strong>SMgr是一个进程，Server是另一个进程，Server向SMgr注册Binder必然会涉及进程间通信。</strong>当前实现的是进程间通信却又要用到进程间通信，这就好象蛋可以孵出鸡前提却是要找只鸡来孵蛋。Binder的实现比较巧妙：预先创造一只鸡来孵蛋：<strong>SMgr和其它进程同样采用Binder通信，SMgr是Server端，有自己的Binder对象（实体），其它进程都是Client，需要通过这个Binder的引用来实现Binder的注册，查询和获取。SMgr提供的Binder比较特殊，它没有名字也不需要注册，当一个进程使用BINDER_SET_CONTEXT_MGR命令将自己注册成SMgr时Binder驱动会自动为它创建Binder实体（这就是那只预先造好的鸡）。</strong>其次这个Binder的引用在所有Client中都固定为0而无须通过其它手段获得。<strong>也就是说，一个Server若要向SMgr注册自己Binder就必需通过0这个引用号和SMgr的Binder通信。</strong>类比网络通信，0号引用就好比域名服务器的地址，你必须预先手工或动态配置好。要注意这里说的Client是相对SMgr而言的，一个应用程序可能是个提供服务的Server，但对SMgr来说它仍然是个Client。</p>
+<h4 id="Client-获得实名Binder的引用"><a href="#Client-获得实名Binder的引用" class="headerlink" title="Client 获得实名Binder的引用"></a>Client 获得实名Binder的引用</h4><p>​    Server向SMgr注册了Binder实体及其名字后，Client就可以通过名字获得该Binder的引用了。Client也利用保留的0号引用向SMgr请求访问某个Binder：我申请获得名字叫张三的Binder的引用。SMgr收到这个连接请求，从请求数据包里获得Binder的名字，在查找表里找到该名字对应的条目，从条目中取出Binder的引用，将该引用作为回复发送给发起请求的Client。</p>
+<h4 id="匿名-Binder"><a href="#匿名-Binder" class="headerlink" title="匿名 Binder"></a>匿名 Binder</h4><p>​    并不是所有Binder都需要注册给SMgr广而告之的。<strong>Server端可以通过已经建立的Binder连接将创建的Binder实体传给Client，当然这条已经建立的Binder连接必须是通过实名Binder实现。</strong>由于这个Binder没有向SMgr注册名字，所以是个匿名Binder。Client将会收到这个匿名Binder的引用，通过这个引用向位于Server中的实体发送请求。匿名Binder为通信双方建立一条私密通道，只要Server没有把匿名Binder发给别的进程，别的进程就无法通过穷举或猜测等任何方式获得该Binder的引用，向该Binder发送请求。</p>
+<h2 id="Binder-内存映射和接收缓存区管理"><a href="#Binder-内存映射和接收缓存区管理" class="headerlink" title="Binder 内存映射和接收缓存区管理"></a>Binder 内存映射和接收缓存区管理</h2><p>​    暂且撇开Binder，考虑一下传统的IPC方式中，数据是怎样从发送端到达接收端的呢？通常的做法是，发送方将准备好的数据存放在缓存区中，调用API通过系统调用进入内核中。内核服务程序在内核空间分配内存，将数据从发送方缓存区复制到内核缓存区中。接收方读数据时也要提供一块缓存区，内核将数据从内核缓存区拷贝到接收方提供的缓存区中并唤醒接收线程，完成一次数据发送。</p>
+<p>​    这种存储-转发机制有两个缺陷：<strong>首先是效率低下，需要做两次拷贝：用户空间-&gt;内核空间-&gt;用户空间。</strong>Linux使用copy_from_user()和copy_to_user()实现这两个跨空间拷贝，在此过程中如果使用了高端内存（high memory），这种拷贝需要临时建立/取消页面映射，造成性能损失。</p>
+<p>​    <strong>其次是接收数据的缓存要由接收方提供</strong>，可接收方不知道到底要多大的缓存才够用，只能开辟尽量大的空间或先调用API接收消息头获得消息体大小，再开辟适当的空间接收消息体。两种做法都有不足，不是浪费空间就是浪费时间。</p>
+<p>​    <strong>Binder采用一种全新策略：由Binder驱动负责管理数据接收缓存。</strong>我们注意到Binder驱动实现了mmap()系统调用，这对字符设备是比较特殊的，因为mmap()通常用在有物理存储介质的文件系统上，而象Binder这样没有物理介质，纯粹用来通信的字符设备没必要支持mmap()。Binder驱动当然不是为了在物理介质和用户空间做映射，而是用来创建数据接收的缓存空间。</p>
+<p><strong>先看mmap()是如何使用的：</strong></p>
+<p>​    fd = open(“/dev/binder”, O_RDWR);</p>
+<p>​    mmap(NULL, MAP_SIZE, PROT_READ, MAP_PRIVATE, fd, 0);</p>
+<p><strong>这样Binder的接收方就有了一片大小为MAP_SIZE的接收缓存区。</strong></p>
+<p>​    <strong>mmap()的返回值是内存映射在用户空间的地址（在用户空间，和内核空间对应的一块空间），不过这段空间是由驱动管理，用户不必也不能直接访问（映射类型为PROT_READ，只读映射）。</strong></p>
+<p>​    接收缓存区映射好后就可以做为缓存池接收和存放数据了。前面说过，接收数据包的结构为binder_transaction_data，但这只是消息头，真正的有效负荷位于data.buffer所指向的内存中。这片内存不需要接收方提供，恰恰是来自mmap()映射的这片缓存池。在数据从发送方向接收方拷贝时，驱动会根据发送数据包的大小，使用最佳匹配算法从缓存池中找到一块大小合适的空间，将数据从发送缓存区复制过来。映射的缓存池要足够大，因为接收方的线程池可能会同时处理多条并发的交互，每条交互都需要从缓存池中获取目的存储区，一旦缓存池耗竭将产生导致无法预期的后果。</p>
+<p>​    有分配必然有释放。接收方在处理完数据包后，就要通知驱动释放data.buffer所指向的内存区。</p>
+<p>​    通过上面介绍可以看到，驱动为接收方分担了最为繁琐的任务：分配/释放大小不等，难以预测的有效负荷缓存区，而接收方只需要提供缓存来存放大小固定，最大空间可以预测的消息头即可。</p>
+<h4 id="一次拷贝原理"><a href="#一次拷贝原理" class="headerlink" title="一次拷贝原理"></a>一次拷贝原理</h4><p>​    <strong>在效率上，由于mmap()分配的内存是映射在接收方用户空间里的，所有总体效果就相当于对有效负荷数据做了一次从发送方用户空间到接收方用户空间的直接数据拷贝，省去了内核中暂存这个步骤，提升了一倍的性能。顺便再提一点，Linux内核实际上没有从一个用户空间到另一个用户空间直接拷贝的函数，需要先用copy_from_user()拷贝到内核空间，再用copy_to_user()拷贝到另一个用户空间。为了实现用户空间到用户空间的拷贝，mmap()分配的内存除了映射进了接收方进程里，还映射进了内核空间。所以调用copy_from_user()将数据拷贝进内核空间也相当于拷贝进了接收方的用户空间，这就是Binder只需一次拷贝的‘秘密’。</strong></p>
+<p>​    *<em>mmap函数属于系统调用，mmap会从当前进程中获取用户态可用的虚拟地址空间（vm_area_struct <em>vma），并在mmap_region中真正获取vma，然后调用file-&gt;f_op-&gt;mmap(file, vma)，进入驱动处理，之后就会在内存中分配一块连续的虚拟地址空间，并预先分配好页表、已使用的与未使用的标识、初始地址、与用户空间的偏移等等，通过这一步之后，就能把Binder在内核空间的数据直接通过指针地址映射到用户空间，供进程在用户空间使用</em></em></p>
+<p>​    <strong>当数据从用户空间拷贝到内核空间的时候，是直从当前进程的用户空间接拷贝到目标进程的内核空间，这个过程是在请求端线程中处理的，操作对象是目标进程的内核空间</strong>。</p>
+<p><strong>Linux是使用的虚拟内存寻址方式，有如下特性：</strong></p>
+<ul>
+<li>用户空间的虚拟内存地址是映射到物理内存中的</li>
+<li>对虚拟内存的读写实际上是对物理内存的读写，这个过程就是内存映射</li>
+<li>这个内存映射过程是通过系统调用mmap()来实现的</li>
+</ul>
+<p>​    Binder借助了内存映射的方法，在<code>内核空间和接收方用户空间的数据缓存区之间做了一层内存映射</code>，就相当于直接拷贝到了接收方用户空间的数据缓存区，从而减少了一次数据拷贝</p>
+<p><strong>一次完整的 Binder IPC 通信过程通常是这样：</strong></p>
+<ol>
+<li><p>Server端在启动之后，调用对/dev/binder设备调用mmap。</p>
+</li>
+<li><p>内核中的binder_mmap函数进行对应的处理：申请一块物理内存，然后在Server端的用户空间和内核空间同时进行映射。内核中的binder_mmap函数进行对应的处理：申请一块物理内存，然后在Server端的用户空间和内核空间同时进行映射</p>
+<p>（一个进程只能有一次mmap，如要执行新的map，需先将之前的unmap。）</p>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/LZq2rj"><img src="https://s1.ax1x.com/2022/04/12/LZq2rj.png" alt="LZq2rj.png"></a></p>
+<h2 id="拓展：虚拟内存"><a href="#拓展：虚拟内存" class="headerlink" title="拓展：虚拟内存"></a>拓展：虚拟内存</h2><ul>
+<li><strong>每个进程都有自己独立的4G内存空间，各个进程的内存空间具有类似的结构</strong><ul>
+<li><strong>计算机明明没有那么多内存（n个进程的话就需要n*4G）内存</strong></li>
+<li><strong>建立一个进程，就要把磁盘上的程序文件拷贝到进程对应的内存中去，对于一个程序对应的多个进程这种情况，浪费内存！</strong></li>
 </ul>
 </li>
-<li><p>引入CardView和RecycleView等新控件；</p>
-</li>
-</ul>
-</li>
-<li><h3 id="Android-6-x"><a href="#Android-6-x" class="headerlink" title="Android 6.x"></a>Android 6.x</h3><ul>
-<li><h4 id="运行时权限（最主要）"><a href="#运行时权限（最主要）" class="headerlink" title="运行时权限（最主要）"></a><strong>运行时权限（最主要）</strong></h4><ul>
-<li>此版本引入了一种新的权限模式，用户可直接在运行时管理应用权限。<br>对于以 Android 6.0（API 级别 23）或更高版本为目标平台的应用，请务必在运行时检查和请求权限。要确定您的应用是否已被授予权限，请调用新增的 checkSelfPermission() 方法。要请求权限，请调用新增的 requestPermissions() 方法。</li>
-</ul>
-</li>
-<li><h4 id="新增瞌睡模式和待机模式"><a href="#新增瞌睡模式和待机模式" class="headerlink" title="新增瞌睡模式和待机模式"></a>新增瞌睡模式和待机模式</h4></li>
-</ul>
-</li>
-<li><h3 id="Android-7-0"><a href="#Android-7-0" class="headerlink" title="Android 7.0"></a><strong>Android 7.0</strong></h3><ul>
-<li><h4 id="低电耗模式"><a href="#低电耗模式" class="headerlink" title="低电耗模式"></a><strong>低电耗模式</strong></h4></li>
-<li><h4 id="系统权限的更改"><a href="#系统权限的更改" class="headerlink" title="系统权限的更改"></a><strong>系统权限的更改</strong></h4><ul>
-<li>分享私有文件内容的推荐方法是使用 FileProvider。直接File file = new File可能会报错</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><h3 id="Android-8-0"><a href="#Android-8-0" class="headerlink" title="Android 8.0"></a><strong>Android 8.0</strong></h3><ul>
-<li><h4 id="画中画"><a href="#画中画" class="headerlink" title="画中画"></a>画中画</h4><ul>
-<li>PIP 模式不会改变 Activity 的生命周期。在指定时间只有最近与用户交互过的 Activity 为活动状态。 该 Activity 将被视为顶级 Activity。 所有其他 Activity 虽然可见，但均处于暂停状态。当一个 Activity 处于 PIP 模式时，其实它是出在暂停状态，但其内容会继续展示。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><h3 id="Android-9-0"><a href="#Android-9-0" class="headerlink" title="Android 9.0"></a>Android 9.0</h3><ul>
-<li><h4 id="显示屏缺口支持"><a href="#显示屏缺口支持" class="headerlink" title="显示屏缺口支持"></a><strong>显示屏缺口支持</strong></h4><ul>
-<li>支持全面屏，增加了全新的窗口布局属性</li>
-</ul>
-</li>
-<li><h4 id="多摄像头-API"><a href="#多摄像头-API" class="headerlink" title="多摄像头 API"></a>多摄像头 API</h4></li>
-<li><h4 id="用于-NFC-支付和安全交易的-Open-Mobile-API"><a href="#用于-NFC-支付和安全交易的-Open-Mobile-API" class="headerlink" title="用于 NFC 支付和安全交易的 Open Mobile API"></a>用于 NFC 支付和安全交易的 Open Mobile API</h4></li>
-</ul>
-</li>
-<li><h3 id="Android-10"><a href="#Android-10" class="headerlink" title="Android 10"></a><strong>Android 10</strong></h3><ul>
-<li><h4 id="用户存储权限的变更"><a href="#用户存储权限的变更" class="headerlink" title="用户存储权限的变更"></a><strong>用户存储权限的变更</strong></h4><ul>
-<li>Android Q 在外部存储设备中为每个应用提供了一个“隔离存储沙盒”（例如 /sdcard）。任何其他应用都无法直接访问您应用的沙盒文件。由于文件是您应用的私有文件，因此您不再需要任何权限即可在外部存储设备中访问和保存自己的文件。此变更可让您更轻松地保证用户文件的隐私性，并有助于减少应用所需的权限数量。<br>谷歌官方推荐应用在沙盒内存储文件的地址为Context.getExternalFilesDir()下的文件夹。比如要存储一张图片,则应放在Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)中。</li>
-</ul>
-</li>
-<li><h4 id="用户的定位权限的变更"><a href="#用户的定位权限的变更" class="headerlink" title="用户的定位权限的变更"></a><strong>用户的定位权限的变更</strong></h4><ul>
-<li><p>为了让用户更好地控制应用对位置信息的访问权限，Android Q 引入了新的位置权限 ACCESS_BACKGROUND_LOCATION。</p>
-<p>与现有的 ACCESS_FINE_LOCATION和 ACCESS_COARSE_LOCATION权限不同，新权限仅会影响应用在后台运行时对位置信息的访问权。除非应用的某个 Activity 可见或应用正在运行前台服务，否则应用将被视为在后台运行。<br>与iOS系统一样，Q中也加入了后台位置权限ACCESS_BACKGROUND_LOCATION，如果应用需要在后台时也获得用户位置(比如滴滴)，就需要动态申请ACCESS_BACKGROUND_LOCATION权限。</p>
-<p>当然如果不需要的话，应用就无需任何改动，且谷歌会按照应用的targetSDK作出不同处理：<br>targetSDK &lt;= P 应用如果请求了ACCESS_FINE_LOCATION或 ACCESS_COARSE_LOCATION权限，Q设备会自动帮你申请ACCESS_BACKGROUND_LOCATION权限。</p>
-</li>
-</ul>
-</li>
-<li><h4 id="设备唯一标识符的变更"><a href="#设备唯一标识符的变更" class="headerlink" title="设备唯一标识符的变更"></a><strong>设备唯一标识符的变更</strong></h4><ul>
-<li>从 Android Q 开始，应用必须具有 READ_PRIVILEGED_PHONE_STATE签名权限才能访问设备的不可重置标识符（包含 IMEI 和序列号）。<br>如果您的应用没有该权限，但您仍尝试查询标识符的相关信息，会返回空值或报错。<br>设备唯一标识符需要特别注意，原来的READ_PHONE_STATE权限已经不能获得IMEI和序列。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><h3 id="Android-11"><a href="#Android-11" class="headerlink" title="Android 11"></a><strong>Android 11</strong></h3><ul>
-<li><h4 id="需要-APK-签名方案-v2"><a href="#需要-APK-签名方案-v2" class="headerlink" title="需要 APK 签名方案 v2"></a><strong>需要 APK 签名方案 v2</strong></h4><ul>
-<li><p>对于以 Android 11（API 级别 30）为目标平台，且目前仅使用 APK 签名方案 v1 签名的应用，现在还必须使用 APK 签名方案 v2 或更高版本进行签名。用户无法在搭载 Android 11 的设备上安装或更新仅通过 APK 签名方案 v1 签名的应用。</p>
-<p>如果你的targetSdkVersion修改到30，那么你就必须要加上v2签名才行。否则无法安装和更新。</p>
-</li>
-</ul>
-</li>
-<li><h4 id="电话号码相关权限"><a href="#电话号码相关权限" class="headerlink" title="电话号码相关权限"></a><strong>电话号码相关权限</strong></h4><ul>
-<li><p>Android 11 更改了您的应用在读取电话号码时使用的与电话相关的权限。</p>
-<p>其实就是两个API：<br>TelecomManager 类中的 getLine1Number() 方法<br>TelecomManager 类中的 getMsisdn() 方法</p>
-<p>也就是当用到这两个API的时候，原来的READ_PHONE_STATE权限不管用了，需要READ_PHONE_NUMBERS权限才行。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li><strong>所以每个进程的4G内存空间只是虚拟内存空间，每次访问内存空间的某个地址，都需要把地址翻译为实际物理内存地址</strong></li>
+<li>内核空间指的是 3G - 4G部分，并且这部分都是相同的，可以理解为所有进程共享内核空间。所以说Binder拷贝到内核空间后，内核空间和目标用户空间有一块内存映射，所以目标空间可以直接拿到数据。</li>
 </ul>
 
       </section>
@@ -228,8 +201,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/02/081920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：Service</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -243,8 +216,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/02/061920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：Activity</h2>
+        <a href="/2022/03/241920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：ARouter</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -313,7 +286,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-5-x"><span class="toc-number">1.</span> <span class="toc-text">Android 5.x</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-6-x"><span class="toc-number">2.</span> <span class="toc-text">Android 6.x</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-7-0"><span class="toc-number">3.</span> <span class="toc-text">Android 7.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-8-0"><span class="toc-number">4.</span> <span class="toc-text">Android 8.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-9-0"><span class="toc-number">5.</span> <span class="toc-text">Android 9.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-10"><span class="toc-number">6.</span> <span class="toc-text">Android 10</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-11"><span class="toc-number">7.</span> <span class="toc-text">Android 11</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Binder-%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">Binder 通信模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Binder-%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84%E5%92%8C%E6%8E%A5%E6%94%B6%E7%BC%93%E5%AD%98%E5%8C%BA%E7%AE%A1%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">Binder 内存映射和接收缓存区管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%EF%BC%9A%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-number">4.</span> <span class="toc-text">拓展：虚拟内存</span></a></li></ol>
   </div>
 </section>
 
