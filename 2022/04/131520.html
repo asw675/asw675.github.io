@@ -24,7 +24,7 @@
 
   
 
-  <title>进程间通信的方式 | ReasonLee</title>
+  <title>操作系统：虚拟内存 | ReasonLee</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">进程间通信的方式</h1>
+          <h1 class="title-wrap">操作系统：虚拟内存</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-01-13T22:20:14.000Z" itemprop="datePublished">2022-01-14</time>
+            <time  class="article-date" datetime="2022-04-13T07:20:14.000Z" itemprop="datePublished">2022-04-13</time>
           </h2>
           <ul class="wrap-list dark">
   
@@ -139,50 +139,14 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="2、按通信类型区分"><a href="#2、按通信类型区分" class="headerlink" title="2、按通信类型区分"></a>2、按通信类型区分</h2><h3 id="共享存储器系统"><a href="#共享存储器系统" class="headerlink" title="共享存储器系统"></a>共享存储器系统</h3><p>1.基于共享数据结构的通信方式<br>（仅适用于传递相对少量的数据，通信效率低，属于低级通信）<br>2.基于共享存储区的通信方式</p>
-<h3 id="管道通信系统"><a href="#管道通信系统" class="headerlink" title="管道通信系统"></a>管道通信系统</h3><p>管道是指用于连接一个读进程和一个写进程以实现它们之间通信的一个共享文件（pipe文件）<br>管道机制需要提供一下几点的协调能力<br>1.互斥，即当一个进程正在对pipe执行读/写操作时，其它进程必须等待<br>2.同步，当一个进程将一定数量的数据写入，然后就去睡眠等待，直到读进程将数据取走，再去唤醒。读进程与之类似<br>3.确定对方是否存在</p>
-<h3 id="消息传递系统"><a href="#消息传递系统" class="headerlink" title="消息传递系统"></a>消息传递系统</h3><p>1.<strong>直接通信方式</strong><br>发送进程利用OS所提供的发送原语直接把消息发给目标进程<br>2.<strong>间接通信方式</strong><br>发送和接收进程都通过共享实体（邮箱）的方式进行消息的发送和接收</p>
-<h3 id="客户机服务器系统"><a href="#客户机服务器系统" class="headerlink" title="客户机服务器系统"></a>客户机服务器系统</h3><p>1.<strong>套接字 –</strong> 通信标识型的数据结构是进程通信和网络通信的基本构件<br>基于文件型的 （当通信进程都在同一台服务器中）其原理类似于管道<br>基于网络型的（非对称方式通信，发送者需要提供接收者命名。通信双方的进程运行在不同主机环境下被分配了一对套接字，一个属于发送进程，一个属于接收进程）<br>2.<strong>远程过程调用和远程方法调用</strong></p>
-<h3 id="管道："><a href="#管道：" class="headerlink" title="管道："></a>管道：</h3><p>管道是面向字节流，自带互斥与同步机制，生命周期随进程。 </p>
-<ol>
-<li><p>​    普通管道PIPE, 通常有两种限制,一是半双工,数据同时只能单向传输;二是只能在父子或者兄弟进程间使用.，</p>
-</li>
-<li><p>​    命令流管道s_pipe: 去除了第一种限制,为全双工，可以同时双向传输，</p>
-</li>
-<li><p>​    命名管道FIFO, 去除了第二种限制,可以在许多并不相关的进程之间进行通讯。</p>
-</li>
-</ol>
-<p>​        <strong>无名管道</strong>：没有磁盘节点，仅仅作为一个内存对象，用完就销毁了。因此没有显示的打开过程，实际在创建时自动打开，并且生成内存iNode，其内存对象和普通文件的一致，所以读写操作用的同样的接口，但是专用的。因为不能显式打开（没有任何标示），所以只能用在父子进程，兄弟进程， 或者其他继承了祖先进程的管道文件对象的两个进程间使用【具有共同祖先的进程】</p>
-<p>​        <strong>有名管道</strong>：任意两个或多个进程间通讯。因为它在文件目录树中有一个文件标示（FIFO） 实际不占据磁盘空间，数据缓存在内存上。它与普通文件类似，都遵循打开，读，写，关闭的过程，但读写的内部实现和普通文件不同，和无名管道一样。</p>
-<h3 id="信号量："><a href="#信号量：" class="headerlink" title="信号量："></a>信号量：</h3><ol>
-<li><strong>临界资源</strong>：同一时刻，只能被一个进程访问的资源</li>
-<li><strong>临界区</strong>：访问临界资源的代码区</li>
-<li><strong>原子操作</strong>：任何情况下不能被打断的操作。</li>
-</ol>
-<p>​        它是一个计数器，记录资源能被多少个进程同时访问。用于控制多进程对临界资源的访问（同步)），并且是非负值。主要作为进程间以及同一进程的不同线程间的同步手段。</p>
-<h3 id="消息队列："><a href="#消息队列：" class="headerlink" title="消息队列："></a>消息队列：</h3><p>​        消息队列是消息的链表，是存放在内核中并由消息队列标识符标识。因此是随内核持续的，只有在内核重起或者显示删除一个消息队列时，该消息队列才会真正被删除。消息队列克服了信号传递信息少，管道只能承载无格式字节流以及缓冲区受限等特点。允许不同进程将格式化的数据流以消息队列形式发送给任意进程，对消息队列具有操作权限的进程都可以使用msg.get完成对消息队列的操作控制，通过使用消息类型，进程可以按顺序读信息，或为消息安排优先级顺序。</p>
-<p>​      与信号量相比，都以内核对象确保多进程访问同一消息队列。但消息队列发送实际数据，信号量进行进程同步控制。</p>
-<p>​     与管道相比，管道发送的数据没有类型，读取数据端无差别从管道中按照前后顺序读取；消息队列有类型，读端可以根据数据类型读取特定的数据。</p>
-<h3 id="共享内存："><a href="#共享内存：" class="headerlink" title="共享内存："></a><strong>共享内存：</strong></h3><p>​    共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问。</p>
-<p>​    共享内存是最快的一种IPC，因为不需要在客户进程和服务器进程之间赋值。使用共享内存的唯一注意的是是多个进程对一给定的存储区的同步访问。【若服务器进程正在向共享存储区写入数据，则写完数据之前客户进程不应读取数据，或者客户进程正在从共享内存中读取数据，服务进程不应写入数据。所以我们要对共享内存进行同步控制，通常是<strong>信号量</strong>。】</p>
-<p><strong>消息队列和管道基本上都是4次拷贝，而共享内存（mmap, shmget）只有两次。</strong></p>
-<h4 id="4次："><a href="#4次：" class="headerlink" title="4次："></a><strong>4次</strong>：</h4><p>​                1，由用户空间的缓冲区中将数据拷贝到内核中。</p>
-<p>​                2，内核将数据拷贝到内存中。</p>
-<p>​                3，内存到内核。</p>
-<p>​                4，内核到用户空间的缓冲区.</p>
-<h4 id="2次："><a href="#2次：" class="headerlink" title="2次："></a><strong>2次</strong>：</h4><p>​                1，用户空间到内存。 </p>
-<p>​                2，内存到用户空间。</p>
-<p>消息队列、共享内存和管道都是内核对象，所执行的操作也都是系统调用，而这些数据最终是要存储在内存中执行的。因此不可避免的要经过4次数据的拷贝。</p>
-<p>但是共享内存不同，当执行mmap或者shmget时，会在内存中开辟空间，然后再将这块空间映射到用户进程的虚拟地址空间中，即返回值为一个指向逻辑地址的指针。</p>
-<p>当用户使用这个指针时，例如赋值操作，会引起一个从逻辑地址到物理地址的转化，会将数据直接写入对应的物理内存中，省去了拷贝到内核中的过程。当读取数据时，也是类似的过程，因此总共有两次数据拷贝。</p>
-<h3 id="socket通信"><a href="#socket通信" class="headerlink" title="socket通信"></a><strong>socket通信</strong></h3><p>​    适合同一主机的不同进程间和不同主机的进程间进行全双工网络通信。但并不只是Linux有，在所有提供了TCP/IP协议栈的操作系统中几乎都提供了socket，而所有这样操作系统，对套接字的编程方法几乎是完全一样的,即“网络编程”。</p>
-<h2 id="Android进程通信"><a href="#Android进程通信" class="headerlink" title="Android进程通信"></a>Android进程通信</h2><ol>
-<li>Intent</li>
-<li>文件共享（sharedpre等）</li>
-<li>广播</li>
-<li>contentProvider</li>
-<li>Binder (AIDL)</li>
-</ol>
+        <h2 id="一、什么是物理内存"><a href="#一、什么是物理内存" class="headerlink" title="一、什么是物理内存"></a>一、什么是物理内存</h2><p>物理内存又称主存是计算机中重要的部件之一，物理内存其实就是插在计算机主板内存槽上的硬件设备，是CPU能直接寻址的存储空间、与CPU进行沟通的桥梁，由半导体器件制成。计算机中所有程序的运行都是在内存中进行的，因此内存的性能对计算机的影响非常大。内存(Memory)也被称为内存储器，其作用是用于暂时存放CPU中的运算数据，以及与硬盘等外部存储器交换的数据。只要计算机在运行中，CPU就会把需要运算的数据调到内存中进行运算，当运算完成后CPU再将结果传送出来，内存的运行也决定了计算机的稳定运行。物理内存的容量是固定的，但是寻址空间却取决于cpu地址线条数，如32位机，则寻址空间为2^32 = 4G，所以最大支只持4G的寻址空间，即使插了8G的内存条也只能使用4G内存。</p>
+<p><strong>现代操作系统为什么不让进程直接使用物理内存？</strong></p>
+<ul>
+<li><strong>内存空间利用率的问题：</strong>各个进程对内存的使用会导致内存碎片化，当要用malloc分配一块很大的内存空间时，可能会出现虽然有足够多的空闲物理内存，却没有足够大的连续空闲内存这种情况，东一块西一块的内存碎片就被浪费掉了</li>
+<li><strong>读写内存的安全性问题：</strong>物理内存本身是不限制访问的，任何地址都可以读写，由于程序都是直接访问物理内存，所以恶意程序可以随意修改别的进程的内存数据，以达到破坏的目的。有些非恶意的，但是有bug的程序也可能不小心修改了其它程序的内存数据，就会导致其它程序的运行出现异常。这种情况对用户来说是无法容忍的，因为用户希望使用计算机的时候，其中一个任务失败了，至少不能影响其它的任务。</li>
+<li><strong>内存读写的效率问题：</strong>当多个进程同时运行，需要分配给进程的内存总和大于实际可用的物理内存时，需要将其他程序暂时拷贝到硬盘当中，然后将新的程序装入内存运行。由于大量的数据频繁装入装出，内存的使用效率会非常低</li>
+</ul>
+<h2 id="二、虚拟内存"><a href="#二、虚拟内存" class="headerlink" title="二、虚拟内存"></a>二、虚拟内存</h2><p><strong>虚拟内存：</strong>是计算机系统内存管理的一种技术。它使得应用程序认为它拥有连续可用的内存（一个连续完整的地址空间），而实际上，它通常是被分隔成多个物理内存碎片，还有部分暂时存储在外部磁盘存储器上，在需要时进行数据交换。现代所有用于一般应用的操作系统都对普通的应用程序使用虚拟内存技术。<br>为了解决上述问题，现代操作系统就是采用虚拟内存的方式使程序中访问的内存地址不再是实际的物理内存地址，而是一个虚拟地址，然后由操作系统将这个虚拟地址映射到适当的物理内存地址上。这样，只要操作系统处理好虚拟地址到物理内存地址的映射，就可以保证不同的程序最终访问的内存地址位于不同的区域，彼此没有重叠，以此达到内存地址空间隔离的效果。</p>
 
       </section>
 
@@ -195,8 +159,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/141520.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">用户态和内核态</h2>
+        <a href="/2022/04/131920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：Dalvik虚拟机和JVM的区别</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -210,8 +174,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/140520.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">进程和线程的区别</h2>
+        <a href="/2022/04/130920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Java:深拷贝和浅拷贝</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -280,7 +244,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E6%8C%89%E9%80%9A%E4%BF%A1%E7%B1%BB%E5%9E%8B%E5%8C%BA%E5%88%86"><span class="toc-number">1.</span> <span class="toc-text">2、按通信类型区分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%AD%98%E5%82%A8%E5%99%A8%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text">共享存储器系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%A1%E9%81%93%E9%80%9A%E4%BF%A1%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.2.</span> <span class="toc-text">管道通信系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.3.</span> <span class="toc-text">消息传递系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E6%9C%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.4.</span> <span class="toc-text">客户机服务器系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%A1%E9%81%93%EF%BC%9A"><span class="toc-number">1.5.</span> <span class="toc-text">管道：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F%EF%BC%9A"><span class="toc-number">1.6.</span> <span class="toc-text">信号量：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%9A"><span class="toc-number">1.7.</span> <span class="toc-text">消息队列：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%EF%BC%9A"><span class="toc-number">1.8.</span> <span class="toc-text">共享内存：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#socket%E9%80%9A%E4%BF%A1"><span class="toc-number">1.9.</span> <span class="toc-text">socket通信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1"><span class="toc-number">2.</span> <span class="toc-text">Android进程通信</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98"><span class="toc-number">1.</span> <span class="toc-text">一、什么是物理内存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-number">2.</span> <span class="toc-text">二、虚拟内存</span></a></li></ol>
   </div>
 </section>
 
