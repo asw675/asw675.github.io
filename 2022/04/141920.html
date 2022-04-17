@@ -24,7 +24,7 @@
 
   
 
-  <title>计算机网络：流量控制算法——漏桶算法和令牌桶算法 | ReasonLee</title>
+  <title>Android：加载大图 | ReasonLee</title>
 
   
 
@@ -102,20 +102,20 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">计算机网络：流量控制算法——漏桶算法和令牌桶算法</h1>
+          <h1 class="title-wrap">Android：加载大图</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2021-12-27T01:20:33.000Z" itemprop="datePublished">2021-12-27</time>
+            <time  class="article-date" datetime="2022-04-14T11:20:12.000Z" itemprop="datePublished">2022-04-14</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">📒 计算机网络</a></li>
+    <li><a href="/categories/Android%E5%9F%BA%E7%A1%80/">📒 Android基础</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">🏷️ 计算机网络</a></li>
+    <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
   
 </ul>
         </div>
@@ -139,28 +139,20 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h4 id=""><a href="#" class="headerlink" title=""></a></h4><h3 id="为什么要有流量控制？"><a href="#为什么要有流量控制？" class="headerlink" title="为什么要有流量控制？"></a>为什么要有流量控制？</h3><p>​            流量控制在计算机领域称为过载保护。何为过载保护？所谓“过载”，即需求超过了负载能力;而“保护”则是指当“过载”发生了，采取必要的措施保护自己不受“伤害”。在计算机领域，尤其是分布式系统领域，“过载保护”是一个重要的概念。一个不具备“过载保护”功能的系统，是非常危险和脆弱的，很可能由于瞬间的压力激增，引起“雪崩效应”，导致系统的各个部分都同时崩溃，停止服务。这就好像在没有保险丝的保护下，电压突然变高，导致所有的电器都会被损坏一样，“过载保护”功能是系统的“保险丝”。</p>
-<h3 id="漏桶算法"><a href="#漏桶算法" class="headerlink" title="漏桶算法"></a>漏桶算法</h3><p>​    漏桶算法思路很简单，请求先进入到漏桶里，漏桶以固定的速度出水，也就是处理请求，当水加的过快，则会直接溢出，也就是拒绝请求，可以看出漏桶算法能强行限制数据的传输速率。</p>
-<p><img src="http://xiaobaoqiu.github.io/images/guava/rate-limit1.png" alt="img"></p>
-<h3 id="令牌桶算法"><a href="#令牌桶算法" class="headerlink" title="令牌桶算法"></a>令牌桶算法</h3><p>​    令牌桶算法(Token Bucket)和 Leaky Bucket 效果一样但方向相反的算法,更加容易理解.随着时间流逝,系统会按恒定1/QPS时间间隔(如果QPS=100,则间隔是10ms)往桶里加入Token(想象和漏洞漏水相反,有个水龙头在不断的加水),如果桶已经满了就不再加了.新请求来临时,会各自拿走一个Token,如果没有Token可拿了就阻塞或者拒绝服务.</p>
-<p><img src="http://xiaobaoqiu.github.io/images/guava/token_bucket.JPG" alt="img"></p>
-<p>​    令牌桶的另外一个好处是可以方便的改变速度. 一旦需要提高速率,则按需提高放入桶中的令牌的速率. 一般会定时(比如100毫秒)往桶中增加一定数量的令牌, 有些变种算法则实时的计算应该增加的令牌的数量.</p>
-<h5 id="令牌桶和漏桶对比："><a href="#令牌桶和漏桶对比：" class="headerlink" title="令牌桶和漏桶对比："></a>令牌桶和漏桶对比：</h5><ul>
-<li><p>令牌桶是按照固定速率往桶中添加令牌，请求是否被处理需要看桶中令牌是否足够，当令牌数减为零时则拒绝新的请求；</p>
-</li>
-<li><p>漏桶则是按照常量固定速率流出请求，流入请求速率任意，当流入的请求数累积到漏桶容量时，则新流入的请求被拒绝；</p>
-</li>
-<li><p>令牌桶限制的是平均流入速率（允许突发请求，只要有令牌就可以处理，支持一次拿3个令牌，4个令牌），并允许一定程度突发流量；</p>
-</li>
-<li><p>漏桶限制的是常量流出速率（即流出速率是一个固定常量值，比如都是1的速率流出，而不能一次是1，下次又是2），从而平滑突发流入速率；</p>
-</li>
-<li><p>令牌桶允许一定程度的突发，而漏桶主要目的是平滑流入速率；</p>
-</li>
-<li><p>两个算法实现可以一样，但是方向是相反的，对于相同的参数得到的限流效果是一样的。</p>
-</li>
+        <h2 id="计算一张图片的大小"><a href="#计算一张图片的大小" class="headerlink" title="计算一张图片的大小"></a><strong>计算一张图片的大小</strong></h2><p>图片占用内存的计算公式：图片高度 * 图片宽度 * 一个像素占用的内存大小.所以，计算图片占用内存大小的时候，要考虑图片所在的目录跟设备密度，这两个因素其实影响的是图片的高宽，android会对图片进行拉升跟压缩。</p>
+<h2 id="加载bitmap过程（怎样保证不产生内存溢出）"><a href="#加载bitmap过程（怎样保证不产生内存溢出）" class="headerlink" title="加载bitmap过程（怎样保证不产生内存溢出）"></a><strong>加载bitmap过程（怎样保证不产生内存溢出）</strong></h2><p>由于Android对图片使用内存有限制，若是加载几兆的大图片便内存溢出。Bitmap会将图片的所有像素（即长x宽）加载到内存中，如果图片分辨率过大，会直接导致内存OOM，只有在BitmapFactory加载图片时使用BitmapFactory.Options对相关参数进行配置来减少加载的像素。</p>
+<h4 id="加载图片时，需要考虑"><a href="#加载图片时，需要考虑" class="headerlink" title="加载图片时，需要考虑"></a>加载图片时，需要考虑</h4><ul>
+<li>预估一下加载整张图片所需占用的内存。</li>
+<li>为了加载这一张图片你所愿意提供多少内存。</li>
+<li>用于展示这张图片的控件的实际大小。</li>
+<li>当前设备的屏幕尺寸和分辨率。</li>
 </ul>
-<p>​        并不能说明令牌桶一定比漏洞好，她们使用场景不一样。令牌桶可以用来保护自己，主要用来对调用者频率进行限流，为的是让自己不被打垮。所以如果自己本身有处理能力的时候，如果流量突发（实际消费能力强于配置的流量限制），那么实际处理速率可以超过配置的限制。而漏桶算法，这是用来保护他人，也就是保护他所调用的系统。主要场景是，当调用的第三方系统本身没有保护机制，或者有流量限制的时候，我们的调用速度不能超过他的限制，由于我们不能更改第三方系统，所以只有在主调方控制。这个时候，即使流量突发，也必须舍弃。因为消费能力是第三方决定的。</p>
-<h4 id="总结起来："><a href="#总结起来：" class="headerlink" title="总结起来："></a>总结起来：</h4><p>​    如果要让自己的系统不被打垮，用令牌桶。如果保证别人的系统不被打垮，用漏桶算法</p>
+<h2 id="BitmapFactory-Options相关参数详解"><a href="#BitmapFactory-Options相关参数详解" class="headerlink" title="BitmapFactory.Options相关参数详解"></a><strong>BitmapFactory.Options相关参数详解</strong></h2><h4 id="1-Options-inPreferredConfig值来降低内存消耗。"><a href="#1-Options-inPreferredConfig值来降低内存消耗。" class="headerlink" title="(1).Options.inPreferredConfig值来降低内存消耗。"></a>(1).Options.inPreferredConfig值来降低内存消耗。</h4><p>​    比如：默认值ARGB_8888改为RGB_565,节约一半内存。</p>
+<h4 id="2-设置Options-inSampleSize-缩放比例，对大图片进行压缩-。"><a href="#2-设置Options-inSampleSize-缩放比例，对大图片进行压缩-。" class="headerlink" title="(2).设置Options.inSampleSize 缩放比例，对大图片进行压缩 。"></a>(2).设置Options.inSampleSize 缩放比例，对大图片进行压缩 。</h4><h4 id="3-设置Options-inPurgeable和inInputShareable：让系统能及时回-收内存。"><a href="#3-设置Options-inPurgeable和inInputShareable：让系统能及时回-收内存。" class="headerlink" title="(3).设置Options.inPurgeable和inInputShareable：让系统能及时回 收内存。"></a>(3).设置Options.inPurgeable和inInputShareable：让系统能及时回 收内存。</h4><p>​    A：inPurgeable：设置为True时，表示系统内存不足时可以被回 收，设置为False时，表示不能被回收。</p>
+<p>​    B：inInputShareable：设置是否深拷贝，与inPurgeable结合使用，inPurgeable为false时，该参数无意义。</p>
+<h4 id="4-使用decodeStream代替其他方法。"><a href="#4-使用decodeStream代替其他方法。" class="headerlink" title="(4).使用decodeStream代替其他方法。"></a>(4).使用decodeStream代替其他方法。</h4><p>​    decodeResource,</p>
+<p>​    setImageResource,</p>
+<p>​    setImageBitmap等方法</p>
 
       </section>
 
@@ -173,8 +165,8 @@
     
     <div class="card-text">
       
-        <a href="/2021/12/281008.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Hello Yusen&#39;s World</h2>
+        <a href="/2022/04/180520.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">操作系统：进程调度算法</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -188,8 +180,8 @@
     
     <div class="card-text">
       
-        <a href="/2021/12/260920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">操作系统：什么是大端序和小端序</h2>
+        <a href="/2022/04/131920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：Dalvik虚拟机和JVM的区别</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -258,7 +250,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">为什么要有流量控制？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%A1%B6%E7%AE%97%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">漏桶算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A4%E7%89%8C%E6%A1%B6%E7%AE%97%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">令牌桶算法</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E4%B8%80%E5%BC%A0%E5%9B%BE%E7%89%87%E7%9A%84%E5%A4%A7%E5%B0%8F"><span class="toc-number">1.</span> <span class="toc-text">计算一张图片的大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BDbitmap%E8%BF%87%E7%A8%8B%EF%BC%88%E6%80%8E%E6%A0%B7%E4%BF%9D%E8%AF%81%E4%B8%8D%E4%BA%A7%E7%94%9F%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">加载bitmap过程（怎样保证不产生内存溢出）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BitmapFactory-Options%E7%9B%B8%E5%85%B3%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3"><span class="toc-number">3.</span> <span class="toc-text">BitmapFactory.Options相关参数详解</span></a></li></ol>
   </div>
 </section>
 
