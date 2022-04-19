@@ -24,7 +24,7 @@
 
   
 
-  <title>Android：View滑动冲突 | ReasonLee</title>
+  <title>Android：View 相关问题 | ReasonLee</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Android：View滑动冲突</h1>
+          <h1 class="title-wrap">Android：View 相关问题</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-03-23T11:20:12.000Z" itemprop="datePublished">2022-03-23</time>
+            <time  class="article-date" datetime="2022-04-19T13:20:12.000Z" itemprop="datePublished">2022-04-19</time>
           </h2>
           <ul class="wrap-list dark">
   
@@ -139,31 +139,24 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="滑动冲突的常见场景"><a href="#滑动冲突的常见场景" class="headerlink" title="滑动冲突的常见场景"></a>滑动冲突的常见场景</h2><ul>
-<li><strong>外层与内层滑动方向不一致</strong>，外层ViewGroup是可以横向滑动的，内层View是可以竖向滑动的（类似ViewPager，每个页面里面是ListView）<ul>
-<li>这里ViewPager已经为我们处理了滑动冲突，所以实际可以正常使用，但是这种滑动冲突是存在的。</li>
-<li>这种情况下<strong>我们可以根据当前滑动方向，水平还是垂直来判断这个事件到底该交给谁来处理。</strong>。一般情况下根据水平和竖直方向滑动的距离差就可以判断方向，当然也可以根据滑动路径形成的夹角（或者说是斜率），水平和竖直方向滑动速度差来判断。（ViewPager也是这样处理的）</li>
+        <h2 id="SurfaceView和View的区别"><a href="#SurfaceView和View的区别" class="headerlink" title="SurfaceView和View的区别"></a>SurfaceView和View的区别</h2><p>​    View适用主动更新，SurfaceView 适用被动更新，如频繁的刷新<br>​    View在UI线程更新，在非UI线程更新会报错，当在主线程更新view时如果耗时过长也会出错, SurfaceView在子线程刷新不会阻塞主线程，适用于界面频繁更新、对帧率要求较高的情况。<br>​    SurfaceView可以控制刷新频率。<br>​    SurfaceView底层利用双缓存机制，绘图时不会出现闪烁问题。</p>
+<p><strong>双缓冲技术</strong>是游戏开发中的一个重要的技术，主要是为了解决 反复局部刷屏带来的闪烁。游戏，视频等画面变化较频繁，前面还没有显示完，程序又请求重新绘制，这样屏幕就会不停地闪烁。双缓冲技术会把要处理的图片在内存中处理好之后，把要画的东西先画到一个内存区域里，然后整体的一次性画出来，将其显示在屏幕上。</p>
+<h2 id="Activity-Window-View三者的差别"><a href="#Activity-Window-View三者的差别" class="headerlink" title="Activity Window View三者的差别"></a>Activity Window View三者的差别</h2><p>Activity像一个工匠（控制单元），Window像窗户（承载模型），View像窗花（显示视图） LayoutInflater像剪刀，Xml配置像窗花图纸。</p>
+<ul>
+<li>在Activity中调用attach，创建了一个Window</li>
+<li>创建的window是其子类PhoneWindow，在attach中创建PhoneWindow</li>
+<li>在Activity中调用setContentView(R.layout.xxx)</li>
+<li>其中实际上是调用的getWindow().setContentView()</li>
+<li>调用PhoneWindow中的setContentView方法</li>
+<li>创建ParentView：作为ViewGroup的子类，实际是创建的DecorView(作为FramLayout的子类）</li>
+<li>将指定的R.layout.xxx进行填充，通过布局填充器进行填充【其中的parent指的就是DecorView】</li>
+<li>调用ViewGroup的removeAllView()，先将所有的view移除掉</li>
+<li>添加新的view：addView()</li>
 </ul>
-</li>
-<li><strong>外层与内层滑动方向一致</strong>，外层ViewGroup是可以竖向滑动的，内层View同样也是竖向滑动的（类似ScrollView包裹ListView）<ul>
-<li>这种情况下需要根据场景来判断，举个例子就是大List包裹小List的时候，一般焦点在大List上或者小List滑动见底（无法继续滑动）的时候，则滑动大List，在小List上且小List能够滑动，则滑动小List。</li>
+<ul>
+<li><h3 id="Window-是什么？"><a href="#Window-是什么？" class="headerlink" title="Window 是什么？"></a>Window 是什么？</h3></li>
 </ul>
-</li>
-</ul>
-<p>​    </p>
-<h2 id="滑动冲突解决套路"><a href="#滑动冲突解决套路" class="headerlink" title="滑动冲突解决套路"></a>滑动冲突解决套路</h2><ul>
-<li><h4 id="外部拦截法："><a href="#外部拦截法：" class="headerlink" title="外部拦截法："></a>外部拦截法：</h4><ul>
-<li>父View根据需要对事件进行拦截。逻辑处理放在父View的onInterceptTouchEvent方法中。我们只需要重写父View的onInterceptTouchEvent方法，并根据逻辑需要做相应的拦截即可。</li>
-</ul>
-</li>
-<li><h4 id="内部拦截法："><a href="#内部拦截法：" class="headerlink" title="内部拦截法："></a>内部拦截法：</h4><ul>
-<li><p>即父View不拦截任何事件，所有事件都传递给子View，子View根据需要决定是自己消费事件还是给父View处理。这需要子View使用requestDisallowInterceptTouchEvent方法才能正常工作。</p>
-</li>
-<li><p>外层与内层滑动方向一致多采用这种方法，因为大list包裹小list，需优先判断小list。</p>
-</li>
-</ul>
-</li>
-</ul>
+<p>​            Window 是 Android 中窗口的宏观定义，主要是管理 View 的创建，以及与 ViewRootImpl 的交互，将 Activity 与 View 解耦。</p>
 
       </section>
 
@@ -176,8 +169,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/03/241920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：ARouter</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">待看事项</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -191,8 +184,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/03/221920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：View事件分发</h2>
+        <a href="/2022/04/191920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：动画</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -261,7 +254,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81%E7%9A%84%E5%B8%B8%E8%A7%81%E5%9C%BA%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">滑动冲突的常见场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3%E5%A5%97%E8%B7%AF"><span class="toc-number">2.</span> <span class="toc-text">滑动冲突解决套路</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SurfaceView%E5%92%8CView%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">SurfaceView和View的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Activity-Window-View%E4%B8%89%E8%80%85%E7%9A%84%E5%B7%AE%E5%88%AB"><span class="toc-number">2.</span> <span class="toc-text">Activity Window View三者的差别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Window-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">Window 是什么？</span></a></li></ol></li></ol>
   </div>
 </section>
 
