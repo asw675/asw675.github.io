@@ -24,7 +24,7 @@
 
   
 
-  <title>Android：各个版本新特性 | ReasonLee</title>
+  <title>Android：Jetpack 源码系列 | ReasonLee</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Android：各个版本新特性</h1>
+          <h1 class="title-wrap">Android：Jetpack 源码系列</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-02-07T11:20:12.000Z" itemprop="datePublished">2022-02-07</time>
+            <time  class="article-date" datetime="2022-05-22T19:20:12.000Z" itemprop="datePublished">2022-05-23</time>
           </h2>
           <ul class="wrap-list dark">
   
@@ -139,82 +139,34 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <ul>
-<li><h3 id="Android-5-x"><a href="#Android-5-x" class="headerlink" title="Android 5.x"></a>Android 5.x</h3><ul>
-<li><h4 id="Material-design"><a href="#Material-design" class="headerlink" title="Material design"></a>Material design</h4><ul>
-<li>Material design算是Android 系统风格的里程碑，其3D UI风格新颖，贴近人机交互；</li>
+        <p>LiveData 之 </p>
+<p><strong><code>void observe(LifecycleOwner owner,Observer observer)</code></strong></p>
+<ul>
+<li>向LiveData注册观察者——用于消息分发</li>
+<li>向Lifycycle注册观察者——用于感知宿主生命周期</li>
 </ul>
-</li>
-<li><p>引入CardView和RecycleView等新控件；</p>
-</li>
-</ul>
-</li>
-<li><h3 id="Android-6-x"><a href="#Android-6-x" class="headerlink" title="Android 6.x"></a>Android 6.x</h3><ul>
-<li><h4 id="运行时权限（最主要）"><a href="#运行时权限（最主要）" class="headerlink" title="运行时权限（最主要）"></a><strong>运行时权限（最主要）</strong></h4><ul>
-<li>此版本引入了一种新的权限模式，用户可直接在运行时管理应用权限。<br>对于以 Android 6.0（API 级别 23）或更高版本为目标平台的应用，请务必在运行时检查和请求权限。要确定您的应用是否已被授予权限，请调用新增的 checkSelfPermission() 方法。要请求权限，请调用新增的 requestPermissions() 方法。</li>
-</ul>
-</li>
-<li><h4 id="新增瞌睡模式和待机模式"><a href="#新增瞌睡模式和待机模式" class="headerlink" title="新增瞌睡模式和待机模式"></a>新增瞌睡模式和待机模式</h4></li>
-</ul>
-</li>
-<li><h3 id="Android-7-0"><a href="#Android-7-0" class="headerlink" title="Android 7.0"></a><strong>Android 7.0</strong></h3><ul>
-<li><h4 id="低电耗模式"><a href="#低电耗模式" class="headerlink" title="低电耗模式"></a><strong>低电耗模式</strong></h4></li>
-<li><h4 id="系统权限的更改"><a href="#系统权限的更改" class="headerlink" title="系统权限的更改"></a><strong>系统权限的更改</strong></h4><ul>
-<li>分享私有文件内容的推荐方法是使用 FileProvider。直接File file = new File可能会报错</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><h3 id="Android-8-0"><a href="#Android-8-0" class="headerlink" title="Android 8.0"></a><strong>Android 8.0</strong></h3><ul>
-<li><h4 id="画中画"><a href="#画中画" class="headerlink" title="画中画"></a>画中画</h4><ul>
-<li>PIP 模式不会改变 Activity 的生命周期。在指定时间只有最近与用户交互过的 Activity 为活动状态。 该 Activity 将被视为顶级 Activity。 所有其他 Activity 虽然可见，但均处于暂停状态。当一个 Activity 处于 PIP 模式时，其实它是出在暂停状态，但其内容会继续展示。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><h3 id="Android-9-0"><a href="#Android-9-0" class="headerlink" title="Android 9.0"></a>Android 9.0</h3><ul>
-<li><h4 id="显示屏缺口支持"><a href="#显示屏缺口支持" class="headerlink" title="显示屏缺口支持"></a><strong>显示屏缺口支持</strong></h4><ul>
-<li>支持全面屏，增加了全新的窗口布局属性</li>
-</ul>
-</li>
-<li><h4 id="多摄像头-API"><a href="#多摄像头-API" class="headerlink" title="多摄像头 API"></a>多摄像头 API</h4></li>
-<li><h4 id="用于-NFC-支付和安全交易的-Open-Mobile-API"><a href="#用于-NFC-支付和安全交易的-Open-Mobile-API" class="headerlink" title="用于 NFC 支付和安全交易的 Open Mobile API"></a>用于 NFC 支付和安全交易的 Open Mobile API</h4></li>
-</ul>
-</li>
-<li><h3 id="Android-10"><a href="#Android-10" class="headerlink" title="Android 10"></a><strong>Android 10</strong></h3><ul>
-<li><h4 id="用户存储权限的变更"><a href="#用户存储权限的变更" class="headerlink" title="用户存储权限的变更"></a><strong>用户存储权限的变更</strong></h4><ul>
-<li>Android Q 在外部存储设备中为每个应用提供了一个“隔离存储沙盒”（例如 /sdcard）。任何其他应用都无法直接访问您应用的沙盒文件。由于文件是您应用的私有文件，因此您不再需要任何权限即可在外部存储设备中访问和保存自己的文件。此变更可让您更轻松地保证用户文件的隐私性，并有助于减少应用所需的权限数量。<br>谷歌官方推荐应用在沙盒内存储文件的地址为Context.getExternalFilesDir()下的文件夹。比如要存储一张图片,则应放在Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)中。</li>
-</ul>
-</li>
-<li><h4 id="用户的定位权限的变更"><a href="#用户的定位权限的变更" class="headerlink" title="用户的定位权限的变更"></a><strong>用户的定位权限的变更</strong></h4><ul>
-<li><p>为了让用户更好地控制应用对位置信息的访问权限，Android Q 引入了新的位置权限 ACCESS_BACKGROUND_LOCATION。</p>
-<p>与现有的 ACCESS_FINE_LOCATION和 ACCESS_COARSE_LOCATION权限不同，新权限仅会影响应用在后台运行时对位置信息的访问权。除非应用的某个 Activity 可见或应用正在运行前台服务，否则应用将被视为在后台运行。<br>与iOS系统一样，Q中也加入了后台位置权限ACCESS_BACKGROUND_LOCATION，如果应用需要在后台时也获得用户位置(比如滴滴)，就需要动态申请ACCESS_BACKGROUND_LOCATION权限。</p>
-<p>当然如果不需要的话，应用就无需任何改动，且谷歌会按照应用的targetSDK作出不同处理：<br>targetSDK &lt;= P 应用如果请求了ACCESS_FINE_LOCATION或 ACCESS_COARSE_LOCATION权限，Q设备会自动帮你申请ACCESS_BACKGROUND_LOCATION权限。</p>
-</li>
-</ul>
-</li>
-<li><h4 id="设备唯一标识符的变更"><a href="#设备唯一标识符的变更" class="headerlink" title="设备唯一标识符的变更"></a><strong>设备唯一标识符的变更</strong></h4><ul>
-<li>从 Android Q 开始，应用必须具有 READ_PRIVILEGED_PHONE_STATE签名权限才能访问设备的不可重置标识符（包含 IMEI 和序列号）。<br>如果您的应用没有该权限，但您仍尝试查询标识符的相关信息，会返回空值或报错。<br>设备唯一标识符需要特别注意，原来的READ_PHONE_STATE权限已经不能获得IMEI和序列。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><h3 id="Android-11"><a href="#Android-11" class="headerlink" title="Android 11"></a><strong>Android 11</strong></h3><ul>
-<li><h4 id="需要-APK-签名方案-v2"><a href="#需要-APK-签名方案-v2" class="headerlink" title="需要 APK 签名方案 v2"></a><strong>需要 APK 签名方案 v2</strong></h4><ul>
-<li><p>对于以 Android 11（API 级别 30）为目标平台，且目前仅使用 APK 签名方案 v1 签名的应用，现在还必须使用 APK 签名方案 v2 或更高版本进行签名。用户无法在搭载 Android 11 的设备上安装或更新仅通过 APK 签名方案 v1 签名的应用。</p>
-<p>如果你的targetSdkVersion修改到30，那么你就必须要加上v2签名才行。否则无法安装和更新。</p>
-</li>
-</ul>
-</li>
-<li><h4 id="电话号码相关权限"><a href="#电话号码相关权限" class="headerlink" title="电话号码相关权限"></a><strong>电话号码相关权限</strong></h4><ul>
-<li><p>Android 11 更改了您的应用在读取电话号码时使用的与电话相关的权限。</p>
-<p>其实就是两个API：<br>TelecomManager 类中的 getLine1Number() 方法<br>TelecomManager 类中的 getMsisdn() 方法</p>
-<p>也就是当用到这两个API的时候，原来的READ_PHONE_STATE权限不管用了，需要READ_PHONE_NUMBERS权限才行。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@MainThread</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">observe</span><span class="hljs-params">(<span class="hljs-meta">@NonNull</span> LifecycleOwner owner, <span class="hljs-meta">@NonNull</span> Observer&lt;? <span class="hljs-keyword">super</span> T&gt; observer)</span> </span>&#123;<br>    assertMainThread(<span class="hljs-string">&quot;observe&quot;</span>);<br>    <span class="hljs-comment">// 保证当前宿主的状态为非DESTROYED</span><br>    <span class="hljs-keyword">if</span> (owner.getLifecycle().getCurrentState() == DESTROYED) &#123;<br>        <span class="hljs-comment">// ignore</span><br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-comment">// 将Observer包装成LifecycleBoundObserver</span><br>    LifecycleBoundObserver wrapper = <span class="hljs-keyword">new</span> LifecycleBoundObserver(owner, observer);<br>    <span class="hljs-comment">// 向LiveData注册观察者</span><br>    ObserverWrapper existing = mObservers.putIfAbsent(observer, wrapper);<br>    <span class="hljs-comment">// 禁止重复添加</span><br>    <span class="hljs-keyword">if</span> (existing != <span class="hljs-keyword">null</span> &amp;&amp; !existing.isAttachedTo(owner)) &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">&quot;Cannot add the same observer&quot;</span><br>                + <span class="hljs-string">&quot; with different lifecycles&quot;</span>);<br>    &#125;<br>    <span class="hljs-keyword">if</span> (existing != <span class="hljs-keyword">null</span>) &#123;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-comment">// 向Lifecycle注册观察者</span><br>    owner.getLifecycle().addObserver(wrapper);<br>&#125;<br><br><span class="hljs-comment">// 绑定生命周期的观察者</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LifecycleBoundObserver</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ObserverWrapper</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">GenericLifecycleObserver</span> </span>&#123;<br>    <span class="hljs-meta">@NonNull</span><br>    <span class="hljs-keyword">final</span> LifecycleOwner mOwner;<br><br>    LifecycleBoundObserver(<span class="hljs-meta">@NonNull</span> LifecycleOwner owner, Observer&lt;? <span class="hljs-keyword">super</span> T&gt; observer) &#123;<br>        <span class="hljs-keyword">super</span>(observer);<br>        mOwner = owner;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">shouldBeActive</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-comment">// 当前宿主的状态是否为活跃状态，即STARTED，RESUMED</span><br>        <span class="hljs-keyword">return</span> mOwner.getLifecycle().getCurrentState().isAtLeast(STARTED);<br>    &#125;<br><br>    <span class="hljs-comment">// 宿主生命周期改变回调的方法</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onStateChanged</span><span class="hljs-params">(LifecycleOwner source, Lifecycle.Event event)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (mOwner.getLifecycle().getCurrentState() == DESTROYED) &#123;<br>            <span class="hljs-comment">// 宿主为DESTROYED状态，移除观察者，即反注册</span><br>            removeObserver(mObserver); <br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">// 活跃状态改变</span><br>        activeStateChanged(shouldBeActive());<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">isAttachedTo</span><span class="hljs-params">(LifecycleOwner owner)</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> mOwner == owner;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">detachObserver</span><span class="hljs-params">()</span> </span>&#123;<br>        mOwner.getLifecycle().removeObserver(<span class="hljs-keyword">this</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="void-activeStateChanged-boolean-newActive-活跃状态改变，回调对应方法"><a href="#void-activeStateChanged-boolean-newActive-活跃状态改变，回调对应方法" class="headerlink" title="void activeStateChanged(boolean newActive)活跃状态改变，回调对应方法"></a><code>void activeStateChanged(boolean newActive)</code>活跃状态改变，回调对应方法</h5><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">void activeStateChanged(boolean newActive) &#123;<br>        <span class="hljs-comment">// 1.屏蔽初始化时非活跃状态的分发</span><br>        <span class="hljs-comment">// 2.屏蔽相同活跃状态重复分发</span><br>        <span class="hljs-keyword">if</span> (newActive == mActive) &#123;<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">// immediately set active state, so we&#x27;d never dispatch anything to inactive</span><br>        <span class="hljs-comment">// owner</span><br>        mActive = newActive;<br>        boolean wasInactive = LiveData.<span class="hljs-keyword">this</span>.mActiveCount == <span class="hljs-number">0</span>;<br>        LiveData.<span class="hljs-keyword">this</span>.mActiveCount += mActive ? <span class="hljs-number">1</span> : -<span class="hljs-number">1</span>;<br>        <span class="hljs-comment">// 当且仅当有一个活跃的观察者时会触发</span><br>        <span class="hljs-keyword">if</span> (wasInactive &amp;&amp; mActive) &#123;<br>            onActive();<br>        &#125;<br>        <span class="hljs-comment">// 不存在活跃的观察者时会触发</span><br>        <span class="hljs-keyword">if</span> (LiveData.<span class="hljs-keyword">this</span>.mActiveCount == <span class="hljs-number">0</span> &amp;&amp; !mActive) &#123;<br>            onInactive();<br>        &#125;<br>        <span class="hljs-comment">// 当前宿主为活跃状态时分发</span><br>        <span class="hljs-keyword">if</span> (mActive) &#123;<br>            dispatchingValue(<span class="hljs-keyword">this</span>);<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="void-dispatchingValue-Nullable-ObserverWrapper-initiator-分发，阻断-maybe-，再分发，精准分发，全部分发"><a href="#void-dispatchingValue-Nullable-ObserverWrapper-initiator-分发，阻断-maybe-，再分发，精准分发，全部分发" class="headerlink" title="void dispatchingValue(@Nullable ObserverWrapper initiator) 分发，阻断(maybe)，再分发，精准分发，全部分发"></a><code>void dispatchingValue(@Nullable ObserverWrapper initiator)</code> 分发，阻断(maybe)，再分发，精准分发，全部分发</h5><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">void</span> dispatchingValue(<span class="hljs-meta">@Nullable</span> ObserverWrapper initiator) &#123;<br>      <span class="hljs-keyword">if</span> (mDispatchingValue) &#123;<br>          mDispatchInvalidated = <span class="hljs-keyword">true</span>;<br>          <span class="hljs-keyword">return</span>;<br>      &#125;<br>      mDispatchingValue = <span class="hljs-keyword">true</span>;<br>      <span class="hljs-comment">// 循环的原因， 结束当前分发，重新再分发</span><br>      <span class="hljs-comment">// 当正在分发第一次数据时，此时 mDispatchingValue=true  mDispatchInvalidated=false</span><br>      <span class="hljs-comment">// 这是第二次分发走到当前方法时，mDispatchInvalidated会被置为true，break结束for循环，do while继续执行</span><br>      <span class="hljs-keyword">do</span> &#123;<br>          mDispatchInvalidated = <span class="hljs-keyword">false</span>;<br>          <span class="hljs-keyword">if</span> (initiator != <span class="hljs-keyword">null</span>) &#123; <span class="hljs-comment">// 不为null，精准分发</span><br>              considerNotify(initiator);<br>              initiator = <span class="hljs-keyword">null</span>;<br>          &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">// 为null</span><br>              <span class="hljs-comment">// 遍历，向所有观察者分发数据</span><br>              <span class="hljs-keyword">for</span> (<span class="hljs-built_in">Iterator</span>&lt;<span class="hljs-built_in">Map</span>.Entry&lt;Observer&lt;? <span class="hljs-keyword">super</span> T&gt;, ObserverWrapper&gt;&gt; iterator =<br>                   mObservers.iteratorWithAdditions(); iterator.hasNext(); ) &#123;<br>                  considerNotify(iterator.next().getValue());<br>                  <span class="hljs-keyword">if</span> (mDispatchInvalidated) &#123;<br>                      <span class="hljs-keyword">break</span>;<br>                  &#125;<br>              &#125;<br>          &#125;<br>      &#125; <span class="hljs-keyword">while</span> (mDispatchInvalidated);<br>      mDispatchingValue = <span class="hljs-keyword">false</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="void-considerNotify-ObserverWrapper-observer-分发最终方法and黏性事件的产生"><a href="#void-considerNotify-ObserverWrapper-observer-分发最终方法and黏性事件的产生" class="headerlink" title="void considerNotify(ObserverWrapper observer)分发最终方法and黏性事件的产生"></a><code>void considerNotify(ObserverWrapper observer)</code>分发最终方法and黏性事件的产生</h5><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">private</span> void considerNotify(ObserverWrapper observer) &#123;<br>        <span class="hljs-keyword">if</span> (!observer.mActive) &#123;<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">// Check latest state b4 dispatch. Maybe it changed state but we didn&#x27;t get the event yet.</span><br>        <span class="hljs-comment">//</span><br>        <span class="hljs-comment">// we still first check observer.active to keep it as the entrance for events. So even if</span><br>        <span class="hljs-comment">// the observer moved to an active state, if we&#x27;ve not received that event, we better not</span><br>        <span class="hljs-comment">// notify for a more predictable notification order.</span><br>        <span class="hljs-comment">// 译：为了保险起见，还是在检查一下吧，万一出问题了呢，还要背锅</span><br>        <span class="hljs-comment">// 宿主状态不活跃不分发</span><br>        <span class="hljs-keyword">if</span> (!observer.shouldBeActive()) &#123;<br>            observer.activeStateChanged(<span class="hljs-literal">false</span>);<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">// 黏性消息的始发地，即先发送消息，再注册观察者也会收到此消息（发送的最后一条消息）</span><br>        <span class="hljs-comment">// mLastVersion和mVersion的初始值均为-1</span><br>        <span class="hljs-comment">// 当发送消息时，mVersion++ = 0</span><br>        <span class="hljs-comment">// 再注册观察者时-1 &lt; 0 , 则向observer分发</span><br>        <span class="hljs-keyword">if</span> (observer.mLastVersion &gt;= mVersion) &#123;<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">// 对齐</span><br>        observer.mLastVersion = mVersion;<br>        <span class="hljs-comment">//noinspection unchecked</span><br>        <span class="hljs-comment">// 事件分发到此结束</span><br>        observer.mObserver.onChanged((T) mData);<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="LiveData的优势"><a href="#LiveData的优势" class="headerlink" title="LiveData的优势"></a>LiveData的优势</h2><ul>
+<li><strong>确保界面符合数据状态</strong><br> <code>LiveData</code>遵循观察者模式。当生命周期状态发生变化时，<code>LiveData</code> 会根据宿主状态和注册类型通知 [<code>Observer</code>]对象并把最新数据派发给它。观察者可以在收到<code>onChanged</code>事件时更新界面，而不是在每次数据发生更改时立即更新界面。</li>
+<li><strong>不再需要手动处理生命周期</strong><br> 只需要观察相关数据，不用手动停止或恢复观察。<code>LiveData</code> 会自动管理<code>Observer</code>的反注册，因为它能感知宿主生命周期的变化，并在宿主生命周期的<code>onDestory</code>自动进行反注册。因此使用<code>LiveData</code>做消息分发不会发生内存泄漏</li>
+<li><strong>数据始终保持最新状态</strong><br> 如果宿主的生命周期变为非活跃状态，它会在再次变为活跃状态时接收最新的数据。例如，在后台的 <code>Activity</code>会在返回前台后立即接收最新的数据。</li>
+<li><strong>支持黏性事件的分发</strong><br> 即先发送一条数据，后注册一个观察者，默认是能够收到最后发送的那条数据</li>
+<li><strong>共享资源</strong><br> 可以使用单例模式拓展 <code>LiveData</code>，实现全局的消息分发总线。</li>
 </ul>
 
       </section>
@@ -228,8 +180,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/02/081920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：Service</h2>
+        <a href="/2022/05/231920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：动态化和插件化</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -243,8 +195,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/02/061920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：Activity</h2>
+        <a href="/2022/04/221928.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：ANR</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -313,7 +265,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-5-x"><span class="toc-number">1.</span> <span class="toc-text">Android 5.x</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-6-x"><span class="toc-number">2.</span> <span class="toc-text">Android 6.x</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-7-0"><span class="toc-number">3.</span> <span class="toc-text">Android 7.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-8-0"><span class="toc-number">4.</span> <span class="toc-text">Android 8.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-9-0"><span class="toc-number">5.</span> <span class="toc-text">Android 9.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-10"><span class="toc-number">6.</span> <span class="toc-text">Android 10</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-11"><span class="toc-number">7.</span> <span class="toc-text">Android 11</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LiveData%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="toc-number">1.</span> <span class="toc-text">LiveData的优势</span></a></li></ol>
   </div>
 </section>
 

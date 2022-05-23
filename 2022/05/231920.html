@@ -24,7 +24,7 @@
 
   
 
-  <title>Android：各个版本新特性 | ReasonLee</title>
+  <title>Android：动态化和插件化 | ReasonLee</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Android：各个版本新特性</h1>
+          <h1 class="title-wrap">Android：动态化和插件化</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-02-07T11:20:12.000Z" itemprop="datePublished">2022-02-07</time>
+            <time  class="article-date" datetime="2022-05-23T11:20:12.000Z" itemprop="datePublished">2022-05-23</time>
           </h2>
           <ul class="wrap-list dark">
   
@@ -139,83 +139,16 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <ul>
-<li><h3 id="Android-5-x"><a href="#Android-5-x" class="headerlink" title="Android 5.x"></a>Android 5.x</h3><ul>
-<li><h4 id="Material-design"><a href="#Material-design" class="headerlink" title="Material design"></a>Material design</h4><ul>
-<li>Material design算是Android 系统风格的里程碑，其3D UI风格新颖，贴近人机交互；</li>
-</ul>
-</li>
-<li><p>引入CardView和RecycleView等新控件；</p>
-</li>
-</ul>
-</li>
-<li><h3 id="Android-6-x"><a href="#Android-6-x" class="headerlink" title="Android 6.x"></a>Android 6.x</h3><ul>
-<li><h4 id="运行时权限（最主要）"><a href="#运行时权限（最主要）" class="headerlink" title="运行时权限（最主要）"></a><strong>运行时权限（最主要）</strong></h4><ul>
-<li>此版本引入了一种新的权限模式，用户可直接在运行时管理应用权限。<br>对于以 Android 6.0（API 级别 23）或更高版本为目标平台的应用，请务必在运行时检查和请求权限。要确定您的应用是否已被授予权限，请调用新增的 checkSelfPermission() 方法。要请求权限，请调用新增的 requestPermissions() 方法。</li>
-</ul>
-</li>
-<li><h4 id="新增瞌睡模式和待机模式"><a href="#新增瞌睡模式和待机模式" class="headerlink" title="新增瞌睡模式和待机模式"></a>新增瞌睡模式和待机模式</h4></li>
-</ul>
-</li>
-<li><h3 id="Android-7-0"><a href="#Android-7-0" class="headerlink" title="Android 7.0"></a><strong>Android 7.0</strong></h3><ul>
-<li><h4 id="低电耗模式"><a href="#低电耗模式" class="headerlink" title="低电耗模式"></a><strong>低电耗模式</strong></h4></li>
-<li><h4 id="系统权限的更改"><a href="#系统权限的更改" class="headerlink" title="系统权限的更改"></a><strong>系统权限的更改</strong></h4><ul>
-<li>分享私有文件内容的推荐方法是使用 FileProvider。直接File file = new File可能会报错</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><h3 id="Android-8-0"><a href="#Android-8-0" class="headerlink" title="Android 8.0"></a><strong>Android 8.0</strong></h3><ul>
-<li><h4 id="画中画"><a href="#画中画" class="headerlink" title="画中画"></a>画中画</h4><ul>
-<li>PIP 模式不会改变 Activity 的生命周期。在指定时间只有最近与用户交互过的 Activity 为活动状态。 该 Activity 将被视为顶级 Activity。 所有其他 Activity 虽然可见，但均处于暂停状态。当一个 Activity 处于 PIP 模式时，其实它是出在暂停状态，但其内容会继续展示。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><h3 id="Android-9-0"><a href="#Android-9-0" class="headerlink" title="Android 9.0"></a>Android 9.0</h3><ul>
-<li><h4 id="显示屏缺口支持"><a href="#显示屏缺口支持" class="headerlink" title="显示屏缺口支持"></a><strong>显示屏缺口支持</strong></h4><ul>
-<li>支持全面屏，增加了全新的窗口布局属性</li>
-</ul>
-</li>
-<li><h4 id="多摄像头-API"><a href="#多摄像头-API" class="headerlink" title="多摄像头 API"></a>多摄像头 API</h4></li>
-<li><h4 id="用于-NFC-支付和安全交易的-Open-Mobile-API"><a href="#用于-NFC-支付和安全交易的-Open-Mobile-API" class="headerlink" title="用于 NFC 支付和安全交易的 Open Mobile API"></a>用于 NFC 支付和安全交易的 Open Mobile API</h4></li>
-</ul>
-</li>
-<li><h3 id="Android-10"><a href="#Android-10" class="headerlink" title="Android 10"></a><strong>Android 10</strong></h3><ul>
-<li><h4 id="用户存储权限的变更"><a href="#用户存储权限的变更" class="headerlink" title="用户存储权限的变更"></a><strong>用户存储权限的变更</strong></h4><ul>
-<li>Android Q 在外部存储设备中为每个应用提供了一个“隔离存储沙盒”（例如 /sdcard）。任何其他应用都无法直接访问您应用的沙盒文件。由于文件是您应用的私有文件，因此您不再需要任何权限即可在外部存储设备中访问和保存自己的文件。此变更可让您更轻松地保证用户文件的隐私性，并有助于减少应用所需的权限数量。<br>谷歌官方推荐应用在沙盒内存储文件的地址为Context.getExternalFilesDir()下的文件夹。比如要存储一张图片,则应放在Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)中。</li>
-</ul>
-</li>
-<li><h4 id="用户的定位权限的变更"><a href="#用户的定位权限的变更" class="headerlink" title="用户的定位权限的变更"></a><strong>用户的定位权限的变更</strong></h4><ul>
-<li><p>为了让用户更好地控制应用对位置信息的访问权限，Android Q 引入了新的位置权限 ACCESS_BACKGROUND_LOCATION。</p>
-<p>与现有的 ACCESS_FINE_LOCATION和 ACCESS_COARSE_LOCATION权限不同，新权限仅会影响应用在后台运行时对位置信息的访问权。除非应用的某个 Activity 可见或应用正在运行前台服务，否则应用将被视为在后台运行。<br>与iOS系统一样，Q中也加入了后台位置权限ACCESS_BACKGROUND_LOCATION，如果应用需要在后台时也获得用户位置(比如滴滴)，就需要动态申请ACCESS_BACKGROUND_LOCATION权限。</p>
-<p>当然如果不需要的话，应用就无需任何改动，且谷歌会按照应用的targetSDK作出不同处理：<br>targetSDK &lt;= P 应用如果请求了ACCESS_FINE_LOCATION或 ACCESS_COARSE_LOCATION权限，Q设备会自动帮你申请ACCESS_BACKGROUND_LOCATION权限。</p>
-</li>
-</ul>
-</li>
-<li><h4 id="设备唯一标识符的变更"><a href="#设备唯一标识符的变更" class="headerlink" title="设备唯一标识符的变更"></a><strong>设备唯一标识符的变更</strong></h4><ul>
-<li>从 Android Q 开始，应用必须具有 READ_PRIVILEGED_PHONE_STATE签名权限才能访问设备的不可重置标识符（包含 IMEI 和序列号）。<br>如果您的应用没有该权限，但您仍尝试查询标识符的相关信息，会返回空值或报错。<br>设备唯一标识符需要特别注意，原来的READ_PHONE_STATE权限已经不能获得IMEI和序列。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><h3 id="Android-11"><a href="#Android-11" class="headerlink" title="Android 11"></a><strong>Android 11</strong></h3><ul>
-<li><h4 id="需要-APK-签名方案-v2"><a href="#需要-APK-签名方案-v2" class="headerlink" title="需要 APK 签名方案 v2"></a><strong>需要 APK 签名方案 v2</strong></h4><ul>
-<li><p>对于以 Android 11（API 级别 30）为目标平台，且目前仅使用 APK 签名方案 v1 签名的应用，现在还必须使用 APK 签名方案 v2 或更高版本进行签名。用户无法在搭载 Android 11 的设备上安装或更新仅通过 APK 签名方案 v1 签名的应用。</p>
-<p>如果你的targetSdkVersion修改到30，那么你就必须要加上v2签名才行。否则无法安装和更新。</p>
-</li>
-</ul>
-</li>
-<li><h4 id="电话号码相关权限"><a href="#电话号码相关权限" class="headerlink" title="电话号码相关权限"></a><strong>电话号码相关权限</strong></h4><ul>
-<li><p>Android 11 更改了您的应用在读取电话号码时使用的与电话相关的权限。</p>
-<p>其实就是两个API：<br>TelecomManager 类中的 getLine1Number() 方法<br>TelecomManager 类中的 getMsisdn() 方法</p>
-<p>也就是当用到这两个API的时候，原来的READ_PHONE_STATE权限不管用了，需要READ_PHONE_NUMBERS权限才行。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+        <h2 id="动态化方案"><a href="#动态化方案" class="headerlink" title="动态化方案"></a>动态化方案</h2><h3 id="一、WebView"><a href="#一、WebView" class="headerlink" title="一、WebView"></a>一、WebView</h3><p>WebView是最常见的一种动态化方案，跨平台（Android/iOS），可以不依赖于发版实时更新，其劣势在于体验和性能不如NA的体验，有些功能需要依赖客户端提供端能力实现。</p>
+<h3 id="二、Hybird"><a href="#二、Hybird" class="headerlink" title="二、Hybird"></a>二、Hybird</h3><p>Hybird是一种NA + Web的混合开发模式，底层依赖于Native提供的容器，上层使用Html&amp;Css&amp;JS做业务开发，底层透明化、上层多样化，这种场景非常有利于前端介入，非常适合业务快速迭代，对于需要快速试错、迅速占领市场的团队来说，Hybrid一定是不二的选择。但Hybird的体验肯定比不上Native，所以生存下来后还是需要做体验更好的原生APP。协议，转载请附上原文出处链接及本声明。</p>
+<h3 id="三、插件化"><a href="#三、插件化" class="headerlink" title="三、插件化"></a>三、插件化</h3><p><strong>VirtualAPK</strong> (可以提到的插件化框架)</p>
+<p>插件化技术的出现一个大背景是Android有一个史上最坑的天花板 —— 65535方法数的限制，它要求在Android的一个dex文件中的方法数不能超过65535个方法。随着业务逻辑的复杂导致客户端代码的急剧膨胀，很容易就碰触到了65535方法数的限制。有人提出了通过拆分dex的方法规避天花板的限制，但随着代码量和各种资源的不断增大，导致一次编译、运行、调试的速度降低，启动速度慢，导致开发成本高、用户体验变差。</p>
+<p>在运营为王的时代对模块的热更新提出了更高的要求，所谓热更新就是在不依赖发版的情况下，对业务进行实时的更新，也可以对客户端一些线上问题进行实时修复。在业务层面，功能模块的解耦以及维护团队的分离是大势所趋，各个团队维护着同一个APP的不同模块，如果每个模块升级新功能都要对整个APP进行升级，那么发布流程不仅复杂而且效率低下，在讲究小步快跑和持续迭代的互联网时代，对开发效率和版本迭代速度有更高的要求。</p>
+<p>插件化的方案可以解决宿主APK中的Java方法数限制；宿主APP可以不通过系统安装和使用插件APK；可以只在指定的时候才加载作为功能模块的APK；插件APK同一套代码可以作为插件和独立运行的APK；兼容Android所有版本(AndroidP待定)。</p>
+<h3 id="四、ReactNative"><a href="#四、ReactNative" class="headerlink" title="四、ReactNative"></a>四、ReactNative</h3><p>ReactNative（简称RN）是Facebook于2015年4月开源的跨平台移动应用开发框架，致力于提高多平台开发的开发效率 —— Learn once, write anywhere，跨平台（支持iOS/Android）。</p>
+<p>关于H5、NA和RN应用的对比分析，可见文章：<a target="_blank" rel="noopener" href="http://vczero.github.io/react_native/H5-React-Native-Native.html">http://vczero.github.io/react_native/H5-React-Native-Native.html</a></p>
+<h3 id="五、热修复"><a href="#五、热修复" class="headerlink" title="五、热修复"></a>五、热修复</h3><h2 id="插件化实现思路"><a href="#插件化实现思路" class="headerlink" title="插件化实现思路"></a>插件化实现思路</h2><p>利用hook技术实现欺上瞒下。Android系统是多进程的，所以系统服务实际上不知道App进程中具体运行的代码，所以使得欺上瞒下成为了可能。欺上是指让系统不知道我们的插件在宿主App中运行；瞒下是指让插件以为自己已经被安装。当然也有使用Java动态代理来实现的欺上瞒下，比如DroidPlugin。</p>
+<p>通过反射，将JAVA代码在编译的过程中，替换掉部分对象，成员。例如在startActivity过程中，将mInstrumentation代理对象替换成我们自己的代理对象，然后通过反射替换掉部分字段，例如将本来应该start的Aactivity换成Bactivity，这样原来Bactivity没有在manifest里面注册但是却可以打开了。</p>
 
       </section>
 
@@ -228,8 +161,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/02/081920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：Service</h2>
+        <a href="/2022/05/232320.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Flutter 详解</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -243,8 +176,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/02/061920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：Activity</h2>
+        <a href="/2022/05/230320.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：Jetpack 源码系列</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -313,7 +246,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-5-x"><span class="toc-number">1.</span> <span class="toc-text">Android 5.x</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-6-x"><span class="toc-number">2.</span> <span class="toc-text">Android 6.x</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-7-0"><span class="toc-number">3.</span> <span class="toc-text">Android 7.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-8-0"><span class="toc-number">4.</span> <span class="toc-text">Android 8.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-9-0"><span class="toc-number">5.</span> <span class="toc-text">Android 9.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-10"><span class="toc-number">6.</span> <span class="toc-text">Android 10</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-11"><span class="toc-number">7.</span> <span class="toc-text">Android 11</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%8C%96%E6%96%B9%E6%A1%88"><span class="toc-number">1.</span> <span class="toc-text">动态化方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81WebView"><span class="toc-number">1.1.</span> <span class="toc-text">一、WebView</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Hybird"><span class="toc-number">1.2.</span> <span class="toc-text">二、Hybird</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%8F%92%E4%BB%B6%E5%8C%96"><span class="toc-number">1.3.</span> <span class="toc-text">三、插件化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81ReactNative"><span class="toc-number">1.4.</span> <span class="toc-text">四、ReactNative</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%83%AD%E4%BF%AE%E5%A4%8D"><span class="toc-number">1.5.</span> <span class="toc-text">五、热修复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E5%8C%96%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="toc-number">2.</span> <span class="toc-text">插件化实现思路</span></a></li></ol>
   </div>
 </section>
 
