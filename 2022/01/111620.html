@@ -166,6 +166,15 @@
 <p>发送方，首先是把全零放入校验和字段并且添加伪首部，然后把UDP数据报看成是由许多16位的子串连接起来，若UDP数据报的数据部分不是偶数个字节，则要在数据部分末尾增加一个全零字节（此字节不发送），接下来就按照二进制反码计算出这些16位字的和。将此和的二进制反码写入校验和字段。在接收方，把收到得UDP数据报加上伪首部（如果不为偶数个字节，还需要补上全零字节）后，按二进制反码计算出这些16位字的和。当无差错时其结果全为1,。否则就表明有差错出现，接收方应该丢弃这个UDP数据报。</p>
 <p><img src="https://img-blog.csdnimg.cn/20181226170949756.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FhMTkyODk5Mjc3Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <p>注意：<br>1.校验时，若UDP数据报部分的长度不是偶数个字节，则需要填入一个全0字节，但是次字节和伪首部一样，是不发送的。<br>2.如果UDP校验和校验出UDP数据报是错误的，可以丢弃，也可以交付上层，但是要附上错误报告，告诉上层这是错误的数据报。<br>3.通过伪首部，不仅可以检查源端口号，目的端口号和UDP用户数据报的数据部分，还可以检查IP数据报的源IP地址和目的地址。<br>这种差错检验的检错能力不强，但是简单，速度快</p>
+<h2 id="如何保证UDP协议可靠？"><a href="#如何保证UDP协议可靠？" class="headerlink" title="如何保证UDP协议可靠？"></a><strong>如何保证UDP协议可靠？</strong></h2><p>模拟tcp的可靠机制来保证四个无即可:<strong>无差错、无丢失、无重复、无失序</strong>;</p>
+<ul>
+<li><p>数据包添加序号，保证单次通信的多个数据包之间有序:</p>
+</li>
+<li><p>应用层增加<strong>校验机制</strong>，如接收方计算数据包的校验码与数据包中提供的校验码不-致，则丢弃该数据包请求重发;</p>
+</li>
+<li><p>应用层增加<strong>确认机制</strong>，如果发送方没有在规定的时间内没有收到接收方的应答包，则进行重发，三次后还未收到应答直接判断发送失败;</p>
+</li>
+</ul>
 
       </section>
 
@@ -263,7 +272,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#UDP%E7%9A%84%E6%A6%82%E8%BF%B0%EF%BC%88User-Datagram-Protocol%EF%BC%8C%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AE%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">UDP的概述（User Datagram Protocol，用户数据报协议）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UDP%E7%9A%84%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">UDP的首部格式</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#UDP%E7%9A%84%E6%A6%82%E8%BF%B0%EF%BC%88User-Datagram-Protocol%EF%BC%8C%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AE%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">UDP的概述（User Datagram Protocol，用户数据报协议）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UDP%E7%9A%84%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">UDP的首部格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81UDP%E5%8D%8F%E8%AE%AE%E5%8F%AF%E9%9D%A0%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">如何保证UDP协议可靠？</span></a></li></ol>
   </div>
 </section>
 
