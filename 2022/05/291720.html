@@ -24,7 +24,7 @@
 
   
 
-  <title>Android：动画 | ReasonLee</title>
+  <title>操作系统：生产者和消费者问题 | ReasonLee</title>
 
   
 
@@ -102,20 +102,20 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Android：动画</h1>
+          <h1 class="title-wrap">操作系统：生产者和消费者问题</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-04-19T11:20:12.000Z" itemprop="datePublished">2022-04-19</time>
+            <time  class="article-date" datetime="2022-05-29T09:20:14.000Z" itemprop="datePublished">2022-05-29</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/Android%E5%9F%BA%E7%A1%80/">📒 Android基础</a></li>
+    <li><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📒 操作系统</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
+    <li><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">🏷️ 操作系统</a></li>
   
 </ul>
         </div>
@@ -139,32 +139,9 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="Android-动画"><a href="#Android-动画" class="headerlink" title="Android 动画"></a>Android 动画</h2><ol>
-<li><h3 id="帧动画"><a href="#帧动画" class="headerlink" title="帧动画"></a>帧动画</h3><ol>
-<li>帧动画就是顺序播放一组预先定义好的图片，就类似于我们观看视频，就是一张一张的图片连续播放。<ol>
-<li>在res/drawable目录下定义一个XML文件，根节点为系统提供的animation-list，然后放入定义更好的图片；</li>
-<li>使用AnimationDrawable类播放第一步定义好的Drawable中的图片，形成动画效果；</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><h3 id="View动画（也称补间动画）"><a href="#View动画（也称补间动画）" class="headerlink" title="View动画（也称补间动画）"></a>View动画（也称补间动画）</h3><ol>
-<li>view动画也称为补间动画，因为我们只需要拿到一个view，设定它开始和结束的位置，中间的view会自动由系统补齐，而不需要帧动画每一幅图都是提前准备好的。</li>
-<li>View动画是Android一开始就提供的比较原始的动画，主要支持四种效果：平移、缩放、旋转、透明度变化（渐变） 四种基本效果，我们可以再这四种基础效果的基础上，选择其中的几种进行组合。属性动画</li>
-</ol>
-</li>
-<li><h3 id="属性动画"><a href="#属性动画" class="headerlink" title="属性动画"></a>属性动画</h3><ol>
-<li><p>属性动画可以看作是增强版的补间动画，与补间动画的不同之处体现在：</p>
-<p>​    补间动画只能定义两个关键帧在透明、旋转、位移和倾斜这四个属性的变换，但是属性动画可以定义任何属性的变化。<br>​    补间动画只能对 UI 组件执行动画，但属性动画可以对任何对象执行动画。</p>
-</li>
-<li><p>与补间动画类似的是，属性动画也需要定义几个方面的属性：</p>
-<p>动画持续时间。默认为 300ms，可以通过 android:duration 属性指定。<br>动画插值方式。通过 android:interploator 指定。<br>动画重复次数。通过 android:repeatCount 指定。<br>重复行为。通过 android:repeatMode 指定。<br>动画集。在属性资源文件中通过 &lt;set …/&gt; 来组合。<br>帧刷新率。指定多长时间播放一帧。默认为 10 ms。</p>
-</li>
-<li><p>使用使用 ValueAnimator 或者 ObjectAnimator 的静态工厂方法创建动画。</p>
-</li>
-</ol>
-</li>
-</ol>
+        <p>items代表缓冲区可使用的资源数，space代表当前缓冲区大小<br>mutex表示互斥锁<br>buf[10]代表缓冲区，内容类型为item<br>in、out代表第一个资源和最后一个资源(i即in最早产生的资源)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs plain">var items&#x3D;0,sapce&#x3D;10,mutex&#x3D;1;<br>var in&#x3D;0,out&#x3D;0;<br>item buf[10]&#x3D;&#123;NULL&#125;;<br>producer&#123;<br>    while(true)&#123;<br>        wait(space);&#x2F;&#x2F;等待缓冲区有空闲位置（即等待space信号），在使用PV操作时，条件变量需要在互斥锁之前<br>        wait(mutex);&#x2F;&#x2F;保证在product时不会有其他进程访问缓冲区<br>        <br>        &#x2F;&#x2F;product<br>        buf.push(item,in);  &#x2F;&#x2F;将新资源放到buf[in]位置<br>        in&#x3D;(in+1)%10;<br>        Signal(mutex); &#x2F;&#x2F; 释放锁<br>        Signal(items); &#x2F;&#x2F; 发出items信号<br>      &#125;<br>&#125;<br><br>consumer&#123;<br>   while(true)&#123;<br>    wait(items);  &#x2F;&#x2F;等待缓冲区有资源可以使用 （即等待items信号）<br>    wait(mutex);  &#x2F;&#x2F;保证在consume时不会有其他线程访问缓冲区<br>    <br>    &#x2F;&#x2F;consume<br>    buf.pop(out); &#x2F;&#x2F;将buf[out]位置的资源取走<br>    out&#x3D;(out+1)%10;<br>    Signal(mutex); &#x2F;&#x2F; 释放锁<br>    Signal(space); &#x2F;&#x2F; 发出space信号<br> &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
 
       </section>
 
@@ -177,8 +154,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/04/192120.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：View 相关问题</h2>
+        <a href="/2022/05/300320.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">操作系统：页面置换算法</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -192,8 +169,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/04/182121.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：Retrofit</h2>
+        <a href="/2022/05/232320.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Flutter 详解</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -262,7 +239,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-%E5%8A%A8%E7%94%BB"><span class="toc-number">1.</span> <span class="toc-text">Android 动画</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%A7%E5%8A%A8%E7%94%BB"><span class="toc-number">1.1.</span> <span class="toc-text">帧动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#View%E5%8A%A8%E7%94%BB%EF%BC%88%E4%B9%9F%E7%A7%B0%E8%A1%A5%E9%97%B4%E5%8A%A8%E7%94%BB%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">View动画（也称补间动画）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E5%8A%A8%E7%94%BB"><span class="toc-number">1.3.</span> <span class="toc-text">属性动画</span></a></li></ol></li></ol>
+    
   </div>
 </section>
 
