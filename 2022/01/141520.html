@@ -159,6 +159,11 @@
 <li><strong>外围设备的中断</strong></li>
 </ul>
 <p>​    当外围设备完成用户请求的操作之后，会向CPU发出相应的中断信号，这时CPU会暂停执行下一条将要执行的指令<br>​    转而去执行中断信号的处理程序，如果先执行的指令是用户态下的程序，那么这个转换的过程自然也就发生了由用户态到内核态的切换。比如硬盘读写操作完成，系统会切换到硬盘读写的中断处理程序中执行后续操作等。</p>
+<h2 id="什么是系统调用"><a href="#什么是系统调用" class="headerlink" title="什么是系统调用"></a>什么是系统调用</h2><p>操作系统提供给程序员的接口就是系统调用。</p>
+<p>进程在系统上的运行分为2个级别：</p>
+<p>（1） 用户态（user mode）：用户态运行的进程可以直接读取用户程序的数据；</p>
+<p>（2） 内核态（kernel mode）：内核态运行的程序可以访问计算机的任何资源，不受限制</p>
+<p>平常我们的进程几乎都是用户态，读取用户数据，当涉及到系统级别资源的操作（例如文件管理、进程控制、内存管理等）的时候，就要用到系统调用了。</p>
 
       </section>
 
@@ -256,7 +261,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">1、用户态和内核态的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text">2、用户态和内核态的转换</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">1、用户态和内核态的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text">2、用户态和内核态的转换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-number"></span> <span class="toc-text">什么是系统调用</span></a>
   </div>
 </section>
 
