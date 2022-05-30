@@ -139,7 +139,51 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><p>单例模式，它的定义就是确保某一个类只有一个实例，并且提供一个全局访问点。</p>
+        <h2 id="设计模式六大原则"><a href="#设计模式六大原则" class="headerlink" title="设计模式六大原则"></a>设计模式六大原则</h2><h5 id="1-设计模式之单一职责原则"><a href="#1-设计模式之单一职责原则" class="headerlink" title="1. 设计模式之单一职责原则"></a>1. 设计模式之单一职责原则</h5><blockquote>
+<p>一个类只负责一项职责，不要存在 1 个以上导致类发生变更的原因。</p>
+</blockquote>
+<ul>
+<li>优点：<br> a. 降低类的复杂度，一个类只负责一项职责，逻辑简单清晰；<br> b. 类的可读性，系统的可维护性更高；<br> c. 因需求变更引起的风险更低，降低对其它功能的影响。</li>
+<li>总结：<br> 只有逻辑足够简单，才可以在代码级别上违反单一职责原则；<br> 只有类中方法数量足够少，才可以在方法级别上违反单一职责原则；<br> 模块化的程序设计以及在员工工作安排上面，都适用单一职责原则。</li>
+</ul>
+<h5 id="2-设计模式之里式替换原则"><a href="#2-设计模式之里式替换原则" class="headerlink" title="2. 设计模式之里式替换原则"></a>2. 设计模式之里式替换原则</h5><blockquote>
+<p>子类可以扩展父类的功能，不能改变父类原有的功能，子类可以替换父类，方法或者行为也没有改变</p>
+</blockquote>
+<ul>
+<li>注意：<br> a. 子类可以实现父类的抽象方法，但不能覆盖父类的非抽象方法；<br> b. 子类中可以增加自己特有的方法；<br> c. 当子类的方法重载父类的方法时，方法的前置条件（形参）要比父类方法更宽松；<br> d. 当子类的方法实现父类的抽象方法时，方法的后置条件（返回值）要比父类更严格。</li>
+</ul>
+<h5 id="3-设计模式之依赖倒置原则"><a href="#3-设计模式之依赖倒置原则" class="headerlink" title="3. 设计模式之依赖倒置原则"></a>3. 设计模式之依赖倒置原则</h5><blockquote>
+<p> 高层模块不应该依赖低层模块，二者都应该依赖其抽象<br> 抽象不应该依赖细节，细节应该依赖抽象</p>
+</blockquote>
+<ul>
+<li><p>理解：<br> a. 相对于细节的多变性，抽象的东西要稳定的多，以抽象为基础搭建起来的架构比以细节为基础搭建起来的架构要稳定的多。这里，抽象指的是接口或者抽象类，细节就是具体的实现类，使用抽象类或者接口的目的是，制定好规范和契约，不去涉及任何具体的操作，把展现细节的任务交给实现类来完成；</p>
+<p>b. 依赖倒置原则的核心思想是面向接口编程，达到解耦的过程。</p>
+</li>
+<li><p>注意：<br> a. 底层模块尽量都要有抽象类或者接口；<br> b. 变量的声明类型尽量是抽象类或接口；<br> c. 使用继承时遵循里式替换原则。</p>
+</li>
+</ul>
+<h5 id="4-设计模式之接口隔离原则"><a href="#4-设计模式之接口隔离原则" class="headerlink" title="4. 设计模式之接口隔离原则"></a>4. 设计模式之接口隔离原则</h5><blockquote>
+<p> 客户端不应该依赖它不需要的接口<br> 一个类对另一个类的依赖应该建立在最小的接口上面</p>
+</blockquote>
+<ul>
+<li>理解：<br> a. 建立单一接口，尽量细化接口，接口中的方法尽量少；<br> b. 为单个类建立专用的接口，不要包含太多；<br> c. 依赖几个专用的接口要比依赖一个综合的接口更灵活，提高系统的灵活性和可维护性。</li>
+<li>注意：<br> a. 接口尽量小，但是要有限度，过小则导致接口数量过多，设计复杂化；<br> b. 为依赖接口的类定制服务，只暴露给调用类需要的方法，建立最小的依赖关系；<br> c. 提高内聚，减少对外交互，用最少的方法去完成最多的事情。</li>
+<li>和单一职责原则的对比：<br> a. 单一职责原则注重的是职责，而接口隔离原则注重对接口依赖的隔离；<br> b. 单一职责原则主要是约束类，其次才是接口和方法，它针对的是程序中的实现和细节；而接口隔离原则主要约束接口，针对抽象和程序整体框架的构建。</li>
+</ul>
+<h5 id="5-设计模式之迪米特法则"><a href="#5-设计模式之迪米特法则" class="headerlink" title="5. 设计模式之迪米特法则"></a>5. 设计模式之迪米特法则</h5><blockquote>
+<p>迪米特法则在于降低类之间的耦合，每个类尽量减少对其他类的依赖，尽量减少对外暴露的方法，使得功能模块独立，低耦合</p>
+</blockquote>
+<ul>
+<li>理解：<br> a. 只直接的朋友交流（成员变量、方法的输入输出参数中的类）；<br> b. 减少对朋友的理解（减少一个类对外暴露的方法）。</li>
+<li>注意：<br> a. 虽然可以避免和非直接的类通信，但是要通信，必然会通过一个”中介“来发生联系，过分的使用迪米特原则，会产生大量的中介和传递类，导致系统复杂度变高。</li>
+</ul>
+<h5 id="6-设计模式之开闭原则"><a href="#6-设计模式之开闭原则" class="headerlink" title="6. 设计模式之开闭原则"></a>6. 设计模式之开闭原则</h5><blockquote>
+<p>软件中的对象（类、模块、函数等）应该对于扩展是开放的，对于修改是封闭的</p>
+</blockquote>
+<ul>
+<li>理解：<br> a. 当需求发生变化时，尽量扩展实体的行为来变化，而不是通过修改已有的代码来实现变化；<br> b. 低层模块的变化，必然有高层模块进行耦合，它并不意味着不做任何修改；<br> c. 这个原则比较虚，可以通过具体的设计模式的设计思维去加深理解。</li>
+</ul>
+<h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><p>单例模式，它的定义就是确保某一个类只有一个实例，并且提供一个全局访问点。</p>
 <p>单例模式具备典型的3个特点：1、只有一个实例。 2、自我实例化。 3、提供全局访问点。</p>
 <p>因此当系统中只需要一个实例对象或者系统中只允许一个公共访问点，除了这个公共访问点外，不能通过其他访问点访问该实例时，可以使用单例模式。</p>
 <p>单例模式的主要优点就是节约系统资源、提高了系统效率，同时也能够严格控制客户对它的访问。也许就是因为系统中只有一个实例，这样就导致了单例类的职责过重，违背了“单一职责原则”，同时也没有抽象类，所以扩展起来有一定的困难。</p>
@@ -296,7 +340,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">单例模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">工厂方法模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">抽象工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">建造者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">适配器模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">6.</span> <span class="toc-text">外观模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-number">7.</span> <span class="toc-text">代理模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">8.</span> <span class="toc-text">观察者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F"><span class="toc-number">9.</span> <span class="toc-text">责任链模式</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%AD%E5%A4%A7%E5%8E%9F%E5%88%99"><span class="toc-number">1.</span> <span class="toc-text">设计模式六大原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">单例模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">工厂方法模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">抽象工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">建造者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-number">6.</span> <span class="toc-text">适配器模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">7.</span> <span class="toc-text">外观模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-number">8.</span> <span class="toc-text">代理模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">9.</span> <span class="toc-text">观察者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F"><span class="toc-number">10.</span> <span class="toc-text">责任链模式</span></a></li></ol>
   </div>
 </section>
 
