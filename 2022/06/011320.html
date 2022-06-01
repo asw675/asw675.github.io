@@ -24,7 +24,7 @@
 
   
 
-  <title>Android：View绘制流程 | ReasonLee</title>
+  <title>操作系统：中断 | ReasonLee</title>
 
   
 
@@ -102,20 +102,20 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Android：View绘制流程</h1>
+          <h1 class="title-wrap">操作系统：中断</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-03-02T11:20:12.000Z" itemprop="datePublished">2022-03-02</time>
+            <time  class="article-date" datetime="2022-06-01T05:20:14.000Z" itemprop="datePublished">2022-06-01</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/Android%E5%9F%BA%E7%A1%80/">📒 Android基础</a></li>
+    <li><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📒 操作系统</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
+    <li><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">🏷️ 操作系统</a></li>
   
 </ul>
         </div>
@@ -139,29 +139,20 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="MeasureSpec"><a href="#MeasureSpec" class="headerlink" title="MeasureSpec"></a>MeasureSpec</h2><p>MeasureSpec相当于是View的测量说明，其中封装了测量模式(SpecMode)和测量规格(SpecSize)。</p>
-<h4 id="测量模式-SpecMode-有三种类型："><a href="#测量模式-SpecMode-有三种类型：" class="headerlink" title="测量模式(SpecMode)有三种类型："></a>测量模式(SpecMode)有三种类型：</h4><ul>
-<li><h4 id="EXACTLY"><a href="#EXACTLY" class="headerlink" title="EXACTLY"></a>EXACTLY</h4></li>
-</ul>
-<p>父容器已经检测出View所需要的精确大小，这个时候View的最终大小就是<code>SpecSize</code>所指定的值。它对应于<code>LayoutParams</code>中的<code>match_parent</code>和具体的数值这两种模式。</p>
-<ul>
-<li><h4 id="AT-MOST"><a href="#AT-MOST" class="headerlink" title="AT_MOST"></a>AT_MOST</h4></li>
-</ul>
-<p>父容器指定了一个可用大小即<code>SpecSize</code>，View的大小不能大于这个值，具体是什么值要看不同View的具体实现。它对应于<code>LayoutParams</code>中的<code>wrap_content</code>。</p>
-<ul>
-<li><h4 id="UNSPECIFIED"><a href="#UNSPECIFIED" class="headerlink" title="UNSPECIFIED"></a>UNSPECIFIED</h4><p>父容器不对View有任何限制，要多大给多大，这种情况一般用于系统内部，表示一种测量状态。</p>
-</li>
-</ul>
-<p>一个<code>View</code>的<code>MeasureSpec</code>由父布局<code>MeasureSpec</code>和自身的<code>LayoutParams</code>共同产生。父布局的<code>MeasureSpec</code>从何而来？从父布局的父布局而来。最顶层的布局是<code>DecorView</code>，常用的<code>setContent(view)</code>便是设置<code>DecorView</code>。<code>DecorView</code>的<code>MeasureSpec</code>是通过<code>ViewRootImpl</code>中的<code>getRootMeasureSpec</code>方法得到的。</p>
-<h2 id="Measure"><a href="#Measure" class="headerlink" title="Measure"></a>Measure</h2><p><code>onMeasure</code>方法最终是调用<code>getDefaultSize</code>方法得到实际的测量值。当子<code>View</code>的<code>LayoutParams</code>为<code>wrap_content</code>时，最终的SpecMode都是<code>AT_MOST</code>，SpecSize为父容器剩余空间大小。在<code>getDefaultSize</code>方法中，对于<code>AT_MOST</code>和<code>EXACTLY</code>均是直接使用父容器传进来的值，这可能不是我们想要的值，所以自定义<code>View</code>时要重写<code>onMeasure</code>方法处理<code>AT_MOST</code>，否则使用<code>wrap_content</code>相当于使用<code>match_parent</code>。</p>
-<p>对于<code>ViewGroup</code>，测量完自己还要调用子<code>View</code>的<code>measure</code>方法，各个子元素再递归去执行这个过程。</p>
-<h2 id="Layout"><a href="#Layout" class="headerlink" title="Layout"></a>Layout</h2><p>Layout的作用是<code>ViewGroup</code>用来确定子元素的位置，当<code>ViewGroup</code>的位置被确定以后，它在<code>onLayout</code>中会遍历所有的子元素并调用其<code>layout</code>方法，在<code>layout</code>方法中<code>onLayout</code>方法又会被调用。<code>onlayout</code>方法是抽象方法，所以自定义<code>ViewGroup</code>时需要实现这个方法确定子元素的布局。常用的<code>LinearLayout</code>以及<code>RelativeLayout</code>方法均重写了这个方法。</p>
-<h2 id="Draw"><a href="#Draw" class="headerlink" title="Draw"></a>Draw</h2><p>draw 过程中一共分成7步，其中两步我们直接直接跳过不分析了。</p>
-<p>第一步：<code>drawBackground(canvas)</code>： 作用就是绘制 View 的背景。</p>
-<p>第三步：<code>onDraw(canvas)</code> ：绘制 View 的内容。View 的内容是根据自己需求自己绘制的，所以方法是一个空方法，View的继承类自己复写实现绘制内容。</p>
-<p>第三步：<code>dispatchDraw（canvas）</code>：遍历子View进行绘制内容。在 View 里面是一个空实现，ViewGroup 里面才会有实现。在自定义 ViewGroup 一般不用复写这个方法，因为它在里面的实现帮我们实现了子 View 的绘制过程，基本满足需求。</p>
-<p>第四步：<code>onDrawForeground(canvas)</code>：对前景色跟滚动条进行绘制。</p>
-<p>第五步：<code>drawDefaultFocusHighlight(canvas)</code>：绘制默认焦点高亮</p>
+        <h2 id="什么是中断？"><a href="#什么是中断？" class="headerlink" title="什么是中断？"></a>什么是中断？</h2><p>中断是指CPU在执行当前程序时系统出现了某种状况，使得CPU必须停止当前程序，而去执行另一段程序来处理的出现的紧急事务，处理结束后CPU再返回到原先暂停的程序继续执行，这个过程就称为中断。</p>
+<h2 id="中断的作用"><a href="#中断的作用" class="headerlink" title="中断的作用"></a>中断的作用</h2><p>使得计算机系统具备应对对处理突发事件的能力，使其****能及时响应紧急事件****。</p>
+<p>****提高处理器效率****，如果没有中断系统，CPU就只能按照原来的程序编写的先后顺序，对各个外设进行查询和处理，即轮询工作方式，轮询方法貌似公平，但实际工作效率却很低。</p>
+<h3 id="内部中断（引发异常）"><a href="#内部中断（引发异常）" class="headerlink" title="内部中断（引发异常）"></a>内部中断（引发异常）</h3><p>当指令执行时由CPU主动产生的，受到CPU控制。内部中断分为软中断和异常。</p>
+<p>软中断：是由软件产生的中断。异常：异常是另外一种内部中断，是指令执行期间CPU内部产生的错误引起的；</p>
+<p>异常包含故障，陷阱，终止</p>
+<p>故障：故障可以修正，如果修复成功，将返回到当前正在执行的指令，重新执行。否则将终止故障程序；</p>
+<p>陷阱：陷阱会导致程序停止；</p>
+<p>终止：由不可恢复的知名错误造成，处理器会终止应用程序。</p>
+<h3 id="外部中断"><a href="#外部中断" class="headerlink" title="外部中断"></a>外部中断</h3><p>外部中断又叫<strong>硬中断</strong></p>
+<p>外部中断是系统外部设备引发的程序中断，一般分为可屏蔽中断和不可屏蔽中断。</p>
+<p>可屏蔽中断<br>可屏蔽中断是由由中断能力的外部设备发出，例如I/O设备发出的所有中断请求都属于可屏蔽中断。</p>
+<p>不可屏蔽中断<br>内部不可屏蔽中断是通过软件调用的中断以及由执行指令过程中产生的“异常”。包括溢出中断、除法出错中断等。</p>
+<h3 id="缺页中断？"><a href="#缺页中断？" class="headerlink" title="缺页中断？"></a>缺页中断？</h3><p>进程线性地址空间里的页面不必常驻内存，在执行一条指令时，如果发现他要访问的页没有在内存中（即存在位为0），那么停止该指令的执行，并产生一个页不存在的异常，对应的故障处理程序可通过从外存加载该页的方法来排除故障，之后，原先引起的异常的指令就可以继续执行，而不再产生异常。</p>
 
       </section>
 
@@ -174,8 +165,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/03/221920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：View事件分发</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">复习计划</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -189,8 +180,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/02/171920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：ActivityManagerService</h2>
+        <a href="/2022/05/302320.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">设计模式</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -259,7 +250,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MeasureSpec"><span class="toc-number">1.</span> <span class="toc-text">MeasureSpec</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Measure"><span class="toc-number">2.</span> <span class="toc-text">Measure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Layout"><span class="toc-number">3.</span> <span class="toc-text">Layout</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Draw"><span class="toc-number">4.</span> <span class="toc-text">Draw</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%B8%AD%E6%96%AD%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">什么是中断？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E6%96%AD%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">中断的作用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E4%B8%AD%E6%96%AD%EF%BC%88%E5%BC%95%E5%8F%91%E5%BC%82%E5%B8%B8%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">内部中断（引发异常）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E9%83%A8%E4%B8%AD%E6%96%AD"><span class="toc-number">2.2.</span> <span class="toc-text">外部中断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E9%A1%B5%E4%B8%AD%E6%96%AD%EF%BC%9F"><span class="toc-number">2.3.</span> <span class="toc-text">缺页中断？</span></a></li></ol></li></ol>
   </div>
 </section>
 

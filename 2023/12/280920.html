@@ -24,7 +24,7 @@
 
   
 
-  <title>lc600题 --》 进度 250 / 600 --》 不会题 3/3 | ReasonLee</title>
+  <title>可能会问到的一些比较杂的问题 | ReasonLee</title>
 
   
 
@@ -102,7 +102,7 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">lc600题 --》 进度 250 / 600 --》 不会题 3/3</h1>
+          <h1 class="title-wrap">可能会问到的一些比较杂的问题</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
@@ -139,883 +139,44 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h4 id="要记：-hashmap-遍历"><a href="#要记：-hashmap-遍历" class="headerlink" title="要记： hashmap 遍历"></a>要记： hashmap 遍历</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java">Iterator iter = map.entrySet().iterator();<br><br>​        <span class="hljs-keyword">while</span>(iter.hasNext())&#123;<br><br>​            Map.Entry entry = (Map.Entry) iter.next();<br><br>​            entry.getValue(); entry.getKey();<br><br>​        &#125;<br></code></pre></td></tr></table></figure>
-
-
-
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/XKD5q0"><img src="https://s1.ax1x.com/2022/05/28/XKD5q0.png" alt="XKD5q0.png"></a></p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/XKDTaT"><img src="https://s1.ax1x.com/2022/05/28/XKDTaT.png" alt="XKDTaT.png"></a></p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/XKDoZV"><img src="https://s1.ax1x.com/2022/05/28/XKDoZV.png" alt="XKDoZV.png"></a></p>
-<h2 id="1448-Count-good-nodes-in-binary-tree"><a href="#1448-Count-good-nodes-in-binary-tree" class="headerlink" title="1448 Count good nodes in binary tree"></a>1448 Count good nodes in binary tree</h2><p>用一个dfs可解决</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/count-good-nodes-in-binary-tree/">https://leetcode.com/problems/count-good-nodes-in-binary-tree/</a></p>
-<h2 id="1822-sign-of-product-of-an-array"><a href="#1822-sign-of-product-of-an-array" class="headerlink" title="1822. sign of product of an array"></a>1822. sign of product of an array</h2><p>算乘积的正负，不用直接乘（会溢出），直接乘大小即可（用分治的方法优化）</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/sign-of-the-product-of-an-array/">https://leetcode.com/problems/sign-of-the-product-of-an-array/</a></p>
-<h2 id="146-LRU-Cache"><a href="#146-LRU-Cache" class="headerlink" title="146. LRU Cache"></a>146. LRU Cache</h2><p>用两个map（一个map存储数据，一个map存储ListNode(为了get(key)可以用O(1)复杂度拿到ListNode在的位置)）和一个List(自定义一个ListNode) 来记录。</p>
-<p>List的头连接的是最少使用的</p>
-<p>List的尾连接的是最多使用</p>
-<p>get和put的时候把Node移动到尾部</p>
-<p>remove的时候remove头节点即可</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/lru-cache/">https://leetcode.com/problems/lru-cache/</a></p>
-<h2 id="200-Number-of-Islands"><a href="#200-Number-of-Islands" class="headerlink" title="200. Number of Islands"></a>200. Number of Islands</h2><p>简单的dfs可解决</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/number-of-islands/">https://leetcode.com/problems/number-of-islands/</a></p>
-<h2 id="151-Reverse-Words-in-a-String"><a href="#151-Reverse-Words-in-a-String" class="headerlink" title="151. Reverse Words in a String"></a>151. Reverse Words in a String</h2><p>Reverse两次即可，一次全部，一次每个单词</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-words-in-a-string/">https://leetcode.com/problems/reverse-words-in-a-string/</a></p>
-<h2 id="1405-Longest-Happy-String"><a href="#1405-Longest-Happy-String" class="headerlink" title="1405.Longest Happy String"></a>1405.Longest Happy String</h2><p>首先 当 a = b = c 时候 直接排 abc abc abc 即可</p>
-<p>否则，先排序，如果 a &gt; b &gt; c</p>
-<p>进行一个循环，每次取出前两个数</p>
-<p>如果a&gt;b 则取 aab 如果 a=b 则取 ab</p>
-<p>然后再次排序 直到 a = b = c 或者 有两个数的值为零为止。</p>
-<p>然后收尾即可</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-happy-string/">https://leetcode.com/problems/longest-happy-string/</a></p>
-<h2 id="56-Merge-Intervals"><a href="#56-Merge-Intervals" class="headerlink" title="56.Merge Intervals"></a>56.Merge Intervals</h2><p>将数组排好序即可得出答案，排序最低复杂度为O(nlogn)</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/merge-intervals/">https://leetcode.com/problems/merge-intervals/</a></p>
-<h2 id="222-Count-Complete-Tree-Nodes"><a href="#222-Count-Complete-Tree-Nodes" class="headerlink" title="222.Count Complete Tree Nodes"></a>222.Count Complete Tree Nodes</h2><p>记住一个优化解法，用到完全二叉树的特性 因为满的完全二叉树的节点总数为 2^high - 1 </p>
-<p>所以只需要看左右子树的最左边节点层数是否等于最右边节点层数，</p>
-<p>如果等于那就按照满二叉树的计算方法return</p>
-<p>如果不等于，那就分别计算左子树和右子树，左子树和右子树又可以使用之前的方法，看是否相等。</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/count-complete-tree-nodes/">https://leetcode.com/problems/count-complete-tree-nodes/</a></p>
-<h2 id="54-Spiral-Maxtrix"><a href="#54-Spiral-Maxtrix" class="headerlink" title="54.Spiral Maxtrix"></a>54.Spiral Maxtrix</h2><p>这道题时间复杂度没得讲了，最小就是O(nm). 但是可以不使用额外的空间来遍历</p>
-<p>分层遍历，第一次遍历最外面那层 方向肯定是 右 下 左 上 的。</p>
-<p>遍历完后缩小一层，继续 右 下 左 上</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/spiral-matrix/">https://leetcode.com/problems/spiral-matrix/</a></p>
-<h2 id="49-Group-Anagrams"><a href="#49-Group-Anagrams" class="headerlink" title="49.Group Anagrams"></a>49.Group Anagrams</h2><p>用一个hashmap保存即可，key值就是排序后的字符串，如果字母都相等，排序后的字符串就一样，那么就可以分到同一个key值里面</p>
-<p>最后遍历hashmap即可</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/group-anagrams/">https://leetcode.com/problems/group-anagrams/</a></p>
-<h2 id="1647-Minimum-Deletions-to-Make-Character-Frequencies-Unique"><a href="#1647-Minimum-Deletions-to-Make-Character-Frequencies-Unique" class="headerlink" title="1647.Minimum Deletions to Make Character Frequencies Unique"></a>1647.Minimum Deletions to Make Character Frequencies Unique</h2><p>关键点，用一个数组来保存每个频率拥有的字母的个数。举个例子：</p>
-<p>aaaabbbcc则这个数组就是 int[2] = 1 int[3] = 1 int[4] = 1;</p>
-<p>aaabbbccc则这个数组就是 int[3] = 3</p>
-<p>那么从大往小遍历这个数组，如果int[i] &gt;1则说明需要去掉字母，去到1为止，那么需要的步骤就是int[i] -1步</p>
-<p>这样做之后int[i-1] 会多出int[i] -1个字符，记得加上即可</p>
-<h2 id="1304-Find-N-Unique-Integers-Sum-up-to-Zero"><a href="#1304-Find-N-Unique-Integers-Sum-up-to-Zero" class="headerlink" title="1304. Find N Unique Integers Sum up to Zero"></a>1304. Find N Unique Integers Sum up to Zero</h2><p>简单题，有手就行</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-n-unique-integers-sum-up-to-zero/">https://leetcode.com/problems/find-n-unique-integers-sum-up-to-zero/</a></p>
-<h2 id="207-Course-Schedule"><a href="#207-Course-Schedule" class="headerlink" title="207.Course Schedule"></a>207.Course Schedule</h2><p>拓扑排序，用dfs实现</p>
-<p>遍历 0 - n个节点，每个节点dfs进去，然后设置为visiting</p>
-<p>遍历整个列表，如果这个节点还有edge到其他节点，那就dfs这个节点，如图就是如果是0 而且有 [1,0] [7,0] 则dfs (1)  dfs(7)</p>
-<p>dfs返回一个boolean，如果节点在visited里面，则说明已经访问完成，返回true</p>
-<p>如果在visiting里面说明已经产生环，返回false</p>
-<p>有一个节点dfs返回false，这说明整个图无法访问完全，返回False</p>
-<p>否则返回true</p>
-<p>看图好理解</p>
-<p><img src="https://s3.bmp.ovh/imgs/2021/12/ba7e405ec03eee30.png"></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/course-schedule/">https://leetcode.com/problems/course-schedule/</a></p>
-<h2 id="210-Course-Schedule-2"><a href="#210-Course-Schedule-2" class="headerlink" title="210.Course Schedule 2"></a>210.Course Schedule 2</h2><p>返回上题中的visited列表即可</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/course-schedule-ii/submissions/">https://leetcode.com/problems/course-schedule-ii/submissions/</a></p>
-<h2 id="79-Word-Search"><a href="#79-Word-Search" class="headerlink" title="79.Word Search"></a>79.Word Search</h2><p>DFS搜索即可</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/word-search/">https://leetcode.com/problems/word-search/</a></p>
-<h2 id="212-Word-Search-2"><a href="#212-Word-Search-2" class="headerlink" title="212.Word Search 2"></a>212.Word Search 2</h2><p>同样是DFS搜索，但是记得剪枝降低复杂度</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/word-search-ii/">https://leetcode.com/problems/word-search-ii/</a></p>
-<h2 id="17-Letter-Combinations-of-a-Phone-Number"><a href="#17-Letter-Combinations-of-a-Phone-Number" class="headerlink" title="17. Letter Combinations of a Phone Number"></a>17. Letter Combinations of a Phone Number</h2><p>DFS搜索即可</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/letter-combinations-of-a-phone-number/">https://leetcode.com/problems/letter-combinations-of-a-phone-number/</a></p>
-<h2 id="33-Search-in-Rotated-Sorted-Array"><a href="#33-Search-in-Rotated-Sorted-Array" class="headerlink" title="33. Search in Rotated Sorted Array"></a>33. Search in Rotated Sorted Array</h2><p>此题比较绕，需要理解</p>
-<p>​    //这里可以分成两段递增数组，举个例子就是 4 5 6 7 为一段 0 1 2 为第二段</p>
-<p>​    //那么如果 mid &gt; 0 则 mid在第一段 否则 在第二段</p>
-<p>​    //那么如果 mid &gt; target 则 如果mid在第二段 那target必在左边 缩小右即可 right = mid - 1</p>
-<p>​    //如果mid在第一段 则target需要判断</p>
-<p>​    //如果target &gt; 0 则在左边 那就是缩小右边right =  mid - 1，否则在右边 则缩小右边 left = mid + 1</p>
-<p>​    </p>
-<p>​    //如果 mid &lt; target 则 如果mid在第一段 则target必在右边 缩小左即可 left = mid + 1</p>
-<p>​    //如果mid在第二段 则target需要判断</p>
-<p>​    //如果target &gt; 0 则 在左边 需要缩小右边right = mid - 1，否则在右边 则缩小右边 left = mid + 1</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/search-in-rotated-sorted-array/">https://leetcode.com/problems/search-in-rotated-sorted-array/</a></p>
-<h2 id="103-Binary-Tree-Zigzag-Level-Order-Traversal"><a href="#103-Binary-Tree-Zigzag-Level-Order-Traversal" class="headerlink" title="103. Binary Tree Zigzag Level Order Traversal"></a>103. Binary Tree Zigzag Level Order Traversal</h2><p>需要注意的重点：二叉树的层序遍历可以使用for循环来分层</p>
-<p>int size = nodeQueue.size();</p>
-<p>​            for (int i = 0; i &lt; size; ++i)</p>
-<p>这样的话 这个for循环就只循环当前层数的节点次数</p>
-<p>然后记得用一个bool值来区分方向即可</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/submissions/">https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/submissions/</a></p>
-<h2 id="4-Median-of-Two-Sorted-Arrays"><a href="#4-Median-of-Two-Sorted-Arrays" class="headerlink" title="4. Median of Two Sorted Arrays"></a>4. Median of Two Sorted Arrays</h2><p>难题，数组划分法</p>
-<p>需要再做做，难点是特殊情况的处理</p>
-<p>判断正确条件：ApartLeft &lt; BpartRight 且 BpartLeft &lt; ApartRight</p>
-<p>如果不满足ApartLeft &lt; BpartRight 则说明划分线需要 左移</p>
-<p>如果不满足BpartLeft &lt; ApartRight 则说明划分线需要 右移</p>
-<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1B4411V7tP?from=search&amp;seid=15040070379930990880&amp;spm_id_from=333.337.0.0">https://www.bilibili.com/video/BV1B4411V7tP?from=search&amp;seid=15040070379930990880&amp;spm_id_from=333.337.0.0</a></p>
-<p>可看学习</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/median-of-two-sorted-arrays/">https://leetcode.com/problems/median-of-two-sorted-arrays/</a></p>
-<h2 id="23-Merge-k-Sorted-Lists"><a href="#23-Merge-k-Sorted-Lists" class="headerlink" title="23. Merge k Sorted Lists"></a><strong>23. Merge k Sorted Lists</strong></h2><p>用分治的方法即可解决，类似于归并排序，先两个两个合并，最后再一起</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/merge-k-sorted-lists/">https://leetcode.com/problems/merge-k-sorted-lists/</a></p>
-<h2 id="322-Coin-Change"><a href="#322-Coin-Change" class="headerlink" title="322. Coin Change"></a><strong>322. Coin Change</strong></h2><p>背包问题，动态规划解决</p>
-<p>关键代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span> ; i &lt; coins.length ; i++)&#123; <span class="hljs-comment">//遍历所有coin的情况</span><br><br>​            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = coins[i]; j &lt;= amount ; j++)&#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">					当遇到大的coin时候，可以刷新小的coin，举个例子就是，假设全用1块钱 		coin[5]就等于5，那如果	遇到3块钱，coin[5]就等于coin[2] 加 一个3块钱  就等于 3</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">		**/</span><br><br>​                dp[j] = Math.min(dp[j],dp[j-coins[i]]+<span class="hljs-number">1</span>);<br><br>​            &#125;<br><br>​        &#125;<br></code></pre></td></tr></table></figure>
-
-
-
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/coin-change/">https://leetcode.com/problems/coin-change/</a></p>
-<h2 id="994-Rotting-Oranges"><a href="#994-Rotting-Oranges" class="headerlink" title="994. Rotting Oranges"></a><strong>994. Rotting Oranges</strong></h2><p>BFS可解决</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/rotting-oranges/">https://leetcode.com/problems/rotting-oranges/</a></p>
-<h2 id="1344-Angle-Between-Hands-of-a-Clock"><a href="#1344-Angle-Between-Hands-of-a-Clock" class="headerlink" title="1344. Angle Between Hands of a Clock"></a><strong>1344. Angle Between Hands of a Clock</strong></h2><p>按顺序做下去即可，注意的点有数据类型的转换和返回的时候选小角返回</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/angle-between-hands-of-a-clock/submissions/">https://leetcode.com/problems/angle-between-hands-of-a-clock/submissions/</a></p>
-<h2 id="295-Find-Median-from-Data-Stream"><a href="#295-Find-Median-from-Data-Stream" class="headerlink" title="295. Find Median from Data Stream"></a><strong>295. Find Median from Data Stream</strong></h2><p>使用一个最小堆和一个最大堆，最小堆保存大的那部分数据，最大堆保存小的那部分数据。维持两个堆的size让他们保持相差最多为一个。当插入数据的时候，先插到最小堆，然后如果相差大于一就把最小堆的最小数移到最大堆。</p>
-<p>当数据总数为奇数时，就返回最小堆的最小数</p>
-<p>当数据总数为偶数时，就返回最小堆的最小数和最大堆最大数的平均数</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-median-from-data-stream/">https://leetcode.com/problems/find-median-from-data-stream/</a></p>
-<h2 id="706-Design-HashMap"><a href="#706-Design-HashMap" class="headerlink" title="706. Design HashMap"></a><strong>706. Design HashMap</strong></h2><p>数组+链表，链表保存key value ，数组保存key的hash值即可</p>
-<p>像jdk的hashmap</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/design-hashmap/">https://leetcode.com/problems/design-hashmap/</a></p>
-<h2 id="227-Basic-Calculator-II"><a href="#227-Basic-Calculator-II" class="headerlink" title="227. Basic Calculator II"></a><strong>227. Basic Calculator II</strong></h2><p>用一个栈保存操作</p>
-<ul>
-<li>加号：将数字压入栈；</li>
-<li>减号：将数字的相反数压入栈；</li>
-<li>乘除号：计算数字与栈顶元素，并将栈顶元素替换为计算结果。</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/basic-calculator-ii/">https://leetcode.com/problems/basic-calculator-ii/</a></p>
-<h2 id="计算器问题-leetcode-224-227-772"><a href="#计算器问题-leetcode-224-227-772" class="headerlink" title="计算器问题 leetcode 224 227 772"></a><strong>计算器问题 leetcode 224 227 772</strong></h2><p>统一把计算式转换为逆波兰表达式，然后再用逆波兰表达式求解</p>
-<p>RPE规则：</p>
-<p>\1. 碰到 ( 直接入 第一个 symbol stack</p>
-<p>\2. 碰到 数字 直接进入 vector (运算 deque)</p>
-<p>\3. 碰到 ) 就一直pop symbol stack 并且放到 vector 直到 ( </p>
-<p>\4. 碰到 ops 优先级小于自己的，就 push    碰到 大于等于的，直接 pop 给 vector</p>
-<p>然后vector从头开始遍历，定义一个栈，如果是数字就入栈，如果是运算符，就从栈中拿出两个数组进行计算，然后入栈</p>
-<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Nb4y1z7hG?p=1">https://www.bilibili.com/video/BV1Nb4y1z7hG?p=1</a></p>
-<h2 id="116-Populating-Next-Right-Pointers-in-Each-Node"><a href="#116-Populating-Next-Right-Pointers-in-Each-Node" class="headerlink" title="116. Populating Next Right Pointers in Each Node"></a><strong>116. Populating Next Right Pointers in Each Node</strong></h2><p>二叉树的广度遍历即可实现</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/populating-next-right-pointers-in-each-node/">https://leetcode.com/problems/populating-next-right-pointers-in-each-node/</a></p>
-<h2 id="273-Integer-to-English-Words"><a href="#273-Integer-to-English-Words" class="headerlink" title="273. Integer to English Words"></a><strong>273. Integer to English Words</strong></h2><p>考察编码全面性的题目，注意处理各种情况即可</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/integer-to-english-words/">https://leetcode.com/problems/integer-to-english-words/</a></p>
-<h2 id="198-House-Robber"><a href="#198-House-Robber" class="headerlink" title="198. House Robber"></a><strong>198. House Robber</strong></h2><p>经典动态规划问题</p>
-<p>​        // dp[i] = x 表示：</p>
-<p>​        // 从第 i 间房子开始抢劫，最多能抢到的钱为 x</p>
-<p>​        // base case: dp[n] = 0</p>
-<p>​        要么抢，则 i 需要+2 下一个房子不能抢，要么不抢，i+1.需要从最后一个开始遍历，返回dp[0]</p>
-<p>​        dp[i] = Math.max(dp[i + 1], nums[i] + dp[i + 2]);</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/house-robber/">https://leetcode.com/problems/house-robber/</a></p>
-<h2 id="5-Longest-Palindromic-Substring"><a href="#5-Longest-Palindromic-Substring" class="headerlink" title="5. Longest Palindromic Substring"></a><strong>5. Longest Palindromic Substring</strong></h2><p>动态规划</p>
-<p>dp[i][j] 为 i 到 j 是否为回文串</p>
-<p>则状态转移方程是 if (i == j) dp[i][j] = dp[i+1][j-1] ; if(i != j) dp[i][j] = false</p>
-<p>则j - i &gt; maxlen 刷新maxlen</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-palindromic-substring/">https://leetcode.com/problems/longest-palindromic-substring/</a></p>
-<h2 id="979-Distribute-Coins-in-Binary-Tree"><a href="#979-Distribute-Coins-in-Binary-Tree" class="headerlink" title="979. Distribute Coins in Binary Tree"></a><strong>979. Distribute Coins in Binary Tree</strong></h2><p>DFS</p>
-<p>​    //过载量：当前节点能够移走的金币个数</p>
-<p>​    //如果金币个数为0 过载量则为-1， 如果金币个数为5 过载量为 4</p>
-<p>​    //那这棵树所需的移动量就等于Math.abs(过载量)，因为如果过载量&lt;0则别的地方需要移动过来，&gt;0要移动出去，都是算到移动数的</p>
-<p>则一棵树的移动次数 = 当前节点过载量 + 左右子树的移动次数</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/distribute-coins-in-binary-tree/">https://leetcode.com/problems/distribute-coins-in-binary-tree/</a></p>
-<h2 id="443-String-Compression"><a href="#443-String-Compression" class="headerlink" title="443. String Compression"></a><strong>443. String Compression</strong></h2><p>指针，使用一个变量res来保存当前指针走到的下标数，count来保存当前字母出现的次数，now为当前字母。</p>
-<p>一次循环，如果chars[i] == now,则不停的往下找直到不等于为止，计算count，如果chars[i]!=now则刷新所有变量</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/string-compression/">https://leetcode.com/problems/string-compression/</a></p>
-<h2 id="93-Restore-IP-Addresses"><a href="#93-Restore-IP-Addresses" class="headerlink" title="93. Restore IP Addresses"></a><strong>93. Restore IP Addresses</strong></h2><p>DFS</p>
-<p>// i 为当前段数，ip地址四段，i 初始为0，当 i=4为递归结束条件</p>
-<p>// re 为当前拼接的字符串</p>
-<p>// index为当前遍历数组的位置</p>
-<p> dfs(int i, char[] sc,String re,int index)</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/restore-ip-addresses/">https://leetcode.com/problems/restore-ip-addresses/</a></p>
-<h2 id="25-Reverse-Nodes-in-k-Group"><a href="#25-Reverse-Nodes-in-k-Group" class="headerlink" title="25. Reverse Nodes in k-Group"></a><strong>25. Reverse Nodes in k-Group</strong></h2><p>反转链表的同时，把尾和头处理一下即可，像这样 ListNode reverse(ListNode pre,ListNode head) return就是反转后的队尾，pre保持指在list的头</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-nodes-in-k-group/">https://leetcode.com/problems/reverse-nodes-in-k-group/</a></p>
-<h2 id="297-Serialize-and-Deserialize-Binary-Tree"><a href="#297-Serialize-and-Deserialize-Binary-Tree" class="headerlink" title="297. Serialize and Deserialize Binary Tree"></a><strong>297. Serialize and Deserialize Binary Tree</strong></h2><p>二叉树的层序遍历，处理好一些空判断即可</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/serialize-and-deserialize-binary-tree/">https://leetcode.com/problems/serialize-and-deserialize-binary-tree/</a></p>
-<h2 id="128-Longest-Consecutive-Sequence"><a href="#128-Longest-Consecutive-Sequence" class="headerlink" title="128. Longest Consecutive Sequence"></a><strong>128. Longest Consecutive Sequence</strong></h2><p>用一个hash表存储 i 值是否有 i+1 个 值</p>
-<p>然后进行一个循环</p>
-<p><strong>重点判断一个 i 值是否有前驱 i-1，如果有，则说明他不是他这一段中最小的，则不从他开始搜，如果没有前驱则说明他是这段最小的，搜他这段，然后刷新max值。</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-consecutive-sequence/">https://leetcode.com/problems/longest-consecutive-sequence/</a></p>
-<h2 id="462-Minimum-Moves-to-Equal-Array-Elements-II"><a href="#462-Minimum-Moves-to-Equal-Array-Elements-II" class="headerlink" title="462. Minimum Moves to Equal Array Elements II"></a><strong>462. Minimum Moves to Equal Array Elements II</strong></h2><p>排序后找中位数，然后算算将每个数变为中位数需要的总数即可</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-moves-to-equal-array-elements-ii/">https://leetcode.com/problems/minimum-moves-to-equal-array-elements-ii/</a></p>
-<h2 id="238-Product-of-Array-Except-Self"><a href="#238-Product-of-Array-Except-Self" class="headerlink" title="238. Product of Array Except Self"></a><strong>238. Product of Array Except Self</strong></h2><p>res[i]为左边所有数的乘积 x 右边所有数的乘积，所以维护两个数组left[] right[]为左边所有数乘积和右边所有数乘积即可</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/product-of-array-except-self/">https://leetcode.com/problems/product-of-array-except-self/</a></p>
-<h2 id="22-Generate-Parentheses"><a href="#22-Generate-Parentheses" class="headerlink" title="22. Generate Parentheses"></a><strong>22. Generate Parentheses</strong></h2><p>DFS解决，构建的时候，判断栈中是否有左括号，有则可以匹配左和右，否则只能匹配左</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/generate-parentheses/">https://leetcode.com/problems/generate-parentheses/</a></p>
-<h2 id="42-Trapping-Rain-Water"><a href="#42-Trapping-Rain-Water" class="headerlink" title="42. Trapping Rain Water"></a><strong>42. Trapping Rain Water</strong></h2><p>height[i] 可以接的雨水的量等于Min(左边最长的<strong>，</strong>所以维护两个数组left[] right[]为左边最长和右边最长</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/trapping-rain-water/">https://leetcode.com/problems/trapping-rain-water/</a></p>
-<h2 id="28-Implement-strStr-（需要重点看）"><a href="#28-Implement-strStr-（需要重点看）" class="headerlink" title="28. Implement strStr() （需要重点看）"></a><strong>28. Implement strStr() （需要重点看）</strong></h2><p>这道题高级方法是<strong>KMP算法</strong></p>
-<p>维护一个最大公共前后缀数组prefix[] prefix[0] = -1 例如 a b a b c 则为 -1 0 0 1 2 0</p>
-<p>参考：</p>
-<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Px411z7Yo?from=search&amp;seid=771377043483174805&amp;spm_id_from=333.337.0.0">https://www.bilibili.com/video/BV1Px411z7Yo?from=search&amp;seid=771377043483174805&amp;spm_id_from=333.337.0.0</a></p>
-<p>当匹配不相等的时候，例如 i != j </p>
-<p>needle从prefix[j]里继续查找，例如 j = 3, prefix[j] = 1 则此时 将 j = 1继续查找，而不用将 j = 0从头找</p>
-<p>因为如果prefix[j] = 1的话 说明 0-1 和 j-1 到 j 是一样的，而且 j-1 到 j 前面匹配过说明是相等的，所以下一次匹配的时候可以直接省略 0-1这一段</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/implement-strstr/">https://leetcode.com/problems/implement-strstr/</a></p>
-<h2 id="98-Validate-Binary-Search-Tree"><a href="#98-Validate-Binary-Search-Tree" class="headerlink" title="98. Validate Binary Search Tree"></a><strong>98. Validate Binary Search Tree</strong></h2><p>搜索二叉树的中序遍历是有序的</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/validate-binary-search-tree/">https://leetcode.com/problems/validate-binary-search-tree/</a></p>
-<h2 id="73-Set-Matrix-Zeroes"><a href="#73-Set-Matrix-Zeroes" class="headerlink" title="73. Set Matrix Zeroes"></a><strong>73. Set Matrix Zeroes</strong></h2><p>使用数组的第一行和第一列来判断这一行或者这一列是否有0（例如J列有0的话，则arr[0][j]置为零，这样到时候循环的时候，把所有J列的都置为零即可），这样需要修改第一行和第一列，需要提前用两个变量来判断第一行和第一列原先是否有0</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/set-matrix-zeroes/">https://leetcode.com/problems/set-matrix-zeroes/</a></p>
-<h2 id="1275-Find-Winner-on-a-Tic-Tac-Toe-Game"><a href="#1275-Find-Winner-on-a-Tic-Tac-Toe-Game" class="headerlink" title="1275. Find Winner on a Tic Tac Toe Game"></a><strong>1275. Find Winner on a Tic Tac Toe Game</strong></h2><p>只需要判断最后一部下的人赢了没即可。因为井字棋只有三行，三列和两个对角线，所以可以用一个count数组来保存这三行三列和两个对角线的情况，如果count[i] = 3则获胜</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/">https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/</a></p>
-<h2 id="36-Valid-Sudoku"><a href="#36-Valid-Sudoku" class="headerlink" title="36. Valid Sudoku"></a><strong>36. Valid Sudoku</strong></h2><p>两个循环，判断行列和当前九宫格是否存在相同的数字即可</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/valid-sudoku/">https://leetcode.com/problems/valid-sudoku/</a></p>
-<h2 id="20-Valid-Parentheses"><a href="#20-Valid-Parentheses" class="headerlink" title="20. Valid Parentheses"></a><strong>20. Valid Parentheses</strong></h2><p>用栈，右括号匹配栈顶元素</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/valid-parentheses/">https://leetcode.com/problems/valid-parentheses/</a></p>
-<h2 id="75-Sort-Colors"><a href="#75-Sort-Colors" class="headerlink" title="75. Sort Colors"></a><strong>75. Sort Colors</strong></h2><p>用两个指针，指向左右两边，如果找到0，则跟左指针交换，如果找到2则跟右指针交换</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/sort-colors/">https://leetcode.com/problems/sort-colors/</a></p>
-<h2 id="769-Max-Chunks-To-Make-Sorted"><a href="#769-Max-Chunks-To-Make-Sorted" class="headerlink" title="769. Max Chunks To Make Sorted"></a><strong>769. Max Chunks To Make Sorted</strong></h2><p>如果前 0 到 k 个数成为一个块需要排序的话，则最大值为K，那前 0 - k的最大值 = k的时候分为一块 就是max == i 的时候</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/max-chunks-to-make-sorted/">https://leetcode.com/problems/max-chunks-to-make-sorted/</a></p>
-<h2 id="895-Maximum-Frequency-Stack"><a href="#895-Maximum-Frequency-Stack" class="headerlink" title="895. Maximum Frequency Stack"></a><strong>895. Maximum Frequency Stack</strong></h2><p>用两个Map， 一个保存key的频率，另一个Map保存某个频率所拥有的值（用栈来保存，注意，这里保存一个值的所有频率，例如 push 三次 5，则频率 1 2 3 里都需要有5，pop的时候就先pop频率3里的5）</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-frequency-stack/">https://leetcode.com/problems/maximum-frequency-stack/</a></p>
-<h2 id="41-First-Missing-Positive"><a href="#41-First-Missing-Positive" class="headerlink" title="41. First Missing Positive"></a><strong>41. First Missing Positive</strong></h2><p>用一个HashMap，保存出现的所有正数，然后从小到大循环一边，如果哪个没有就return，如果都有就return max+1</p>
-<p>因为要O1的空间复杂度 这里的HashMap用原数组代替，替换方法为：</p>
-<p>将 1 放在 下标为 0 上，将 2 放在下标为 1 上， 将 i 放在下标为 i-1上</p>
-<p>举个例子，当数组遍历到 i 的时候，把 nums[i] 放到 nums[i] - 1上，然后 nums[nums[i]-1] 放到 nums[i]上，如果这个数在数组范围内，继续调整他，直到这个数不在范围内或者已经在他应该在的位置，继续下一次循环</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/first-missing-positive/">https://leetcode.com/problems/first-missing-positive/</a></p>
-<h2 id="11-Container-With-Most-Water"><a href="#11-Container-With-Most-Water" class="headerlink" title="11. Container With Most Water"></a><strong>11. Container With Most Water</strong></h2><p>双指针，左右一个指针，左&gt;右则右指针移动，否则指针移动</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/container-with-most-water/">https://leetcode.com/problems/container-with-most-water/</a></p>
-<h2 id="31-Next-Permutation"><a href="#31-Next-Permutation" class="headerlink" title="31. Next Permutation"></a><strong>31. Next Permutation</strong></h2><p>方法比较抽象，需要记</p>
-<p>首先从右往左找，找第一对 i+1 &gt; i 的 pair</p>
-<p>然后交换，i 和 i 右边最小的数字</p>
-<p>最后reverse i 右边的数字</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/next-permutation/">https://leetcode.com/problems/next-permutation/</a></p>
-<h2 id="使用random7函数实现random10"><a href="#使用random7函数实现random10" class="headerlink" title="使用random7函数实现random10"></a><strong>使用random7函数实现random10</strong></h2><p>​                int x = rand7();        int y = rand7();        int value = (x - 1)*7 + y;        if(value &gt;= 41)            return rand10();        return (value % 10) + 1;              </p>
-<h2 id="380-Insert-Delete-GetRandom-O-1"><a href="#380-Insert-Delete-GetRandom-O-1" class="headerlink" title="380. Insert Delete GetRandom O(1)"></a><strong>380. Insert Delete GetRandom O(1)</strong></h2><p>使用hash表和数组，hash表保存数组的下标，这样插入是O(1)，查询也是O(1)。</p>
-<p>重点是删除：</p>
-<p>这里删除就通过hash表获得数组下标，然后将这个值和数组最后一个值交换，最后删除最后一个值，这样可以保证O(1)</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/insert-delete-getrandom-o1/">https://leetcode.com/problems/insert-delete-getrandom-o1/</a></p>
-<h2 id="450-Delete-Node-in-a-BST"><a href="#450-Delete-Node-in-a-BST" class="headerlink" title="450. Delete Node in a BST"></a><strong>450. Delete Node in a BST</strong></h2><p>如果 key &gt; root.val，说明要删除的节点在右子树，root.right = deleteNode(root.right, key)。</p>
-<p>如果 key &lt; root.val，说明要删除的节点在左子树，root.left = deleteNode(root.left, key)。</p>
-<p>如果 key == root.val，则该节点就是我们要删除的节点，则：</p>
-<p>如果该节点是叶子节点，则直接删除它：root = null。</p>
-<p>如果该节点不是叶子节点且有右节点，则用它的后继节点的值替代 root.val = </p>
-<p>successor.val，然后删除后继节点。</p>
-<p>如果该节点不是叶子节点且只有左节点，则用它的前驱节点的值替代 root.val = predecessor.val，然后删除前驱节点。</p>
-<p>前驱节点是二叉树中序遍历后，他前面的节点，就是他的左子树最大的那个值。</p>
-<p>后继节点是二叉树中序遍历后，他后面的节点，就是他的右子树最小的那个值。</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/delete-node-in-a-bst/">https://leetcode.com/problems/delete-node-in-a-bst/</a></p>
-<h2 id="768-Max-Chunks-To-Make-Sorted-II"><a href="#768-Max-Chunks-To-Make-Sorted-II" class="headerlink" title="768. Max Chunks To Make Sorted II"></a><strong>768. Max Chunks To Make Sorted II</strong></h2><p>维护一个left数组，left[i]表示从左到i最大的数，一个right数组，right[i]表示从右到左最小的数，遍历一遍，如果left[i] &lt;= right[i+1] 则需要分块，因为左边最大的数已经小于右边最小的数了，说明此时左右已经从小到大排好序了，则这时候分块就不会出现最终合并的时候大的在左小的在右。（快速排序思想）</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/max-chunks-to-make-sorted-ii/submissions/">https://leetcode.com/problems/max-chunks-to-make-sorted-ii/submissions/</a></p>
-<h2 id="1～n-整数中-1-出现的次数"><a href="#1～n-整数中-1-出现的次数" class="headerlink" title="1～n 整数中 1 出现的次数"></a><strong>1～n 整数中 1 出现的次数</strong></h2><p>其实就是取n每一位为1的时候，可能的情况。</p>
-<p>举个例子，假设有一个数字 abcdefg ，则如果 将 c设为1 则该数为 ab1defg</p>
-<p>则这个模式的数有ab+defg个，所以c位为1的情况有这么多个，计算全部位数即可。</p>
-<p>设当前位数为Cur，当前倍数为base，前面的数字pre，后面的数字suf</p>
-<p>pre = n / base / 10</p>
-<p>suf = n % base</p>
-<p>cur有三种情况</p>
-<p>\1) cur &gt; 1，则把cur设为1的话，数字变小，后面的数字取值为最大000~999即为base.</p>
-<p>此时总数为 (pre+1)*base</p>
-<p>\2) cur == 1，则如果前面的数字pre取 000<del>pre-1的时候，数字变小，后面的数字取最大为Base,如果前面的数字取pre，则后面的数字不能取最大，只能取000</del>suf</p>
-<p>此时总数为 (pre*base) + (1 * (b+1))</p>
-<p>\3) cur &lt; 1，如果cur设为1，则数字变大。所以前面只能取000~pre-1</p>
-<p>此时总数为 (pre*base) .</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/number-of-digit-one/">https://leetcode.com/problems/number-of-digit-one/</a></p>
-<h2 id="236-Lowest-Common-Ancestor-of-a-Binary-Tree"><a href="#236-Lowest-Common-Ancestor-of-a-Binary-Tree" class="headerlink" title="236. Lowest Common Ancestor of a Binary Tree"></a><strong>236. Lowest Common Ancestor of a Binary Tree</strong></h2><p>用dfs找，如果左子树和右子树分别有其中的一个节点，或者其中一个节点是root的情况，则返回，因为这样判断，两个数的公共节点只能找出一个</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/submissions/">https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/submissions/</a></p>
-<h2 id="232-Implement-Queue-using-Stacks"><a href="#232-Implement-Queue-using-Stacks" class="headerlink" title=".232. Implement Queue using Stacks"></a>.<strong>232. Implement Queue using Stacks</strong></h2><p><strong>简单</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/implement-queue-using-stacks/">https://leetcode.com/problems/implement-queue-using-stacks/</a></p>
-<h2 id="剑指-Offer-54-二叉搜索树的第k大节点"><a href="#剑指-Offer-54-二叉搜索树的第k大节点" class="headerlink" title="剑指 Offer 54. 二叉搜索树的第k大节点"></a><strong>剑指 Offer 54. 二叉搜索树的第k大节点</strong></h2><p><strong>用一个count保存K，因为中序遍历是</strong></p>
-<p><strong>dfs(root.left)</strong></p>
-<p><strong>print(root)</strong></p>
-<p><strong>dfs(root.right)</strong></p>
-<p><strong>能从小到大打印出数据来，所以这里只需要把print换成count–，每打印一个数据，就count–，则count == 0的时候，这个数据就是第K大的</strong></p>
-<h2 id="225-Implement-Stack-using-Queues"><a href="#225-Implement-Stack-using-Queues" class="headerlink" title="225. Implement Stack using Queues"></a><strong>225. Implement Stack using Queues</strong></h2><p><strong>队列实现栈，用一个队列，每次push的时候，把队列里的其他元素放到队尾，这样就能保证每次push的元素是最新的</strong></p>
-<p><strong>举个例子 1 2 3 ，首先 1 入 队，然后 2 入队，把 1 放到队尾。现在是 2 1。然后 3 入队， 2 1 放到队尾。 现在是 3 2 1 ，出队是栈的结构。</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/implement-stack-using-queues/submissions/">https://leetcode.com/problems/implement-stack-using-queues/submissions/</a></p>
-<h2 id="935-Knight-Dialer"><a href="#935-Knight-Dialer" class="headerlink" title="935. Knight Dialer"></a><strong>935. Knight Dialer</strong></h2><p><strong>动态规划 重点：</strong>我们用 f(start, n) 表示骑士从数字 start 开始，跳了 n - 1 步得到不同的 n 位数字的个数。f(start, n) 可以从 f(x, n - 1) 转移而来，其中 x 是任意一个可以一步跳到 start 的数字。例如当 start = 1，时，x 可以为 6 或 8，因此有 f(1, n) = f(6, n - 1) + f(8, n - 1)。</p>
-<p>最终的答案即为 </p>
-<p>f(0, N) + f(1, N) + … + f(9, N)。</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/knight-dialer/">https://leetcode.com/problems/knight-dialer/</a></p>
-<h2 id="171-Excel-Sheet-Column-Number"><a href="#171-Excel-Sheet-Column-Number" class="headerlink" title="171. Excel Sheet Column Number"></a><strong>171. Excel Sheet Column Number</strong></h2><p><strong>26进制，进位的时候记得乘上26即可</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/excel-sheet-column-number/">https://leetcode.com/problems/excel-sheet-column-number/</a></p>
-<h2 id="387-First-Unique-Character-in-a-String"><a href="#387-First-Unique-Character-in-a-String" class="headerlink" title="387. First Unique Character in a String"></a><strong>387. First Unique Character in a String</strong></h2><p><strong>用一个数组记录出现的频率，然后第二遍扫描扫到第一个出现频率为1的return即可</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/first-unique-character-in-a-string/submissions/">https://leetcode.com/problems/first-unique-character-in-a-string/submissions/</a></p>
-<h2 id="155-Min-Stack"><a href="#155-Min-Stack" class="headerlink" title="155. Min Stack"></a><strong>155. Min Stack</strong></h2><p><strong>单调栈，用额外的一个栈保存当前最小值</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/min-stack/">https://leetcode.com/problems/min-stack/</a></p>
-<h2 id="283-Move-Zeroes"><a href="#283-Move-Zeroes" class="headerlink" title="283. Move Zeroes"></a><strong>283. Move Zeroes</strong></h2><p><strong>双指针，一个控制零，一个控制非零。记住，保持非零的左边必须全是零，所以每次循环找非零只需要从非零指针开始。</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/move-zeroes/">https://leetcode.com/problems/move-zeroes/</a></p>
-<h2 id="117-Populating-Next-Right-Pointers-in-Each-Node-II"><a href="#117-Populating-Next-Right-Pointers-in-Each-Node-II" class="headerlink" title="117. Populating Next Right Pointers in Each Node II"></a><strong>117. Populating Next Right Pointers in Each Node II</strong></h2><p><strong>层序遍历</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/">https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/</a></p>
-<h2 id="215-Kth-Largest-Element-in-an-Array"><a href="#215-Kth-Largest-Element-in-an-Array" class="headerlink" title="215. Kth Largest Element in an Array"></a><strong>215. Kth Largest Element in an Array</strong></h2><p><strong>TopK问题</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/kth-largest-element-in-an-array/https://leetcode.com/problems/kth-largest-element-in-an-array/">https://leetcode.com/problems/kth-largest-element-in-an-array/https://leetcode.com/problems/kth-largest-element-in-an-array/</a></p>
-<h2 id="1615-Maximal-Network-Rank"><a href="#1615-Maximal-Network-Rank" class="headerlink" title="1615. Maximal Network Rank"></a><strong>1615. Maximal Network Rank</strong></h2><p><strong>用一个数组保存每一条边出现的次数，最后减去公共边</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximal-network-rank/">https://leetcode.com/problems/maximal-network-rank/</a></p>
-<h2 id="43-Multiply-Strings"><a href="#43-Multiply-Strings" class="headerlink" title="43. Multiply Strings"></a><strong>43. Multiply Strings</strong></h2><p><strong>用一个数组来保存竖式乘法中乘出来的结果数</strong></p>
-<p>​    <img src="https://note.youdao.com/yws/res/1/WEBRESOURCEda70e377a2fb565b732cf63f96cf54c1" alt="0"></p>
-<p>保存下面的那个数</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/multiply-strings/">https://leetcode-cn.com/problems/multiply-strings/</a></p>
-<h2 id="44-Wildcard-Matching"><a href="#44-Wildcard-Matching" class="headerlink" title="44. Wildcard Matching"></a><strong>44. Wildcard Matching</strong></h2><p><strong>动态规划，状态转移方程：</strong></p>
-<p><em>dp</em>[<em>i</em>][<em>j</em>]=(<em>s**i</em> 与 <em>p**j</em> 相同)∧<em>dp</em>[<em>i</em>−1][<em>j</em>−1]</p>
-<p><em>dp</em>[<em>i</em>][<em>j</em>]=<em>dp</em>[<em>i</em>−1][<em>j</em>−1] （pj为问号）</p>
-<p><em>dp</em>[<em>i</em>][<em>j</em>]=<em>dp</em>[<em>i</em>][<em>j</em>−1]∨<em>dp</em>[<em>i</em>−1][<em>j</em>] （pj为星号，如果我们不使用这个星号，那么就会从 \textit{dp}[i][j-1]dp[i][j−1] 转移而来；如果我们使用这个星号，那么就会从 \textit{dp}[i-1][j]dp[i−1][j] 转移而来。）</p>
-<p>base case</p>
-<p>dp[0][0]=True，即当字符串 ss 和模式 pp 均为空时，匹配成功；</p>
-<p>dp[i][0]=False，即空模式无法匹配非空字符串；</p>
-<p>dp[0][j] 需要分情况讨论：因为星号才能匹配空字符串，所以只有当模式 pp 的前 jj 个字符均为星号时，\textit{dp}[0][j]dp[0][j] 才为真。</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/wildcard-matching/">https://leetcode.com/problems/wildcard-matching/</a></p>
-<h2 id="84-Largest-Rectangle-in-Histogram"><a href="#84-Largest-Rectangle-in-Histogram" class="headerlink" title="84. Largest Rectangle in Histogram"></a><strong>84. Largest Rectangle in Histogram</strong></h2><p><strong>用单调栈维护左边最大和右边最大</strong></p>
-<p>例子</p>
-<p>我们用一个具体的例子 [6, 7, 5, 2, 4, 5, 9, 3][6,7,5,2,4,5,9,3] 来帮助读者理解单调栈。我们需要求出每一根柱子的左侧且最近的小于其高度的柱子。初始时的栈为空。</p>
-<p>我们枚举 66，因为栈为空，所以 66 左侧的柱子是「哨兵」，位置为 -1。随后我们将 66 入栈。</p>
-<p>栈：[6(0)]。（这里括号内的数字表示柱子在原数组中的位置）</p>
-<p>我们枚举 77，由于 6&lt;76&lt;7，因此不会移除栈顶元素，所以 77 左侧的柱子是 66，位置为 00。随后我们将 77 入栈。</p>
-<p>栈：[6(0), 7(1)]</p>
-<p>我们枚举 55，由于 7\geq 57≥5，因此移除栈顶元素 77。同样地，6 \geq 56≥5，再移除栈顶元素 66。此时栈为空，所以 55 左侧的柱子是「哨兵」，位置为 -1−1。随后我们将 55 入栈。</p>
-<p>栈：[5(2)]</p>
-<p>接下来的枚举过程也大同小异。我们枚举 22，移除栈顶元素 55，得到 22 左侧的柱子是「哨兵」，位置为 -1−1。将 22 入栈。</p>
-<p>栈：[2(3)]</p>
-<p>我们枚举 44，55 和 99，都不会移除任何栈顶元素，得到它们左侧的柱子分别是 22，44 和 55，位置分别为 33，44 和 55。将它们入栈。</p>
-<p>栈：[2(3), 4(4), 5(5), 9(6)]</p>
-<p>我们枚举 33，依次移除栈顶元素 99，55 和 44，得到 33 左侧的柱子是 22，位置为 33。将 33 入栈。</p>
-<p>栈：[2(3), 3(7)]</p>
-<p>这样以来，我们得到它们左侧的柱子编号分别为 [-1, 0, -1, -1, 3, 4, 5, 3][−1,0,−1,−1,3,4,5,3]。用相同的方法，我们从右向左进行遍历，也可以得到它们右侧的柱子编号分别为 [2, 2, 3, 8, 7, 7, 7, 8][2,2,3,8,7,7,7,8]，这里我们将位置 88 看作「哨兵」。</p>
-<p>在得到了左右两侧的柱子之后，我们就可以计算出每根柱子对应的左右边界，并求出答案了。</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/largest-rectangle-in-histogram/">https://leetcode.com/problems/largest-rectangle-in-histogram/</a></p>
-<h2 id="124-Binary-Tree-Maximum-Path-Sum"><a href="#124-Binary-Tree-Maximum-Path-Sum" class="headerlink" title="124. Binary Tree Maximum Path Sum"></a><strong>124. Binary Tree Maximum Path Sum</strong></h2><p><strong>节点的最大路径和等于 root.val + Math.max (left (max) or right (max))</strong></p>
-<p><strong>举个例子，当遍历到一个节点的时候，此时经过这个节点的路径有，根 -&gt; 此node -&gt; （node.left or node.right），或者 node.left -&gt; 此node -&gt; node.right</strong></p>
-<p><strong>那第二种情况已经和根节点无关了，所以在这里刷新一下max值</strong> maxSum = Math.max(maxSum,root.val+left+right);</p>
-<p><strong>然后把第一种情况return回根节点，然后让根节点继续这个过程，(<strong>return root.val+Math.max(left,right);</strong>) 直到没有根节点了，只剩下第二种情况了，刷新max值</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/binary-tree-maximum-path-sum/">https://leetcode.com/problems/binary-tree-maximum-path-sum/</a></p>
-<h2 id="48-Rotate-Image"><a href="#48-Rotate-Image" class="headerlink" title="48. Rotate Image"></a><strong>48. Rotate Image</strong></h2><p>for (int i = 0; i &lt; n / 2; ++i) {</p>
-<p>​            for (int j = 0; j &lt; (n + 1) / 2; ++j) {</p>
-<p>​                int temp = matrix[i][j];</p>
-<p>​                matrix[i][j] = matrix[n - j - 1][i];</p>
-<p>​                matrix[n - j - 1][i] = matrix[n - i - 1][n - j - 1];</p>
-<p>​                matrix[n - i - 1][n - j - 1] = matrix[j][n - i - 1];</p>
-<p>​                matrix[j][n - i - 1] = temp;</p>
-<p>​            }</p>
-<p>​        }</p>
-<p><strong>或者</strong></p>
-<p>int n = matrix.length;</p>
-<p>​        // 水平翻转</p>
-<p>​        for (int i = 0; i &lt; n / 2; ++i) {</p>
-<p>​            for (int j = 0; j &lt; n; ++j) {</p>
-<p>​                int temp = matrix[i][j];</p>
-<p>​                matrix[i][j] = matrix[n - i - 1][j];</p>
-<p>​                matrix[n - i - 1][j] = temp;</p>
-<p>​            }</p>
-<p>​        }</p>
-<p>​        // 主对角线翻转</p>
-<p>​        for (int i = 0; i &lt; n; ++i) {</p>
-<p>​            for (int j = 0; j &lt; i; ++j) {</p>
-<p>​                int temp = matrix[i][j];</p>
-<p>​                matrix[i][j] = matrix[j][i];</p>
-<p>​                matrix[j][i] = temp;</p>
-<p>​            }</p>
-<p>​        }</p>
-<p>​    }</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/rotate-image/">https://leetcode.com/problems/rotate-image/</a></p>
-<h2 id="622-Design-Circular-Queue"><a href="#622-Design-Circular-Queue" class="headerlink" title="622. Design Circular Queue"></a><strong>622. Design Circular Queue</strong></h2><p><strong>Array + 双指针实现 一个指针控制进， 一个指针控制出</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/design-circular-queue/">https://leetcode.com/problems/design-circular-queue/</a></p>
-<h2 id="221-Maximal-Square"><a href="#221-Maximal-Square" class="headerlink" title="221. Maximal Square"></a><strong>221. Maximal Square</strong></h2><p><strong>动态规划，dp[i][j] 等于dp[i-1][j-1] dp[i-1][j] dp[i][j-1] 最小的那个 +1</strong></p>
-<p><strong>举个例子，如果 i j 的上 左上 左组成的都是边长为2的正方形，则他们加起来就是边长为3，如果有一个小于2 等于1，则加起来边长为2；</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximal-square/">https://leetcode.com/problems/maximal-square/</a></p>
-<h2 id="540-Single-Element-in-a-Sorted-Array"><a href="#540-Single-Element-in-a-Sorted-Array" class="headerlink" title="540. Single Element in a Sorted Array"></a><strong>540. Single Element in a Sorted Array</strong></h2><p><strong>二分，二分条件是判断左右数量是否为偶数，因为只有一个元素为一个，其他都为两个，则肯定是有一块是奇数</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/single-element-in-a-sorted-array/">https://leetcode.com/problems/single-element-in-a-sorted-array/</a></p>
-<h2 id="121-Best-Time-to-Buy-and-Sell-Stock"><a href="#121-Best-Time-to-Buy-and-Sell-Stock" class="headerlink" title="121. Best Time to Buy and Sell Stock"></a><strong>121. Best Time to Buy and Sell Stock</strong></h2><p><strong>单调栈，保存从左开始最小数字</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock/">https://leetcode.com/problems/best-time-to-buy-and-sell-stock/</a></p>
-<h2 id="773-Sliding-Puzzle"><a href="#773-Sliding-Puzzle" class="headerlink" title="773. Sliding Puzzle"></a><strong>773. Sliding Puzzle</strong></h2><p><strong>BFS，把每次移动的情况放到广度搜索数中，找到了则返回层数</strong></p>
-<p><strong>这里queue可以保存一个String, 匹配的String就是 “123450”</strong></p>
-<p><strong>只需要交换0和其他节点即可，因为总共就六个点</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/sliding-puzzle/">https://leetcode.com/problems/sliding-puzzle/</a></p>
-<h2 id="51-N-Queens"><a href="#51-N-Queens" class="headerlink" title="51. N-Queens"></a><strong>51. N-Queens</strong></h2><p><strong>DFS，把所有皇后摆放的情况求出来</strong></p>
-<p><strong>如何判断 i j 是否能下子，</strong></p>
-<p><strong>同一条直线的话则是 i 相同或者 j 相同</strong></p>
-<p><strong>同一条斜线的话则是 i-j 相同 或者 i+j 相同</strong></p>
-<p><strong>用set来保存同一条直线或者同一条斜线是否有棋子即可</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/n-queens/">https://leetcode.com/problems/n-queens/</a></p>
-<h2 id="1578-Minimum-Time-to-Make-Rope-Colorful"><a href="#1578-Minimum-Time-to-Make-Rope-Colorful" class="headerlink" title="1578. Minimum Time to Make Rope Colorful"></a><strong>1578. Minimum Time to Make Rope Colorful</strong></h2><p><strong>贪心算法，用一个变量来保存当前最小值和位置即可</strong></p>
-<p><strong>那遍历的时候要么删除 i 则当前最小值不变，要么删除当前最小值，然后更新值为i</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-time-to-make-rope-colorful/">https://leetcode.com/problems/minimum-time-to-make-rope-colorful/</a></p>
-<h2 id="134-Gas-Station"><a href="#134-Gas-Station" class="headerlink" title="134. Gas Station"></a><strong>134. Gas Station</strong></h2><p><strong>贪心思路</strong></p>
-<p><strong>举个例子：如果 1 - 2 - 3 ，到 3 的时候gas总量小于0了，那说明 1 - 2 这段的总量是大于0的，所以他才会继续开，</strong></p>
-<p><strong>那大于0的值+上3的消耗都小于0，则如果从3开始就是0加上3的消耗，更不行</strong></p>
-<p><strong>所以只能从3的下一个结点开始找，那这样的话总的循环次数不超过两次，复杂度为O(n)</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/gas-station/">https://leetcode.com/problems/gas-station/</a></p>
-<h2 id="234-Palindrome-Linked-List"><a href="#234-Palindrome-Linked-List" class="headerlink" title="234. Palindrome Linked List"></a><strong>234. Palindrome Linked List</strong></h2><p><strong>最优解法：</strong></p>
-<p><strong>反转后面那部分的链表，然后用双指针看是否相同</strong>  </p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/palindrome-linked-list/">https://leetcode.com/problems/palindrome-linked-list/</a></p>
-<h2 id="173-Binary-Search-Tree-Iterator"><a href="#173-Binary-Search-Tree-Iterator" class="headerlink" title="173. Binary Search Tree Iterator"></a><strong>173. Binary Search Tree Iterator</strong></h2><p><strong>解法1：将他中序遍历的结果保存起来</strong></p>
-<p><strong>解法2：用一个栈模拟递归</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/binary-search-tree-iterator/">https://leetcode.com/problems/binary-search-tree-iterator/</a></p>
-<h2 id="162-Find-Peak-Element"><a href="#162-Find-Peak-Element" class="headerlink" title="162. Find Peak Element"></a><strong>162. Find Peak Element</strong></h2><p><strong>二分</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-peak-element/3">https://leetcode.com/problems/find-peak-element/</a></p>
-<h2 id="153-Find-Minimum-in-Rotated-Sorted-Array"><a href="#153-Find-Minimum-in-Rotated-Sorted-Array" class="headerlink" title="153. Find Minimum in Rotated Sorted Array"></a><strong>153. Find Minimum in Rotated Sorted Array</strong></h2><p><strong>二分，和arr[0]比较</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/">https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/</a></p>
-<h2 id="139-Word-Break"><a href="#139-Word-Break" class="headerlink" title="139. Word Break"></a><strong>139. Word Break</strong></h2><p><strong>dp</strong></p>
-<p><strong>当dp[i] == true 且 j - i 符合时 dp[j] == true</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/word-break/">https://leetcode.com/problems/word-break/</a></p>
-<h2 id="394-Decode-String"><a href="#394-Decode-String" class="headerlink" title="394. Decode String"></a><strong>394. Decode String</strong></h2><p><strong>用递归做，或者栈</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/decode-string/">https://leetcode.com/problems/decode-string/</a></p>
-<h2 id="114-Flatten-Binary-Tree-to-Linked-List"><a href="#114-Flatten-Binary-Tree-to-Linked-List" class="headerlink" title="114. Flatten Binary Tree to Linked List"></a><strong>114. Flatten Binary Tree to Linked List</strong></h2><p><strong>将先序遍历的结果保存起来，然后遍历即可</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/flatten-binary-tree-to-linked-list/">https://leetcode.com/problems/flatten-binary-tree-to-linked-list/</a></p>
-<h2 id="300-Longest-Increasing-Subsequence"><a href="#300-Longest-Increasing-Subsequence" class="headerlink" title="300. Longest Increasing Subsequence"></a><strong>300. Longest Increasing Subsequence</strong></h2><p><strong>dp, base case dp值为1，则进行两次循环</strong></p>
-<p><strong>对于任何dp[i] 如果找到一个 j &lt; i ，且dp[i] &lt; dp[j]+1 则刷新dp[i]的值</strong> </p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-increasing-subsequence/">https://leetcode.com/problems/longest-increasing-subsequence/</a></p>
-<h2 id="437-Path-Sum-III"><a href="#437-Path-Sum-III" class="headerlink" title="437. Path Sum III"></a><strong>437. Path Sum III</strong></h2><p><strong>递归 或者 前缀和</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/path-sum-iii/">https://leetcode.com/problems/path-sum-iii/</a></p>
-<h2 id="105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal"><a href="#105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal" class="headerlink" title="105. Construct Binary Tree from Preorder and Inorder Traversal"></a><strong>105. Construct Binary Tree from Preorder and Inorder Traversal</strong></h2><p><strong>熟悉前序和中序的特性即可</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/">https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/</a></p>
-<h2 id="101-Symmetric-Tree"><a href="#101-Symmetric-Tree" class="headerlink" title="101. Symmetric Tree"></a><strong>101. Symmetric Tree</strong></h2><p><strong>使用同步指针递归，一个p 一个q，p左移时，q右移，p右移时，q左移。然后判断p q值是否相等</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/symmetric-tree/">https://leetcode.com/problems/symmetric-tree/</a></p>
-<h2 id="287-Find-the-Duplicate-Number"><a href="#287-Find-the-Duplicate-Number" class="headerlink" title="287. Find the Duplicate Number"></a><strong>287. Find the Duplicate Number</strong></h2><p><strong>二分思路</strong></p>
-<p><strong>举例：</strong></p>
-<p><strong>假设 n = 4 , 这个重复的数字是3，则mid = 2， 小于等于2 的数有 2 个， 大于等于 2 的数有3个，所以重复的在大的那边</strong></p>
-<p><strong>缩小二分范围，然后继续计算即可</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-the-duplicate-number/">https://leetcode.com/problems/find-the-duplicate-number/</a></p>
-<h2 id="39-Combination-Sum"><a href="#39-Combination-Sum" class="headerlink" title="39. Combination Sum"></a><strong>39. Combination Sum</strong></h2><p><strong>DFS，注意用到贪心思路去剪枝，递归的时候只往大的选，因为小的肯定已经被选过了</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/combination-sum/">https://leetcode.com/problems/combination-sum/</a></p>
-<h2 id="127-Word-Ladder"><a href="#127-Word-Ladder" class="headerlink" title="127. Word Ladder"></a><strong>127. Word Ladder</strong></h2><p><strong>BFS</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/word-ladder/">https://leetcode.com/problems/word-ladder/</a></p>
-<h2 id="460-LFU-Cache"><a href="#460-LFU-Cache" class="headerlink" title="460. LFU Cache"></a><strong>460. LFU Cache</strong></h2><p><strong>思路不难，实现起来比较复杂</strong></p>
-<p><strong>维护一个频率链表，root是0，tail是maxvalue，当数据满的时候，从root.next里找频率最低的数</strong></p>
-<p><strong>然后链表里的值也是一个双向链表，这里就是LRU，头是最新插入，未是最久未使用，所以最后一个值删除。</strong></p>
-<p><strong>每次操作的时候，将频率+1，并且挪到对应的频率节点上，如果没有该节点，则新建一个插入</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/lfu-cache/submissions/">https://leetcode.com/problems/lfu-cache/submissions/</a></p>
-<h2 id="403-Frog-Jump"><a href="#403-Frog-Jump" class="headerlink" title="403. Frog Jump"></a><strong>403. Frog Jump</strong></h2><p><strong>dp思路</strong></p>
-<p><strong>用map来保存每一步可以跳的步骤，map&gt;</strong></p>
-<p><strong>举个例子，</strong></p>
-<p><strong>0-1 可以跳一步，此时k为1，那map.get(1) 就可以有 0 1 2步。</strong></p>
-<p><strong>下一个石子是3，跳2步可以跳过去，此时k=2，那此时map.get(2) 就可以有 1 2 3 步</strong></p>
-<p><strong>如果下个石子是5 和 6，那 3 这里可以通过 2 步跳到 5，那5 就是 1 2 3 步，也可以通过3步跳到6 ，那6就是 2 3 4 步</strong></p>
-<p><strong>此时5由可以跳1步到6 那6就是 0 1 2 3 4 步，以此类推，只要最后一步的size&gt;0即为成功</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/frog-jump/">https://leetcode.com/problems/frog-jump/</a></p>
-<h2 id="53-Maximum-Subarray"><a href="#53-Maximum-Subarray" class="headerlink" title="53. Maximum Subarray"></a><strong>53. Maximum Subarray</strong></h2><p><strong>如果全是负数，选最大的那个</strong></p>
-<p><strong>如果不是全是负数，则当计算总和小于零的时候舍弃掉，重新从后面开始计算</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-subarray/">https://leetcode.com/problems/maximum-subarray/</a></p>
-<h2 id="721-Accounts-Merge（需再看）"><a href="#721-Accounts-Merge（需再看）" class="headerlink" title="721. Accounts Merge（需再看）"></a><strong>721. Accounts Merge（需再看）</strong></h2><p><strong>并查集，但是实现有点麻烦，需要新建一个类</strong></p>
-<p><strong>用一个并查集来保存有相同邮箱的一组</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/accounts-merge/">https://leetcode.com/problems/accounts-merge/</a></p>
-<h2 id="50-Pow-x-n"><a href="#50-Pow-x-n" class="headerlink" title="50. Pow(x, n)"></a><strong>50. Pow(x, n)</strong></h2><p><strong>记住 ：</strong></p>
-<p>double y = calculate(x,n/2);</p>
-<p>if(n % 2 == 0){</p>
-<p>​            return y*y;</p>
-<p>​        }else{</p>
-<p>​            return y<em>y</em>x;</p>
-<p>​        }</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/powx-n/">https://leetcode.com/problems/powx-n/</a></p>
-<h2 id="142-Linked-List-Cycle-II"><a href="#142-Linked-List-Cycle-II" class="headerlink" title="142. Linked List Cycle II"></a><strong>142. Linked List Cycle II</strong></h2><p><strong>首先找到第一次相同的点</strong></p>
-<p><strong>然后头节点和这个节点不停地往下走，再次相撞就是交点</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/linked-list-cycle-ii/">https://leetcode.com/problems/linked-list-cycle-ii/</a></p>
-<h2 id="628-Maximum-Product-of-Three-Numbers"><a href="#628-Maximum-Product-of-Three-Numbers" class="headerlink" title="628. Maximum Product of Three Numbers"></a><strong>628. Maximum Product of Three Numbers</strong></h2><p><strong>如果数组里有正有负的话，则答案有可能是两负一正，和三正，所以找出最大的三个数和最小的两个数</strong></p>
-<p><strong>然后比一下他们之间乘积即可</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-product-of-three-numbers/">https://leetcode.com/problems/maximum-product-of-three-numbers/</a></p>
-<h2 id="72-Edit-Distance"><a href="#72-Edit-Distance" class="headerlink" title="72. Edit Distance"></a><strong>72. Edit Distance</strong></h2><p><strong>dp问题</strong></p>
-<p><strong>假设有两串字符串 abbc acc</strong></p>
-<p><strong>分类：当 i == j 时，不用做任何改变，例如上面的c == c，所以dp[i][j] = dp[i-1][j-1]</strong></p>
-<p><strong>当 i != j 时，例如上面abb ac的时候，此时有三种做法</strong> </p>
-<p><strong>1.删掉一位，则 i = i-1 dp[i][j] = dp[i-1][j]</strong></p>
-<p><strong>2.增加一位，因为增加的这一位一定是等于另一侧的值的，举个例子就是这里增加个c,则变成 abbc ac 则 其实此时就变成 i+1 == j 即 i == j-1 dp[i][j] = dp[i][j-1]</strong></p>
-<p><strong>3.改变一位，改变这一位也是一定等于另一侧的值，所以就相当于 abc ac 此时 i == j 即 dp[i][j] = dp[i-1][j-1]</strong></p>
-<p><strong>这三个操作都要 +1 取最小</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/edit-distance/">https://leetcode.com/problems/edit-distance/</a></p>
-<h2 id="32-Longest-Valid-Parentheses"><a href="#32-Longest-Valid-Parentheses" class="headerlink" title="32. Longest Valid Parentheses"></a><strong>32. Longest Valid Parentheses</strong></h2><p><strong>两种方案：</strong></p>
-<p><strong>1.Dp: dp[i] 代表 从 0 到 i 的 最长有效括号</strong></p>
-<p><strong>当我们检查到i的时候，有四种情况：</strong></p>
-<p><strong>…((</strong></p>
-<p><strong>…()</strong></p>
-<p><strong>…))  -&gt;  …((…))</strong></p>
-<p><strong>…)(</strong></p>
-<p><strong>如果 s[i] 是 ‘(‘ 左括号，他无法构成一个有效括号，所以dp[i] = 0</strong></p>
-<p><strong>如果 s[i] 是 ‘)’ 右括号，</strong></p>
-<p><strong>当s[i-1]是’(‘ ，dp[i] = dp[i-2] + 2</strong></p>
-<p><strong>当s[i-1]是’)’ ，</strong></p>
-<p><strong>如果 i - dp[i-1] - 1 是 ‘(‘ ，dp[i] = dp[i-1] + 2 + dp[i - dp[i-1] -2]</strong></p>
-<p><strong>如果 i - dp[i-1] - 1 是 ‘)’  ，dp[i] = 0 不能构成括号</strong></p>
-<p>**2.**具体做法是我们始终保持栈底元素为当前已经遍历过的元素中「最后一个没有被匹配的右括号的下标」，这样的做法主要是考虑了边界条件的处理，栈里其他元素维护左括号的下标：</p>
-<p>对于遇到的每个 ‘(’ ，我们将它的下标放入栈中</p>
-<p>对于遇到的每个 ‘)’ ，<strong>我们先弹出栈顶元素</strong>表示匹配了当前右括号：</p>
-<p>如果栈为空，说明当前的右括号为没有被匹配的右括号，我们将其下标放入栈中来更新我们之前提到的「最后一个没有被匹配的右括号的下标」</p>
-<p>如果栈不为空，当前右括号的下标减去栈顶元素即为「以该右括号为结尾的最长有效括号的长度」</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-valid-parentheses/">https://leetcode.com/problems/longest-valid-parentheses/</a></p>
-<h2 id="15-3Sum"><a href="#15-3Sum" class="headerlink" title="15. 3Sum"></a><strong>15. 3Sum</strong></h2><p><strong>两遍循环，先第一个数确定，然后剩下两个数按照2sum的双指针即可</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/3sum/">https://leetcode.com/problems/3sum/</a></p>
-<h2 id="528-Random-Pick-with-Weight"><a href="#528-Random-Pick-with-Weight" class="headerlink" title="528. Random Pick with Weight"></a><strong>528. Random Pick with Weight</strong></h2><p><strong>前缀和+二分查找</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/random-pick-with-weight/">https://leetcode.com/problems/random-pick-with-weight/</a></p>
-<h2 id="214-Shortest-Palindrome"><a href="#214-Shortest-Palindrome" class="headerlink" title="214. Shortest Palindrome"></a><strong>214. Shortest Palindrome</strong></h2><p><strong>用马拉车算法找到最长回文前缀，然后把剩下的反转接到前面去</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/shortest-palindrome/">https://leetcode.com/problems/shortest-palindrome/</a></p>
-<h2 id="969-Pancake-Sorting"><a href="#969-Pancake-Sorting" class="headerlink" title="969. Pancake Sorting"></a><strong>969. Pancake Sorting</strong></h2><p><strong>每次翻转把当前最大的数反转到最后一位（先反转 0 - max ，然后反转 0 - length）</strong> </p>
-<p><strong>然后类似于冒泡排序即可</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/pancake-sorting/">https://leetcode.com/problems/pancake-sorting/</a></p>
-<h2 id="1312-Minimum-Insertion-Steps-to-Make-a-String-Palindrome"><a href="#1312-Minimum-Insertion-Steps-to-Make-a-String-Palindrome" class="headerlink" title="1312. Minimum Insertion Steps to Make a String Palindrome"></a><strong>1312. Minimum Insertion Steps to Make a String Palindrome</strong></h2><p><strong>dp，思路：</strong></p>
-<p><strong>dp[i][j]代表，i - j 需要插入的次数，</strong></p>
-<p><strong>举个例子如果有一串字符 a …. a , 此时 i == j 那么不用做任何操作 dp[i][j] = dp[i+1][j-1]</strong></p>
-<p><strong>如果此时 字符是 a … b 则有两种情况，</strong></p>
-<p><strong>插入a -&gt; a … ba 则此时 i == j+1 dp[i][j] = dp[i+1][j] +1</strong></p>
-<p><strong>插入b -&gt; ba … b 此时 i-1 == j dp[i][j] = dp[i][j-1] +1</strong></p>
-<p><strong>两者求min</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/">https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/</a></p>
-<h2 id="Manacher-马拉车算法"><a href="#Manacher-马拉车算法" class="headerlink" title="Manacher 马拉车算法"></a><strong>Manacher 马拉车算法</strong></h2><p>p[i] : 下标为i时的回文半径</p>
-<p>状态转移方程</p>
-<p>​                p[i] = Math.min(maxRight - i,p[mirror]);</p>
-<p>然后进行中心扩散</p>
-<p><img src="https://s3.bmp.ovh/imgs/2022/02/5420e103b497729f.png"></p>
-<h2 id="1414-Find-the-Minimum-Number-of-Fibonacci-Numbers-Whose-Sum-Is-K"><a href="#1414-Find-the-Minimum-Number-of-Fibonacci-Numbers-Whose-Sum-Is-K" class="headerlink" title="1414. Find the Minimum Number of Fibonacci Numbers Whose Sum Is K"></a><strong>1414. Find the Minimum Number of Fibonacci Numbers Whose Sum Is K</strong></h2><p><img src="https://s3.bmp.ovh/imgs/2022/02/3ca5e2207c0e1e9c.png"></p>
-<h2 id="639-Decode-Ways-II"><a href="#639-Decode-Ways-II" class="headerlink" title="639. Decode Ways II"></a><strong>639. Decode Ways II</strong></h2><p><strong>dp解法</strong></p>
-<p><strong>dp[i] = 当前一个字符的情况乘前面的所有情况 + 当前两个字符的情况乘前面所有情况</strong></p>
-<p>dp[i]= (ways(sc[i-1])*dp[i-1]+ways(sc[i-2],sc[i-1])*dp[i-2]) 这里的ways就是传入的字符所组成的情况</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/decode-ways-ii/">https://leetcode.com/problems/decode-ways-ii/</a></p>
-<h2 id="189-Rotate-Array"><a href="#189-Rotate-Array" class="headerlink" title="189. Rotate Array"></a><strong>189. Rotate Array</strong></h2><p><strong>旋转全部</strong></p>
-<p><strong>旋转前k部分</strong></p>
-<p><strong>旋转后k部分</strong></p>
-<p><strong>类似于这种旋转部分的题，都可以用这样的方法试试</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/rotate-array/">https://leetcode.com/problems/rotate-array/</a></p>
-<h2 id="1004-Max-Consecutive-Ones-III"><a href="#1004-Max-Consecutive-Ones-III" class="headerlink" title="1004. Max Consecutive Ones III"></a><strong>1004. Max Consecutive Ones III</strong></h2><p><strong>双指针，判断当前指针的0数是否超过k，不超过走r，超过走l</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/max-consecutive-ones-iii/">https://leetcode.com/problems/max-consecutive-ones-iii/</a></p>
-<h2 id="37-Sudoku-Solver"><a href="#37-Sudoku-Solver" class="headerlink" title="37. Sudoku Solver"></a><strong>37. Sudoku Solver</strong></h2><p><strong>需要记得点：dfs中进行循环可以每行进行循环</strong></p>
-<p><strong>每次dfs 行+1，然后在方法里执行列 1 - 9 操作</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/sudoku-solver/">https://leetcode.com/problems/sudoku-solver/</a></p>
-<h2 id="133-Clone-Graph"><a href="#133-Clone-Graph" class="headerlink" title="133. Clone Graph"></a><strong>133. Clone Graph</strong></h2><p><strong>用一个map来表示当前已经访问过的节点，然后dfs即可，可以自己画个图模拟一下</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/clone-graph/">https://leetcode.com/problems/clone-graph/</a></p>
-<h2 id="844-Backspace-String-Compare"><a href="#844-Backspace-String-Compare" class="headerlink" title="844. Backspace String Compare"></a><strong>844. Backspace String Compare</strong></h2><p><strong>双指针，从尾部遍历，用两个数字保存当前#号的数量，每次遍历的时候先把#号清零</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/backspace-string-compare/">https://leetcode.com/problems/backspace-string-compare/</a></p>
-<h2 id="560-Subarray-Sum-Equals-K"><a href="#560-Subarray-Sum-Equals-K" class="headerlink" title="560. Subarray Sum Equals K"></a><strong>560. Subarray Sum Equals K</strong></h2><p><strong>使用map保存一个前缀和 还有出现的次数</strong></p>
-<p><strong>i 到 j 的 sum就是 pre[j] - pre[i] 如果这段等于k 则count ++</strong></p>
-<p><strong>那可以转化成pre[i] = pre[j] - k 如果 map.get(pre[j] - k)存在则 count加上value值</strong></p>
-<p><strong>因为j可能不止一个，举个例子 0 1 0 -1 0 1 这里 0 - 1 和 0 - 5是相等的，所以pre[j] - k可能有多个，所以用value来保存频率</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/subarray-sum-equals-k/submissions/">https://leetcode.com/problems/subarray-sum-equals-k/submissions/</a></p>
-<h2 id="735-Asteroid-Collision"><a href="#735-Asteroid-Collision" class="headerlink" title="735. Asteroid Collision"></a><strong>735. Asteroid Collision</strong></h2><p><strong>用栈解决</strong></p>
-<p><strong>入栈条件：栈为空 或 栈顶元素&lt;0（说明是向左移动的） 或 当前元素&gt;0</strong> </p>
-<p><strong>因为碰撞条件是 栈顶元素&gt;0且当前元素&lt;0 才碰撞，其他的条件则不碰撞，所以可以入栈。</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/asteroid-collision/">https://leetcode.com/problems/asteroid-collision/</a></p>
-<h2 id="1896-Minimum-Cost-to-Change-the-Final-Value-of-Expression（不会）"><a href="#1896-Minimum-Cost-to-Change-the-Final-Value-of-Expression（不会）" class="headerlink" title="1896. Minimum Cost to Change the Final Value of Expression（不会）"></a><strong>1896. Minimum Cost to Change the Final Value of Expression（不会）</strong></h2><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-cost-to-change-the-final-value-of-expression/">https://leetcode.com/problems/minimum-cost-to-change-the-final-value-of-expression/</a></p>
-<h2 id="581-Shortest-Unsorted-Continuous-Subarray"><a href="#581-Shortest-Unsorted-Continuous-Subarray" class="headerlink" title="581. Shortest Unsorted Continuous Subarray"></a><strong>581. Shortest Unsorted Continuous Subarray</strong></h2><p><strong>假设把数组分成三段 A B C，A C是有序的，B是需要排序的</strong></p>
-<p><strong>设B的最小值为min 最大值为 max，则A的所有数都小于这个min，C的所有数都大于这个max</strong></p>
-<p><strong>所以从左到右维持一个max值，则C的边界则是最后一个 nums[i] &gt; max值的数，因为C后面是有序的了</strong></p>
-<p><strong>同理从右到左维持一个min值，则A的边界则是最后一个 nums[i] &lt; min值的数</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/shortest-unsorted-continuous-subarray/">https://leetcode.com/problems/shortest-unsorted-continuous-subarray/</a></p>
-<h2 id="987-Vertical-Order-Traversal-of-a-Binary-Tree"><a href="#987-Vertical-Order-Traversal-of-a-Binary-Tree" class="headerlink" title="987. Vertical Order Traversal of a Binary Tree"></a><strong>987. Vertical Order Traversal of a Binary Tree</strong></h2><p><strong>用一个hashmap保存每column的List，然后再从小到大输出</strong></p>
-<p><strong>需要注意的是需要进行层序遍历，用两个queue，一个放节点，一个放column</strong></p>
-<p><strong>还有就是每层遍历完，先用一个临时map存起来，然后排序后再放到主map</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/">https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/</a></p>
-<h2 id="70-Climbing-Stairs"><a href="#70-Climbing-Stairs" class="headerlink" title="70. Climbing Stairs"></a><strong>70. Climbing Stairs</strong></h2><p><strong>dp类型，dp[i]为当前的步数情况，则dp[i]可以由dp[i-1]得来也可以由dp[i-2]得来，所以dp[i] = dp[i-1] + dp[i-2]</strong></p>
-<p><strong>就是一个斐波那契数列</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/climbing-stairs/">https://leetcode.com/problems/climbing-stairs/</a></p>
-<h2 id="1277-Count-Square-Submatrices-with-All-Ones"><a href="#1277-Count-Square-Submatrices-with-All-Ones" class="headerlink" title="1277. Count Square Submatrices with All Ones"></a><strong>1277. Count Square Submatrices with All Ones</strong></h2><p><strong>先用dp算出每个 i j 所能形成的最大正方形，然后将所有dp值加起来即是答案</strong></p>
-<p><strong>因为，举个例子 dp[i][j] = 3，那么 i j 是一个长为3 的正方形，它包括长为 1 2 3 的 3 个正方形，所以这里的dp值就是它包括的正方形数量</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/count-square-submatrices-with-all-ones/">https://leetcode.com/problems/count-square-submatrices-with-all-ones/</a></p>
-<h2 id="556-Next-Greater-Element-III"><a href="#556-Next-Greater-Element-III" class="headerlink" title="556. Next Greater Element III"></a><strong>556. Next Greater Element III</strong></h2><p>像31题一样，先把n转化为一个数组</p>
-<p>首先从右往左找，找第一对 i+1 &gt; i 的 pair</p>
-<p>然后交换，i 和 i 右边最小的数字且比 i 大的数 (从i+1 找到 num.length 、从左往右，最小数有多个，取最右边那个)</p>
-<p>最后reverse i 右边的数字 （不包括i）</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/next-greater-element-iii/">https://leetcode.com/problems/next-greater-element-iii/</a></p>
-<h2 id="611-Valid-Triangle-Number"><a href="#611-Valid-Triangle-Number" class="headerlink" title="611. Valid Triangle Number"></a><strong>611. Valid Triangle Number</strong></h2><p><strong>直接三重循环复杂度 会超</strong></p>
-<p><strong>所以用排序 + 二分把复杂度降到 n²logn</strong></p>
-<p><strong>先把数组排序，然后两重循环 i j ，然后从 j + 1 到 n - 1 找最大的 k &lt; i+j (三角形特性) 的数</strong></p>
-<p><strong>那么从 j + 1 - k的数都满足第三边，加到总数即可</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/valid-triangle-number/">https://leetcode.com/problems/valid-triangle-number/</a></p>
-<h2 id="1861-Rotating-the-Box"><a href="#1861-Rotating-the-Box" class="headerlink" title="1861. Rotating the Box"></a><strong>1861. Rotating the Box</strong></h2><p><strong>模拟过程即可，双指针，从尾部开始循环</strong></p>
-<p><strong>最后旋转box的时候注意</strong> res[j][box.length - 1 - i] = box[i][j]</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/rotating-the-box/">https://leetcode.com/problems/rotating-the-box/</a></p>
-<h2 id="239-Sliding-Window-Maximum"><a href="#239-Sliding-Window-Maximum" class="headerlink" title="239. Sliding Window Maximum"></a><strong>239. Sliding Window Maximum</strong></h2><p><strong>使用单调队列</strong></p>
-<p><strong>双端队列，每次插入数据的时候，拿出队尾元素比较，如果大于队尾元素，则移除队尾元素，直到把所有小于该数的元素都移除后再插入</strong></p>
-<p><strong>这样就保证了队头元素就是队列最大值。</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/sliding-window-maximum/">https://leetcode.com/problems/sliding-window-maximum/</a></p>
-<h2 id="看图"><a href="#看图" class="headerlink" title="///看图"></a>///看图</h2><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/HBHIMt"><img src="https://s4.ax1x.com/2022/02/13/HBHIMt.png" alt="HBHIMt.png"></a></p>
-<p>针对N+1，先to_string转字符串，从左往右找第一对相等的连续数字，该数字后面全部置零，这两个数字+1。循环，直到没有连续数字（如N+1=99999，第一步，99000+1000=100000，针对100000，100000+1000=101000，针对101000，101000+10=101010）</p>
-<h2 id="76-Minimum-Window-Substring"><a href="#76-Minimum-Window-Substring" class="headerlink" title="76. Minimum Window Substring"></a><strong>76. Minimum Window Substring</strong></h2><p><strong>滑动窗口，先用一个map保存t字符串所有出现的字符的次数</strong></p>
-<p><strong>然后一个左指针一个右指针，用一个数记录当前窗口是否包含了全部的数字 count = t.length</strong></p>
-<p><strong>如果没包含，则r++，此时如果t里存在这个数，则map.get(i) – 这里可以为负数，因为有可能这个串里包含很多这个字符，为了与左指针同步，所以这里先减一下。但是记住只有当map.value值大于0的时候的–才是有效的，count才++，因为多出来的就不需要了。</strong></p>
-<p><strong>反之如果包含了全部字符，则l++，判断 l 是否存在于t，如果存在于，则value值++，此时只有value值&gt;=0的时候，count才需要–，因为真的缺了，否则的话窗口里就还够用</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-window-substring/">https://leetcode.com/problems/minimum-window-substring/</a></p>
-<h2 id="面试题-17-24-最大子矩阵"><a href="#面试题-17-24-最大子矩阵" class="headerlink" title="面试题 17.24. 最大子矩阵"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/max-submatrix-lcci/"><strong>面试题 17.24. 最大子矩阵</strong></a></h2><p>把二维问题压缩成一维来解决</p>
-<p>一维的dp[i] = max(dp[i-1]+num[i],num[i])</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/HBbIfJ"><img src="https://s4.ax1x.com/2022/02/13/HBbIfJ.jpg" alt="HBbIfJ.jpg"></a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/max-submatrix-lcci/">https://leetcode-cn.com/problems/max-submatrix-lcci/</a></p>
-<h2 id="1770-Maximum-Score-from-Performing-Multiplication-Operations"><a href="#1770-Maximum-Score-from-Performing-Multiplication-Operations" class="headerlink" title="1770. Maximum Score from Performing Multiplication Operations"></a><strong>1770. Maximum Score from Performing Multiplication Operations</strong></h2><p><strong>自顶向下dp，定义dp(i,j,k)是nums 剩下 i  到 j 时，mul选到k个的时候，这个区间的最大值(其实意思就是 , i .. j 里 选 m-k 个的最大值，所以base case是k == m的时候，因为m-k == 0，选0个就是)</strong></p>
-<p><strong>这里k = (num.len - j) + (i-1) 因为 左边已经把 i-1选了，右边已经把 n-j选了</strong> </p>
-<p><strong>则dp(i j k) = max(</strong></p>
-<p><strong>dp(i+1, j , k+1) + num[i]*mul[k], //选左边,区间往左诺一位，k+1</strong></p>
-<p><strong>dp(i,j-1,k+1)+num[j]*mul[k])//选右边，区间往右诺一位，k+1</strong></p>
-<p><strong>当 k == mul.len时 ，return 0，因为已经选完了</strong></p>
-<p><strong>因为会有重复的情况，用一个Cache来保存已经保存了的值，如果存在则直接Return</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-score-from-performing-multiplication-operations/">https://leetcode.com/problems/maximum-score-from-performing-multiplication-operations/</a></p>
-<h2 id="223-Rectangle-Area"><a href="#223-Rectangle-Area" class="headerlink" title="223. Rectangle Area"></a><strong>223. Rectangle Area</strong></h2><p>​        int overlapWidth = Math.min(ax2, bx2) - Math.max(ax1, bx1);</p>
-<p>​        int overlapHeight = Math.min(ay2, by2) - Math.max(ay1, by1);</p>
-<p>重叠部分为最短的右上角减最长的左下角</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/rectangle-area/">https://leetcode.com/problems/rectangle-area/</a></p>
-<h2 id="707-Design-Linked-List"><a href="#707-Design-Linked-List" class="headerlink" title="707. Design Linked List"></a><strong>707. Design Linked List</strong></h2><p><strong>单链表好实现</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/design-linked-list/">https://leetcode.com/problems/design-linked-list/</a></p>
-<h2 id="743-Network-Delay-Time"><a href="#743-Network-Delay-Time" class="headerlink" title="743. Network Delay Time"></a><strong>743. Network Delay Time</strong></h2><p><strong>Dijkstra算法</strong></p>
-<p><strong>初始化原点为k，dist[k] = 0，找到最远的距离 max (dist[i])</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/network-delay-time/">https://leetcode.com/problems/network-delay-time/</a></p>
-<h2 id="973-K-Closest-Points-to-Origin"><a href="#973-K-Closest-Points-to-Origin" class="headerlink" title="973. K Closest Points to Origin"></a><strong>973. K Closest Points to Origin</strong></h2><p><strong>普通TopK问题</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/k-closest-points-to-origin/">https://leetcode.com/problems/k-closest-points-to-origin/</a></p>
-<h2 id="1091-Shortest-Path-in-Binary-Matrix"><a href="#1091-Shortest-Path-in-Binary-Matrix" class="headerlink" title="1091. Shortest Path in Binary Matrix"></a><strong>1091. Shortest Path in Binary Matrix</strong></h2><p><strong>这里用广度优先搜索好一些</strong></p>
-<p><strong>最短路径这些用广度搜索，有多少种情况这些用深度搜索</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/shortest-path-in-binary-matrix/">https://leetcode.com/problems/shortest-path-in-binary-matrix/</a></p>
-<h2 id="241-Different-Ways-to-Add-Parentheses"><a href="#241-Different-Ways-to-Add-Parentheses" class="headerlink" title="241. Different Ways to Add Parentheses"></a><strong>241. Different Ways to Add Parentheses</strong></h2><p><strong>代码太长了，思路很简单，分治即可</strong></p>
-<p><strong>2*3-4*5可以分成 -&gt; 2 , 3-4*5 用 * 相连然后递归计算 2 和 3 - 4 * 5的结果，最后*起来</strong></p>
-<p><strong>同理也可以分成2*3 4*5 用 - 相连，然后递归计算2*3 和 4*5的结果，最后 - 起来</strong></p>
-<p><strong>同理也可以分成2*3-4 ，5 用* 相连 ……</strong></p>
-<p><strong>最后把所有结果同意即可</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/different-ways-to-add-parentheses/">https://leetcode.com/problems/different-ways-to-add-parentheses/</a></p>
-<h2 id="395-Longest-Substring-with-At-Least-K-Repeating-Characters"><a href="#395-Longest-Substring-with-At-Least-K-Repeating-Characters" class="headerlink" title="395. Longest Substring with At Least K Repeating Characters"></a><strong>395. Longest Substring with At Least K Repeating Characters</strong></h2><p><strong>分治递归的思想，举个例子</strong></p>
-<p><strong>假设 bbaaacbd k=3 答案肯定是 aaa</strong></p>
-<p><strong>统计一边全部字符出现的次数，如果某个字符出现小于k次，则这个字符肯定不可能包括在答案里，例如这里的c （d也可以）</strong></p>
-<p><strong>那么答案就是在part1 = bbaaa 和 part2 = bd里选。</strong></p>
-<p><strong>同理递归最终得到最长的</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/">https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/</a></p>
-<h2 id="980-Unique-Paths-III"><a href="#980-Unique-Paths-III" class="headerlink" title="980. Unique Paths III"></a><strong>980. Unique Paths III</strong></h2><p><strong>普通dfs即可，走一步将grid[x][y)置为-1，最后再把他换回来</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/unique-paths-iii/">https://leetcode.com/problems/unique-paths-iii/</a></p>
-<h2 id="135-Candy"><a href="#135-Candy" class="headerlink" title="135. Candy"></a><strong>135. Candy</strong></h2><p><strong>用两个数组left right</strong></p>
-<p><strong>保存从左往右数的规则，如果rating[i] &gt; ratings[i-1] 则 left[i] = left[i-1] + 1 否则 left[i] = 1</strong></p>
-<p><strong>和从右往左的规则，如果rating[i] &gt; rating[i+1] 则 right[i] = right[i+1] + 1 否则 right[i] = 1</strong></p>
-<p><strong>此时每个i有两种发糖果的选择，一个是左选一个是右选，</strong></p>
-<p><strong>此时我们要选择发糖果多的那个，因为如果发的多肯定满足发得少的情况，但发得少不一定满足发的多的情况</strong></p>
-<p><strong>举个例子left[i] = 5 right[i] = 2 此时从右往左的规则right[i+1]为1 同理 left[i-1] 为 4</strong></p>
-<p><strong>则 right[i]大于1就行，则可以取 2 3 4 5 .. 同理 left[i] 大于 4 就行 可以取 5 6 7 8 ..</strong></p>
-<p><strong>此时取交集的最小</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/candy/">https://leetcode.com/problems/candy/</a></p>
-<h2 id="143-Reorder-List"><a href="#143-Reorder-List" class="headerlink" title="143. Reorder List"></a><strong>143. Reorder List</strong></h2><p><strong>第一步，找到链表的中点（快慢指针）</strong></p>
-<p><strong>第二步，翻转链表的后半部分</strong></p>
-<p><strong>第三步，后半部分插入到前半部分（链表合并）</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/reorder-list/">https://leetcode.com/problems/reorder-list/</a></p>
-<h2 id="约瑟夫环问题"><a href="#约瑟夫环问题" class="headerlink" title="约瑟夫环问题:"></a>约瑟夫环问题:</h2><p>public int lastRemaining(int n, int m){</p>
-<p>int res = 0;</p>
-<p>for(int i = 2 ; i &lt;= n ; i++){</p>
-<p>res = ( res + m ) % i;</p>
-<p>} </p>
-<p>return res;</p>
-<p>}</p>
-<h2 id="525-Contiguous-Array"><a href="#525-Contiguous-Array" class="headerlink" title="525. Contiguous Array"></a><strong>525. Contiguous Array</strong></h2><p><strong>解题思路：前缀和 + hashmap</strong></p>
-<p><strong>将题目的nums的0 全部转化为 -1 ，并且建立一个前缀和表presum[]</strong></p>
-<p><strong>一次遍历，当前缀和preSum[i] == 0时，更新max</strong></p>
-<p><strong>map保存当前前缀和第一次出现的index</strong></p>
-<p><strong>如果遍历到 j 的时候 map里有值，说明这个前缀和不是第一次出现，设 i = map.get</strong></p>
-<p><strong>则说明 i 到 j 这一段和为0 （因为经历 +1 -1 后又变回原来的数字） 所以这里也要刷新max</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/contiguous-array/">https://leetcode.com/problems/contiguous-array/</a></p>
-<h2 id="55-Jump-Game"><a href="#55-Jump-Game" class="headerlink" title="55. Jump Game"></a><strong>55. Jump Game</strong></h2><p><strong>用一个max值来保存当前能到达的最远节点，然后每遍历一位，刷新一下这个节点。</strong></p>
-<p><strong>如果当前 i 值 大于 这个max值，说明前面的任何一个点都不能到这个 i 点，返回false</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/jump-game/">https://leetcode.com/problems/jump-game/</a></p>
-<h2 id="152-Maximum-Product-Subarray"><a href="#152-Maximum-Product-Subarray" class="headerlink" title="152. Maximum Product Subarray"></a><strong>152. Maximum Product Subarray</strong></h2><p><strong>用两个值来保存当前遍历到 i 为止的最大值和最小值， 用 res 保存总的最大值</strong></p>
-<p><strong>一遍循环：</strong></p>
-<p><strong>1. 当遇到负号的时候，最大值和最小值交换</strong></p>
-<p><strong>2. 每次计算的时候，最大值可以选择乘上当前值，或者不乘，看哪个大 (遇到负数的时候，就从负数的下一个开始计算，这里乘第一个负数的值被最小值保存了，乘第二负数的时候会被换回来，)：</strong>Math.max(nums[i],max*nums[i]);</p>
-<p>\3. 最小值同理</p>
-<p>\4. 每次刷新res值，Math.max(max,res);</p>
-<p>Example:</p>
-<p>  2 3         -2 4            -5 5 6 4</p>
-<p>max: 2 6 (换)  1 4   （换）240 . . . . </p>
-<p>min:  1 1       -12 -48          -5 . . . . . ..</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-product-subarray/">https://leetcode.com/problems/maximum-product-subarray/</a></p>
-<h2 id="440-K-th-Smallest-in-Lexicographical-Order"><a href="#440-K-th-Smallest-in-Lexicographical-Order" class="headerlink" title="440. K-th Smallest in Lexicographical Order"></a><strong>440. K-th Smallest in Lexicographical Order</strong></h2><p><strong>类似于二维有序数组找值</strong></p>
-<p><strong>获取每个以 cur 为前缀的 树的节点数，如果他大于K，那么说明K在这棵树里面，K -= 1 往下挪动</strong></p>
-<p><strong>如果小于K ，说明 K 不在这棵树，cur + 1， K -= 这棵树的全部nodes， 往右挪动</strong></p>
-<p><strong>getNodes（int n, long cur）方法 ：</strong></p>
-<pre><code>       举个例子，N = 109 的时候，cur 就是前缀为 1时
-</code></pre>
-<p>​            next 就是 2</p>
-<p>​            那首先total + 1</p>
-<p>​            cur * 10  next * 10到 10 11 .. 19   20 .. 29 这一层 cur = 10 next = 20</p>
-<p>​            所以 total + (10 11 .. 19) 这么多数 就是 total + (next - cur) 其它层同理</p>
-<p>​            但是如果此时 n 比 next 要小的时候，这里的是109</p>
-<p>​            如果到100 101 102… 199这层的时候，只能取到 100 - 109这么多，就不能用(next - cur)了</p>
-<p>​            而要用(n - cur + 1) -&gt; (109 - 100 + 1)</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/LuBNEd"><img src="https://s1.ax1x.com/2022/04/13/LuBNEd.jpg" alt="LuBNEd.jpg"></a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/k-th-smallest-in-lexicographical-order/">https://leetcode.com/problems/k-th-smallest-in-lexicographical-order/</a></p>
-<h2 id="136-Single-Number"><a href="#136-Single-Number" class="headerlink" title="136. Single Number"></a><strong>136. Single Number</strong></h2><p><strong>这里需要注意的就是，任何数和他自己异或结果等于0</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/single-number/">https://leetcode.com/problems/single-number/</a></p>
-<h2 id="92-Reverse-Linked-List-II"><a href="#92-Reverse-Linked-List-II" class="headerlink" title="92. Reverse Linked List II"></a><strong>92. Reverse Linked List II</strong></h2><p><strong>注意好头结点就行，2</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-linked-list-ii/">https://leetcode.com/problems/reverse-linked-list-ii/</a></p>
-<h2 id="679-24-Game"><a href="#679-24-Game" class="headerlink" title="679. 24 Game"></a><strong>679. 24 Game</strong></h2><p><strong>用递归 有多种情况 X(XXX) (XX)(XX) (XXX)X  最后一步总是两个数进行 +-*/ 运算，所以可以用递归计算这三种情况</strong></p>
-<p><strong>如果递归的情况是两边都是一个数，则返回他们 +-*/的值</strong></p>
-<p><strong>如果有一边或者两边都是两个数或者更更多，则继续递归，然后返回一个list，例如 (XX) -&gt;则递归 X +-*/ X</strong></p>
-<p><strong>最后检查所有list里是否有24</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/24-game/">https://leetcode.com/problems/24-game/</a></p>
-<h2 id="47-Permutations-II"><a href="#47-Permutations-II" class="headerlink" title="47. Permutations II"></a><strong>47. Permutations II</strong></h2><p><strong>给数组排序后，加上去重语句</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">    <span class="hljs-keyword">if</span> (vis[i] || (i &gt; <span class="hljs-number">0</span> &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>] &amp;&amp; vis[i - <span class="hljs-number">1</span>])) &#123; <span class="hljs-comment">// 去重剪枝</span><br><br>​                <span class="hljs-keyword">continue</span>; <span class="hljs-comment">// 如果说，i-1 和 i 是一样的字母，并且 i-1 已经被访问过，则continue</span><br><br>​         &#125;<br></code></pre></td></tr></table></figure>
-
-<p>就是，确保当前层的 i 位置上，同样的数字只选一次</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/LaKERI"><img src="https://s1.ax1x.com/2022/04/17/LaKERI.jpg" alt="LaKERI.jpg"></a></p>
-<h2 id="10-Regular-Expression-Matching"><a href="#10-Regular-Expression-Matching" class="headerlink" title="10. Regular Expression Matching"></a><strong>10. Regular Expression Matching</strong></h2><p><strong>dp思路，dp (i,j) 为 s的前i个字符和p的前j个字符是否匹配</strong></p>
-<p><strong>这里重点是处理 p(j) == ‘*‘的情况，其他的情况正常匹配即可</strong></p>
-<p><strong>dp的大小要 length +1 因为base case dp[0][0] = true</strong></p>
-<p><strong>当p(j) == ‘*‘的时候，有两种情况</strong></p>
-<p><strong>第一种是不匹配：</strong>dp[i+1][j+1] = dp[i+1][j-1] （p直接跳两位数， j + 1 - 2 = j - 1)</p>
-<p>第二种是匹配： 匹配的情况下，前面*那个字母得相同，所以当 s(i) == p(j-1) 或者 p(j - 1) == ‘.’的时候，并且s(i) 前面的数字也匹配的时候，i往前挪一位，代表匹配一位s(i)</p>
-<p>dp[i+1][j+1] = dp[i][j+1]; 因为任何情况下，p(j) == ‘*’的时候都可以不匹配，所以匹配s(i)的时候 j 不用动（因为s匹配完的时候，p会在第一种不匹配的那里被去掉）</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/regular-expression-matching/">https://leetcode.com/problems/regular-expression-matching/</a></p>
-<h2 id="337-House-Robber-III"><a href="#337-House-Robber-III" class="headerlink" title="337. House Robber III"></a><strong>337. House Robber III</strong></h2><p><strong>用dfs，每次dfs的时候，有两种情况：</strong></p>
-<p><strong>一：如果上一个节点被抢过，则当前节点不用计算，计算dfs(left) + dfs(right) + 不抢 的值</strong></p>
-<p><strong>二：如果上一个节点没有被抢过，则有两种情况，一是抢，则 dfs(left) + dfs(right) + root.val + 抢 ，二是不抢 则 dfs(left) + dfs(right) + 不抢，求两个math.max</strong></p>
-<p><strong>然后返回最大值</strong></p>
-<p><strong>注意要进行剪枝，用两个map , rob保存抢当前节点的时候的值，unrob保存不抢的值，如果map有值则直接return，没值则把值保存。</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/house-robber-iii/">https://leetcode.com/problems/house-robber-iii/</a></p>
-<h2 id="16-3Sum-Closest"><a href="#16-3Sum-Closest" class="headerlink" title="16. 3Sum Closest"></a><strong>16. 3Sum Closest</strong></h2><p><strong>双指针，需要注意的是有相同的元素，每次移动指针的时候要移动到下一个不相同的元素为止</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/3sum-closest/">https://leetcode.com/problems/3sum-closest/</a></p>
-<h2 id="415-Add-Strings"><a href="#415-Add-Strings" class="headerlink" title="415. Add Strings"></a><strong>415. Add Strings</strong></h2><p><strong>用一个取巧的方法就是，从左到右插入计算的结果</strong></p>
-<p><strong>然后最后把字符串翻转</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/add-strings/">https://leetcode.com/problems/add-strings/</a></p>
-<h2 id="78-Subsets"><a href="#78-Subsets" class="headerlink" title="78. Subsets"></a><strong>78. Subsets</strong></h2><p><strong>dfs求子集，把子集从0 - length的 size 都求一遍</strong></p>
-<p><strong>然后dfs取点的时候只去上一层dfs取得点后面的点，设上一层取得 i 那么接下来就从 i+1开始取</strong></p>
-<p><strong>剪枝优化：如果说 length - i - 1 (剩下的点)  &lt; size - list.size() (还需要构成多少点组成当前size的子集)，那么直接return，再怎么找都不够得了</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/subsets/">https://leetcode.com/problems/subsets/</a></p>
-<h2 id="329-Longest-Increasing-Path-in-a-Matrix"><a href="#329-Longest-Increasing-Path-in-a-Matrix" class="headerlink" title="329. Longest Increasing Path in a Matrix"></a><strong>329. Longest Increasing Path in a Matrix</strong></h2><p><strong>DP，设dp(i,j)为 i j 点开始的最长的路径</strong></p>
-<p><strong>遍历所有点，然后求最大值，dp i j 为 上下左右四个点的 dp 值 取最大 + 1</strong></p>
-<p><strong>剪枝优化：当 i j 点被计算过了则直接返回</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-increasing-path-in-a-matrix/">https://leetcode.com/problems/longest-increasing-path-in-a-matrix/</a></p>
-<h2 id="767-Reorganize-String"><a href="#767-Reorganize-String" class="headerlink" title="767. Reorganize String"></a><strong>767. Reorganize String</strong></h2><p><strong>用一个优先队列维护字母出现次数的 有序列表，从大的开始贪心取</strong></p>
-<p><strong>可以这样写：</strong></p>
-<p>int[] counts = new int[26];</p>
-<p>PriorityQueue queue = new PriorityQueue(new Comparator() {</p>
-<p>​            public int compare(Character letter1, Character letter2) {</p>
-<p>​                return counts[letter2 - ‘a’] - counts[letter1 - ‘a’];</p>
-<p>​            }</p>
-<p>​        });</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/reorganize-string/">https://leetcode.com/problems/reorganize-string/</a></p>
-<h2 id="1143-Longest-Common-Subsequence"><a href="#1143-Longest-Common-Subsequence" class="headerlink" title="1143. Longest Common Subsequence"></a><strong>1143. Longest Common Subsequence</strong></h2><p><strong>dp思路，dp[i][j] 为 text1的前 i 个 字符 和 text2 的前 j 个 字符的 能匹配的值</strong></p>
-<p><strong>base case 就是当 i 和 j 等于0 时， 不能匹配 ，dp值为0</strong></p>
-<p><strong>按照这个dp定义，则dp值要比text值大一位，即dp[i] 为 text1 的前 i 个字符，则text1 下标取到 i-1 （dp定义size的时候多一位即可）</strong></p>
-<p><strong>如果 text1[i] == text2[j] 这说明 这两个字符可以匹配， 往前诺一位 dp[i+1][j+1] = dp[i][j] + 1</strong></p>
-<p><strong>如果 text1[i] != text2[j] 则有两种情况 dp[i+1][j+1] = max (dp[i][j+1] , dp[i+1][j]) 即text1 和 text2 分别诺一位，看谁大</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-common-subsequence/">https://leetcode.com/problems/longest-common-subsequence/</a></p>
-<h2 id="股票问题："><a href="#股票问题：" class="headerlink" title="股票问题："></a><strong>股票问题：</strong></h2><p><strong>状态转移方程：</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java">                    <span class="hljs-comment">// 当第 i 天，第 j 次交易，此时没有持有股票的情况</span><br><br>​                    <span class="hljs-comment">// (有可能前一天 i-1 天 也没有持有股票 则 dp[i-1][j][0])</span><br><br>​                    <span class="hljs-comment">// (也有可能前一天 i-1 天 持有股票，但是 i 天卖了 dp[i-1][j][1] 加上今天的出售额 prices[i])</span><br><br>​                    `dp[i][j][<span class="hljs-number">0</span>] = Math.max(dp[i-<span class="hljs-number">1</span>][j][<span class="hljs-number">0</span>], dp[i-<span class="hljs-number">1</span>][j][<span class="hljs-number">1</span>] + prices[i]);`<br><br>​                    <span class="hljs-comment">// 当第 i 天，第 j 次交易，此时持有股票的情况</span><br><br>​                    <span class="hljs-comment">// (有可能前一天 i-1 天 也持有股票 则 dp[i-1][j][1])</span><br><br>​                    <span class="hljs-comment">// (也有可能前一天 i-1 天 没有持有股票，但是 i 天买了 dp[i-1][j][1] 减去今天的出售额 prices[i])</span><br><br>​                    <span class="hljs-comment">// 这里定义买股票的时候，开始一次交易，所以如果今天买了股票的话，前一天的交易次数为 j - 1 </span><br><br>​                    <span class="hljs-comment">// 因为 一次交易包括买和卖，所以只用在买这里计算 +1 -1，卖的时候就不用计算了</span><br><br>​                 `   dp[i][j][<span class="hljs-number">1</span>] = Math.max(dp[i-<span class="hljs-number">1</span>][j][<span class="hljs-number">1</span>], dp[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] - prices[i]);<br></code></pre></td></tr></table></figure>
-
-<p><strong>base case:</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 当第 0 天时，肯定不可能有交易的，所以没有持有股票的情况为 0</span><br><br>​                     dp[i][j][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;<br><br>​                    <span class="hljs-comment">// 如果第 0 天，持有了股票，那就按照 </span><br><br>​                    <span class="hljs-comment">// dp[i][j][1] = Math.max(dp[i-1][j][1], dp[i-1][j-1][0] - prices[i])</span><br><br>​                    <span class="hljs-comment">// 则为 max (dp[-1][j][1], dp[-1][j-1][0] - prices[i]);`</span><br><br>​                    <span class="hljs-comment">// max (负无穷，-prices[i])</span><br><br>​                    <span class="hljs-comment">// - prices[i]</span><br><br>​                    dp[i][j][<span class="hljs-number">1</span>] = -prices[i]<br></code></pre></td></tr></table></figure>
-
-<p><strong>(如果k 为 无限时，直接用前一个减后一个计算即可，不用dp)</strong></p>
-<p><strong>（如果k为任意值时，k）</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/submissions/">https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/submissions/</a></p>
-<h2 id="739-Daily-Temperatures"><a href="#739-Daily-Temperatures" class="headerlink" title="739. Daily Temperatures"></a><strong>739. Daily Temperatures</strong></h2><p><strong>维护一个保存数组下标的单调栈</strong></p>
-<p><strong>遍历一遍数组，如果栈为空，或者栈顶元素大于当前 i 值，则入栈</strong></p>
-<p><strong>否则出栈，这里说明栈顶元素 t 这个下标的值已经找到了右边第一个比他大的值，所以res[t] = i - t</strong></p>
-<p><strong>然后继续循环，直到栈是单调递减的</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/daily-temperatures/">https://leetcode.com/problems/daily-temperatures/</a></p>
-<h2 id="剑指-Offer-51-数组中的逆序对"><a href="#剑指-Offer-51-数组中的逆序对" class="headerlink" title="剑指 Offer 51. 数组中的逆序对"></a><strong>剑指 Offer 51. 数组中的逆序对</strong></h2><p>归并排序的思想，</p>
-<p>在归并排序的时候，每交换一次，产生一个逆序对</p>
-<p>合并的时候，每次右数组有数字合并进来的时候，设此时左边的指针为 p ，左数组最右下标为 r2，此时说明左数组有 r2 - p + 1 个数字比他大，则能产生这么多个逆序对</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/">https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/</a></p>
-<h2 id="763-Partition-Labels"><a href="#763-Partition-Labels" class="headerlink" title="763. Partition Labels"></a><strong>763. Partition Labels</strong></h2><p><strong>双指针解法，假设有 ababcd 这个字符串 正确的分法应该是 4 1 1</strong></p>
-<p><strong>首先用一个record数组记录当前record[i]表示str[i]的右边第一个相同元素的位置</strong></p>
-<p><strong>上面的例子record[]就是 2 3 -1 -1 -1 -1 （这里 -1 表示右边没有相同的元素了，-1 也可以用 当前index来表示，同样的意思）</strong></p>
-<p><strong>然后用一个双指针，left，right</strong></p>
-<p><strong>从left 往右开始遍历，根据record[i] 值不断刷新 right</strong></p>
-<p><strong>上面的例子从0 开始，record[0] 为 2，那么说明这个区间最起码都要到2那里，才能把所有a包括进去。</strong></p>
-<p><strong>同理，遍历到1的时候，right刷新到3</strong></p>
-<p><strong>然后一直遍历，直到index == right 说明这个区间已经包括了前面所有的字母，后面已经没有相同的字母了，就可以把他保存起来。</strong></p>
-<p><strong>然后继续往右遍历，直到right == length</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/partition-labels/">https://leetcode.com/problems/partition-labels/</a></p>
-<h2 id="416-Partition-Equal-Subset-Sum"><a href="#416-Partition-Equal-Subset-Sum" class="headerlink" title="416. Partition Equal Subset Sum"></a>416. Partition Equal Subset Sum</h2><p>0 1 背包问题 先求出数组综合，然后除以2 定义dp</p>
-<p>dp的意思就是，从0 - n为止一直选，能不能选出和为halfSum的值</p>
-<p><code>boolean[][] dp = new boolean[n+1][halfSum + 1]</code></p>
-<p>然后两个for循环遍历 i j</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span> ; i &lt; dp.length ; i++)&#123;<br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span> ; j &lt; halfSum + <span class="hljs-number">1</span> ;j++)&#123;<br>                <span class="hljs-keyword">if</span>(i == <span class="hljs-number">0</span> &amp;&amp; j == <span class="hljs-number">0</span>) <span class="hljs-comment">// 如果没有取值，且和为0，有这种情况，为true</span><br>                    dp[i][j] = <span class="hljs-keyword">true</span>;<br>                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(i == <span class="hljs-number">0</span>) <span class="hljs-comment">// 没有取值，但是和不等于0，不可能的情况，就直接为false</span><br>                    dp[i][j] = <span class="hljs-keyword">false</span>;<br>                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(j == <span class="hljs-number">0</span>) <span class="hljs-comment">// 和为0，从 0 - i 什么都不选，有这种情况，为true</span><br>                    dp[i][j] = <span class="hljs-keyword">true</span>;<br>                <span class="hljs-keyword">else</span>&#123;<br>                    <span class="hljs-keyword">if</span>(j &gt;= nums[i-<span class="hljs-number">1</span>]) <br>                        <span class="hljs-comment">// 这里的情况就是 dp[i][j]有两种情况</span><br>                        <span class="hljs-comment">// 不取 num[i-1] 则为 dp[i-1][j]</span><br>                        <span class="hljs-comment">// 取num[i-1] 则为 dp[i-1][j - nums[i-1]]</span><br>                        dp[i][j] = dp[i-<span class="hljs-number">1</span>][j] || dp[i-<span class="hljs-number">1</span>][j - nums[i-<span class="hljs-number">1</span>]];<br>                    <span class="hljs-keyword">else</span><br>                        <span class="hljs-comment">// 如果当前值num[i]已经大于背包总容量，就没法选了</span><br>                        dp[i][j] = dp[i-<span class="hljs-number">1</span>][j];<br>                &#125;<br>            &#125;<br>        &#125;<br></code></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/partition-equal-subset-sum/">https://leetcode.com/problems/partition-equal-subset-sum/</a></p>
-<h2 id="516-Longest-Palindromic-Subsequence"><a href="#516-Longest-Palindromic-Subsequence" class="headerlink" title="516. Longest Palindromic Subsequence"></a>516. Longest Palindromic Subsequence</h2><p>dp，<code>dp[i][j] 为 i - j 的最大回文子序列</code></p>
-<p>那base case就是 i == j 的时候，一个字符肯定是回文，所以为 1</p>
-<p>然后区间从1开始不断扩大到n</p>
-<p>不断地扩大区间来进行运算，举个例子就是 bbbab</p>
-<p>首先计算区间为1 b b b a b，然后是区间为2 bb bb ba ab，然后区间为3 bbb bba bab，然后区间为4 bbba bbab，最后bbbab</p>
-<p>这样的话计算bbbab的时候，因为区间最左和最右相等，然后就看里面的值，因为计算区间为3的时候，里面的值bba已经被计算过了，所以就可以得出结果了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java">    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> l = <span class="hljs-number">1</span> ; l &lt;= n ; l++)&#123; <span class="hljs-comment">// 这里的 l 就是 区间的长度，从1开始一直扩展到n，来判断该区间的最大回文subsequence</span><br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span> ; i &lt;= n - l ; i++)&#123; <span class="hljs-comment">// i 就是区间的最左边，最小为0，最大为 n - l</span><br>                <span class="hljs-keyword">int</span> j = i + l - <span class="hljs-number">1</span>;  <span class="hljs-comment">// j 就是区间的最右边</span><br>            <span class="hljs-keyword">if</span>(s.charAt(i) == s.charAt(j))&#123;<br>                        <span class="hljs-comment">// 例如 a *** a 这样，那么就等于里面的那段字符串的最大回文子序列的长度加上 2</span><br>                            dp[i][j] = dp[i+<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>] + <span class="hljs-number">2</span>;<br>                        &#125;<br>                        <span class="hljs-keyword">else</span>&#123;<br>                         <span class="hljs-comment">// 例如 a *** b，那么就等于 a*** 或者 ***b 中的最大值</span><br>                            dp[i][j] = Math.max(dp[i+<span class="hljs-number">1</span>][j],dp[i][j-<span class="hljs-number">1</span>]);<br>                        &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-palindromic-subsequence/">https://leetcode.com/problems/longest-palindromic-subsequence/</a></p>
-<h2 id="1044-Longest-Duplicate-Substring"><a href="#1044-Longest-Duplicate-Substring" class="headerlink" title="1044. Longest Duplicate Substring"></a>1044. Longest Duplicate Substring</h2><p>二分思路，如果有个字符串 banana 如果 区间为3的时候，找到了这个重复字串，说明3和3以下的都能找到重复字串</p>
-<p>如果字符串区间为4的时候没找到，说明4和4以上区间都找不到</p>
-<p>所以可以根据这个来进行二分</p>
-<p>（这里需要用字符串哈希 Rabin_karp 算法优化，否则会有几个用例通不过，但是太难了，直接放弃）</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-duplicate-substring/">https://leetcode.com/problems/longest-duplicate-substring/</a></p>
-<h2 id="30-Substring-with-Concatenation-of-All-Words"><a href="#30-Substring-with-Concatenation-of-All-Words" class="headerlink" title="30. Substring with Concatenation of All Words"></a>30. Substring with Concatenation of All Words</h2><p>首先用一个map记录所有单词出现的次数，当做一个单词表</p>
-<p>因为区间长度是固定的，所以可以从0开始从左往右一个区间一个区间的找</p>
-<p>然后区间里面就一个单词一个单词的找，如果区间里的所有单词都符合条件，那么将区间左指针添加到res里</p>
-<h4 id="核心代码："><a href="#核心代码：" class="headerlink" title="核心代码："></a>核心代码：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">int</span> n = words.length;<br>      <span class="hljs-keyword">int</span> len = words[<span class="hljs-number">0</span>].length();<br>      <span class="hljs-comment">// 因为他的区间是固定的，所以从0开始，往右判断每个区间是否符合条件</span><br>      <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span> ; i &lt;= s.length() - n*len  ; i++)&#123;<br>          found.clear();<br>          <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;<br>          <span class="hljs-comment">// 一个一个单词的找，不是一个字母一个字母</span><br>          <span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span> ; j &lt; n ; j++)&#123;<br>              <span class="hljs-comment">//这里的str就是一个单词的长度</span><br>              String str = s.substring(i + j * len, i + j * len + len);<br>              <br>              <span class="hljs-comment">//如果这个Str在单词表里面</span><br>              <span class="hljs-keyword">if</span>(map.containsKey(str))&#123;<br>                  <span class="hljs-comment">//说明找到了这个单词, 把他set进found里面</span><br>                  found.put(str,found.getOrDefault(str, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);<br>                  <span class="hljs-comment">//如果说找到的单词数比需求的单词数多，也break</span><br>                  <span class="hljs-keyword">if</span>(found.get(str) &gt; map.get(str))&#123;<br>                      <span class="hljs-keyword">break</span>;<br>                  &#125;<br>                  <br>                  <span class="hljs-comment">//如果不在单词表里就直接break</span><br>              &#125;<span class="hljs-keyword">else</span>&#123;<br>                  <span class="hljs-keyword">break</span>;<br>              &#125;<br>          &#125;<br>          <span class="hljs-comment">//如果所有单词都匹配进单词表里，说明这个区间满足条件</span><br>          <span class="hljs-keyword">if</span>(j == n)&#123;<br>              result.add(i);<br>          &#125;<br>      &#125;<br></code></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/substring-with-concatenation-of-all-words/">https://leetcode.com/problems/substring-with-concatenation-of-all-words/</a></p>
-<h2 id="279-Perfect-Squares"><a href="#279-Perfect-Squares" class="headerlink" title="279. Perfect Squares"></a>279. Perfect Squares</h2><p>dp 背包问题</p>
-<p>base case 为 <code>dp[0] = 0</code></p>
-<p>从 1 - n 遍历</p>
-<p>然后遍历所有的平方数1 4 9 16</p>
-<p>如果当前 n 大于这个平方数 s 则说明 dp[n] 可以 等于 dp [n - s] + 1 </p>
-<p>然后取最小的那个 <code>dp[n] = min( dp[ n - s ] ) + 1</code></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/perfect-squares/">https://leetcode.com/problems/perfect-squares/</a></p>
-<h2 id="343-Integer-Break"><a href="#343-Integer-Break" class="headerlink" title="343. Integer Break"></a>343. Integer Break</h2><p>贪心，有3选3，没3选2。 注意：4的时候选2*2</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/integer-break/">https://leetcode.com/problems/integer-break/</a></p>
-<h2 id="787-Cheapest-Flights-Within-K-Stops"><a href="#787-Cheapest-Flights-Within-K-Stops" class="headerlink" title="787. Cheapest Flights Within K Stops"></a>787. Cheapest Flights Within K Stops</h2><p>dp思路 <code>dp[s][n] 为 最多 飞 s 次 到 n 点的时候的最小花费</code></p>
-<p>如果不飞那 s 为 0，如果飞 1 次 那 s 为1，如果飞 2 次 说明中转 1 次（这种情况下，题目给的k = 1）。所以dp定义的时候 s 的大小为k+2</p>
-<p>状态转移方程为 <strong>如果 i 能飞到 j</strong> 那么<code>dp[s][j] = min(dp[s][j], dp[s-1][i] + cost[i][j])</code></p>
-<p>意思就是，要么就取 i 飞到 j 这段，要么就原地不动。</p>
-<p>最后return <code>dp[k+1][dst]</code></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/cheapest-flights-within-k-stops/">https://leetcode.com/problems/cheapest-flights-within-k-stops/</a></p>
-<h2 id="842-Split-Array-into-Fibonacci-Sequence"><a href="#842-Split-Array-into-Fibonacci-Sequence" class="headerlink" title="842. Split Array into Fibonacci Sequence"></a>842. Split Array into Fibonacci Sequence</h2><p>dfs，但是可以剪枝</p>
-<p>剪枝条件： 当前数字大于 2 的 31 次方的时候，这条分支就无效了</p>
-<p>而且因为要满足fibonacci，所以只有前两个数字是可以任意选取的，后面的话必须满足 第三个数字等于前两个数字之和。</p>
-<p>所以只需要拿 list.get(len - 2) 和 list.get(len - 1) 和 下面那个数字比较一下，如果满足则可以继续下去，如果不满足，则return</p>
-<p>举个例子 123456579 ，dfs中，如果list列表size小于2，那么前面可以任意选</p>
-<p>如：1,2 dfs(3456579) 或 12,34,dfs(56579) 或 ，123,45,dfs(6579) 等等</p>
-<p>但是当size大于等于2的时候，如此时 list有 1 2 3 ，dfs(456579)，那么下面的数必须是 2 + 3 = 5，这里是 4 所以不满足</p>
-<p>或者当list是 123,456 然后dfs(579)的时候，下面的数必须是123 + 456 = 579 所以直接check接下来三位是否是 579 即可，如果满足则加进去，如果不满足那这条枝直接放弃</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/split-array-into-fibonacci-sequence/">https://leetcode.com/problems/split-array-into-fibonacci-sequence/</a></p>
-<h2 id="647-Palindromic-Substrings"><a href="#647-Palindromic-Substrings" class="headerlink" title="647. Palindromic Substrings"></a>647. Palindromic Substrings</h2><p>dp，<code>dp[i][j] 表示 i - j 是否为回文串</code></p>
-<p>那当 s[i] == s[j] 的时候 <code>dp[i][j] = dp[i+1][j-1]</code></p>
-<p>注意按区间来遍历所有子串，len 从 3 - n</p>
-<p>base case就是len 为 1 和 2 的时候</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/palindromic-substrings/">https://leetcode.com/problems/palindromic-substrings/</a></p>
-<h2 id="494-Target-Sum"><a href="#494-Target-Sum" class="headerlink" title="494. Target Sum"></a>494. Target Sum</h2><p>这题可以用回溯，但是慢</p>
-<p>dp思路：将nums分为两个集合，一个P里面全部加正号，一个P里面全部加负号，设 P 为正数集合，N 为负数集</p>
-<p>则有：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plain">                  sum(P) - sum(N) &#x3D; target<br>sum(P) + sum(N) + sum(P) - sum(N) &#x3D; target + sum(P) + sum(N)<br>                       2 * sum(P) &#x3D; target + sum(nums)<br>                       sum(P) &#x3D; （target + sum(nums)）&#x2F;2<br></code></pre></td></tr></table></figure>
-
-<p>那么这道题就变成了，能不能从num里找到这么一个 P 集，使得他的和等于<code>（target + sum(nums)）/2</code></p>
-<p>那这就是一个 0 1 背包问题 和 416 类似</p>
-<p><code>dp[i][j] 表示在数组 nums的前 i 个数中选取元素，使得这些元素之和等于 j 的方案数。</code></p>
-<p>那么 <code>dp[0][0] = 1</code> 因为可以什么都不选，这也是一种解决方法</p>
-<p>那么状态转移方程就是 <code>dp[i][j] = dp[i-1][j] + dp[i-1][j-nums[i]]</code> 选和不选两种情况都加上去</p>
-<p>如果 <code>j - nums[i]</code> 已经小于0，那就只能有不选一种情况</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/target-sum/">https://leetcode.com/problems/target-sum/</a></p>
-<h2 id="1838-Frequency-of-the-Most-Frequent-Element"><a href="#1838-Frequency-of-the-Most-Frequent-Element" class="headerlink" title="1838. Frequency of the Most Frequent Element"></a>1838. Frequency of the Most Frequent Element</h2><p>首先对数组进行排序，然后定义一个滑动窗口</p>
-<p>l 和 r 分别代表窗口的左右两边，这个窗口就表示 能否通过 k 个以内操作将里面的 全部变为 nums[r]</p>
-<p>如果可以，说明数字足够，尝试一下是否能更多，那么扩大窗口 r++</p>
-<p>如果不可以，说明数字太多，那么缩小窗口 l++</p>
-<p>然后求这所有窗口的最大值</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/frequency-of-the-most-frequent-element/">https://leetcode.com/problems/frequency-of-the-most-frequent-element/</a></p>
-<h2 id="64-Minimum-Path-Sum"><a href="#64-Minimum-Path-Sum" class="headerlink" title="64. Minimum Path Sum"></a>64. Minimum Path Sum</h2><p>dp 问题，可以在原数组中修改，空间复杂度为 O(1)</p>
-<p><code>dp[i][j] 为到 i j 点的时候最短路径</code></p>
-<p><code>dp[i][j] = grid[i][j] + Math.min(dp[i-1][j],dp[i][j-1]) </code></p>
-<p>base case 为 i = 0 和 j = 0 的时候，只有一条路没得选。</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-path-sum/">https://leetcode.com/problems/minimum-path-sum/</a></p>
-<h2 id="518-Coin-Change-2"><a href="#518-Coin-Change-2" class="headerlink" title="518. Coin Change 2"></a>518. Coin Change 2</h2><p>背包问题，定义 <code>dp[i] 为 当amount 为 i的时候，有多少种选法</code></p>
-<p>dp[0] 什么都不选 是一种选法</p>
-<p>然后状态转移方程 <code>dp[i] += dp[i - coin]</code> </p>
-<p>遍历所有可能的硬币数，意思就是遍历到这个硬币的时候，用这颗硬币和不用这颗硬币两种方法都要加上 其实就是<code>dp[i] = dp[i] + dp[i - coin]</code></p>
-<p>举个例子 amount = 5 , coins = [1, 2, 5]</p>
-<p>如果全用1的硬币，那么dp此时应该是 [1,1,1,1,1,1]</p>
-<p>然后遍历2，那么到dp[2]的时候，dp[2] = dp[2] <strong>(已经用硬币1选过的情况)</strong> 加上 dp[2 - 2] <strong>(用硬币2选的情况)</strong></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/coin-change-2/">https://leetcode.com/problems/coin-change-2/</a></p>
-<h2 id="148-Sort-List"><a href="#148-Sort-List" class="headerlink" title="148. Sort List"></a>148. Sort List</h2><p>归并排序</p>
-<p>假设有 <code>4 -&gt; 2 -&gt; 1 -&gt; 3</code> </p>
-<p>如果list长度小于等于2，那么将它简单交换排序后，return head</p>
-<p>如果list长度大于3，那么把他从中间分开 （用快慢指针找中点），变成 <code>4 -&gt; 2</code> 和 <code>1 -&gt; 3</code> ，分别对左右两个数组进行排序，然后 merge两个有序数组，（注意 中间需要断开，将一个链表分成两个链表）</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/sort-list/">https://leetcode.com/problems/sort-list/</a></p>
-<h2 id="80-Remove-Duplicates-from-Sorted-Array-II"><a href="#80-Remove-Duplicates-from-Sorted-Array-II" class="headerlink" title="80. Remove Duplicates from Sorted Array II"></a>80. Remove Duplicates from Sorted Array II</h2><p>双指针，一个slow 一个 fast ，</p>
-<p>当<code>nums[slow - 2] != nums[fast]</code> 时，用 fast 替换掉 slow</p>
-<p>这里有两种情况，slow和fast是同一种字母，那么slow - 2就一定是不同的字母，那么此时到slow为止，这个字母出现的次数还没超过限制，那么 fast 替换掉 slow什么都不会发生。</p>
-<p>如果 slow 和 fast 是不同字母，因为是从左到右替换的，那么这种情况下，slow肯定是等于slow - 2的，而fast就是下一个不相同的字母，那么按照题意用 fast 替换掉 slow</p>
-<p>如果发生了替换，那么slow 和 fast 需要 +1</p>
-<p>如果没发生替换，那么只用 fast +1 （意为找到第一个fast 满足 <code>nums[slow - 2] != nums[fast]</code>）</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/">https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/</a></p>
-<h2 id="301-Remove-Invalid-Parentheses"><a href="#301-Remove-Invalid-Parentheses" class="headerlink" title="301. Remove Invalid Parentheses"></a>301. Remove Invalid Parentheses</h2><p>bfs 思路</p>
-<p>每一层删除一个字符，然后检查这一层的所有字符是否有满足的，如果有，那么答案就在这一层，剩下的层数就不用继续遍历了</p>
-<p>举个例子<code>&quot;()())()&quot;</code> 第一层删除完后有 <code>&quot;)())()&quot;,&quot;(())()&quot;,&quot;()))()&quot;,&quot;()()()&quot;,&quot;()()))&quot;,&quot;()())(&quot;</code>这么多字符</p>
-<p>那么检查这些字符，是否有满足条件的，如果有，那么直接添加到res里，并且这里就找到了最短的删除次数，接下来就不需要往下找了</p>
-<p>如果没有符合的，那么将他们加到Queue里，继续bfs操作</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/remove-invalid-parentheses/">https://leetcode.com/problems/remove-invalid-parentheses/</a></p>
-<h2 id="583-Delete-Operation-for-Two-Strings"><a href="#583-Delete-Operation-for-Two-Strings" class="headerlink" title="583. Delete Operation for Two Strings"></a>583. Delete Operation for Two Strings</h2><p>因为一个step只能做删除操作</p>
-<p>所以用dp求出两个 str 的最长公共子序列</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span>(word1.charAt(i-<span class="hljs-number">1</span>) == word2.charAt(j-<span class="hljs-number">1</span>))&#123;<br>                dp[i][j] = dp[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>] + <span class="hljs-number">1</span>;<br>            &#125;<span class="hljs-keyword">else</span>&#123;<br>                dp[i][j] = Math.max(dp[i-<span class="hljs-number">1</span>][j],dp[i][j-<span class="hljs-number">1</span>]);<br>            &#125;<br></code></pre></td></tr></table></figure>
-
-<p>然后把 str1 和 str2 删到和这个最长公共子序列一样长就可以了</p>
-<p>就是 <code>(str1.length - dp[str1.length][str2.length]) + (str2.length - dp[str1.length][str2.length]) </code></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/delete-operation-for-two-strings/">https://leetcode.com/problems/delete-operation-for-two-strings/</a></p>
-<h2 id="1849-Splitting-a-String-Into-Descending-Consecutive-Values"><a href="#1849-Splitting-a-String-Into-Descending-Consecutive-Values" class="headerlink" title="1849. Splitting a String Into Descending Consecutive Values"></a>1849. Splitting a String Into Descending Consecutive Values</h2><p>dfs，每次记录上一次的数字和当前到达哪一位的指针</p>
-<p>然后从这个指针开始循环，然后看后面能不能找到刚好和上一次数字相差一的数字</p>
-<p>能找到就从这个新的数字开始继续dfs直到指针等于 length()</p>
-<p>注意这个数字可能会很大，所以需要进行Long的转换，并且如果这个数字大到一定程度，他就一定不可能满足，可以break剪枝</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/splitting-a-string-into-descending-consecutive-values/">https://leetcode.com/problems/splitting-a-string-into-descending-consecutive-values/</a></p>
-<h2 id="1110-Delete-Nodes-And-Return-Forest"><a href="#1110-Delete-Nodes-And-Return-Forest" class="headerlink" title="1110. Delete Nodes And Return Forest"></a>1110. Delete Nodes And Return Forest</h2><p>dfs，要按照后序遍历的方式，先判断左右子树，再判断根节点，为了防止根节点被删除了，左右子树出现问题</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">root.left = delete(root.left,to_delete);<br>root.right = delete(root.right,to_delete);<br></code></pre></td></tr></table></figure>
-
-<p>在递归搜索过程里，如果node.val 需要被删除，则左右子树需要构建成一条新的树，res.add(node.left), res.add(node.right), 并且return null</p>
-<p>如果不需要被删除，则return node</p>
-<p>根节点需要进行一次特殊判断，看是否要加进res里</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/delete-nodes-and-return-forest/">https://leetcode.com/problems/delete-nodes-and-return-forest/</a></p>
-<h2 id="621-Task-Scheduler"><a href="#621-Task-Scheduler" class="headerlink" title="621. Task Scheduler"></a>621. Task Scheduler</h2><p>贪心思路，首先找到出现频率最多的那个字母，把这个字母的任务调度了，然后再把其他的字母插入到中间</p>
-<p>举个例子 <code>[&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;B&quot;,&quot;B&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;], n = 2</code> 最多的字母是 A 和 B</p>
-<p>那么首先要把 A  调度了，最少都需要 <code>A * * A * * A</code> 这么多时间，那么res 首先得 加上 (maxFreq - 1) * (n + 1) 意为除了最后一组，前面所需要的时间</p>
-<p>然后加上最后一组所需要的时间，只有和A，就是最大频率相同的字母，才有剩余的字母分配到最后一组，否则肯定会在前面被分配进去</p>
-<p>所以计算 count 为 频率为 max 的字母的数量</p>
-<p>最终 <code>res = (maxFreq - 1) * (n + 1) + count </code></p>
-<p>这里注意，如果 res 小于 task.len 那么返回 task.len ，当 n = 0 的时候会出现这种情况</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/task-scheduler/">https://leetcode.com/problems/task-scheduler/</a></p>
-<h2 id="1048-Longest-String-Chain"><a href="#1048-Longest-String-Chain" class="headerlink" title="1048. Longest String Chain"></a>1048. Longest String Chain</h2><p>dp思想，设<code>Map&lt;String, Integer&gt; dp = new HashMap&lt;&gt;(); // dp的意思就是当前字母的最长string链</code></p>
-<p>为了快速定位word的chain长度，所以用map</p>
-<p>首先对数组按照length从小到大排序，遍历所有单词</p>
-<p>然后每个单词遍历所有字母，设prev为删除这个字母后的字符串</p>
-<p>查看map里是否有prev，如果有则提取出他的chain长度，如果没有，则设为 1 意思就是这个word是这条chain的首字母</p>
-<p>然后比较这些chain长度哪个大，返回最长的</p>
-<p>举个例子，假设有<code>&quot;abcd&quot;</code>这个字符串</p>
-<p>那么他的 prev 是 <code>&quot;bcd&quot;,&quot;acd&quot;,&quot;abc&quot;,&quot;abd&quot;</code>，那么检查map是否有这些字符串，如果有就接上去 + 1，如果没有 那<code>&quot;abcd&quot;</code>就是chain的首字符</p>
-<p>因为数组按照length从小到大排序了，所以肯定是先计算短的，再计算长的</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-string-chain/">https://leetcode.com/problems/longest-string-chain/</a></p>
+        <h4 id=""><a href="#" class="headerlink" title=""></a></h4><h2 id="IPV4和IPV6的区别："><a href="#IPV4和IPV6的区别：" class="headerlink" title="IPV4和IPV6的区别："></a><strong>IPV4和IPV6的区别：</strong></h2><p>　　<strong>一、扩展了路由和寻址的能力</strong></p>
+<p>　　IPv6把IP地址由32位增加到128位，从而能够支持更大的地址空间，估计在地球表面每平米有4*10^18个IPv6地址，使IP地址在可预见的将来不会用完。</p>
+<p>　　IPv6地址的编码采用类似于CIDR的分层分级结构，如同电话号码。简化了路由，加快了路由速度。</p>
+<p>　　在多点传播地址中增加了一个“范围”域，从而使多点传播不仅仅局限在子网内，可以横跨不同的子网，不同的<a target="_blank" rel="noopener" href="https://product.pconline.com.cn/itbk/wlbg/network/1107/2474105.html">局域网</a>。</p>
+<p>　　<strong>二、报头格式的简化</strong></p>
+<p>　　IPv 4报头格式中一些冗余的域或被丢弃或被列为扩展报头，从而降低了包处理和报头<a target="_blank" rel="noopener" href="https://product.pconline.com.cn/itbk/wlbg/wireless/1107/2475816.html">带宽</a>的开销。虽然IPv6的地址是IPv4地址的4倍。但报头只有它的2倍大。</p>
+<p>　　<strong>三、对可选项更大的支持</strong></p>
+<p>　　IPv6的可选项不放入报头，而是放在一个个独立的扩展头部。如果不指定<a target="_blank" rel="noopener" href="https://product.pconline.com.cn/itbk/wlbg/network/1107/2473905.html">路由器</a>不会打开处理扩展头部.这大大改变了路由性能。IPv6放宽了对可选项长度的严格要求(IPv4的可选项总长最多为40字节)，并可根据需要随时引入新选项。IPV6的很多新的特点就是由选项来提供的，如对IP层安全(IPSEC)的支持，对巨报(jumbogram)的支持以及对IP层漫游(Mobile-IP)的支持等。</p>
+<p>　　<strong>四、<a target="_blank" rel="noopener" href="https://product.pconline.com.cn/itbk/wlbg/network/1107/2474501.html">QoS</a>的功能</strong></p>
+<p>　　因特网不仅可以提供各种信息，缩短人们的距离.还可以进行网上娱乐。网上VOD现正被商家炒得热火朝天，而大多还只是准VOD的水平，且只能在局域网上实现，因特网上的VOD都很不理想.问题在于IPv4的报头虽然有服务类型的字段，实际上现在的路由器实现中都忽略了这一字段。在IPv6的头部，有两个相应的优先权和流标识字段，允许把数据报指定为某一信息流的组成部分，并可对这些数据报进行流量控制。如对于实时通信即使所有分组都丢失也要保持恒速，所以优先权最高，而一个新闻分组延迟几秒钟也没什么感觉，所以其优先权较低。IPv6指定这两字段是每一IPv6节点都必须实现的。</p>
+<p>　　<strong>五、身份验证和保密</strong></p>
+<p>　　在IPv6中加入了关于身份验证、数据一致性和保密性的内容。</p>
+<p>　　<strong>六、安全机制IPSec是必选的</strong></p>
+<p>　　IPv4的是可选的或者是需要付费支持的。</p>
+<p>　　<strong>七、加强了对移动设备的支持</strong></p>
+<p>　　IPv6在设计之初有有着支持移动设备的思想，允许移动终端在切换接入点时保留相同的IP地址。</p>
+<p>　　<strong>八、支持无状态自动地址配置</strong>，简化了地址配置过程。无需<a target="_blank" rel="noopener" href="https://product.pconline.com.cn/itbk/wlbg/network/1305/3304121.html">DNS</a><a target="_blank" rel="noopener" href="https://product.pconline.com.cn/itbk/wlbg/servers/1111/2578691.html">服务器</a>也可完成地址的配置，路由广播地址前缀，各主机根据自己<a target="_blank" rel="noopener" href="https://product.pconline.com.cn/itbk/wlbg/network/1107/2475410.html">MAC地址</a>和收到的地址前缀生成可聚合全球单播地址。这也方便了某一区域内的主机同时更换IP地址前缀。</p>
+<h2 id="计算机网络七层网络模型和每层网络模型的协议。"><a href="#计算机网络七层网络模型和每层网络模型的协议。" class="headerlink" title="计算机网络七层网络模型和每层网络模型的协议。"></a>计算机网络七层网络模型和每层网络模型的协议。</h2><p><img src="https://i.bmp.ovh/imgs/2019/04/4591cbc12cd82c44.gif"></p>
 
       </section>
 
       
       
         <nav class="article-nav">
+          
+            <div class="article-nav-item layout-padding">
+  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
+    
+    <div class="card-text">
+      
+        <a href="/2023/12/280920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">lc600题 --》 进度 250 / 600 --》 不会题 3/3</h2>
+        </a>
+      
+      <div class="card-text--row">Newer</div>
+    </div>
+  </article>
+</div>
           
           
             <div class="article-nav-item layout-padding">
@@ -1066,7 +227,7 @@
         <svg class="icon icon-article" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <path d="M240.51564747 647.74217627h196.07203239c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806V165.10332731c0-33.18142087-30.16492806-60.32985613-60.32985612-60.32985611H245.04038668C225.43318342 104.7734712 210.35071939 119.85593522 210.35071939 139.46313845V617.57724821c0 16.59071043 13.57421762 30.16492806 30.16492808 30.16492806z m663.62841731-452.47392089v482.63884894c0 33.18142087-27.14843525 60.32985613-60.32985612 60.32985613H180.18579134c-33.18142087 0-60.32985613-27.14843525-60.32985612-60.32985613V195.26825538c-49.77213131 0-90.49478418 40.72265287-90.49478417 90.49478417v452.4739209c0 49.77213131 40.72265287 90.49478418 90.49478417 90.49478417h286.56681657c16.59071043 0 30.16492806 13.57421762 30.16492807 30.16492807s13.57421762 30.16492806 30.16492805 30.16492806h90.49478418c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806s13.57421762-30.16492806 30.16492807-30.16492807h286.56681657c49.77213131 0 90.49478418-40.72265287 90.49478417-90.49478417V285.76303955c0-49.77213131-40.72265287-90.49478418-90.49478417-90.49478417zM587.41232014 647.74217627h191.54729318c19.60720323 0 34.68966726-15.08246403 34.68966729-34.68966727V134.93839925c0-16.59071043-13.57421762-30.16492806-30.16492808-30.16492805H617.57724821c-30.16492806 0-60.32985613 27.14843525-60.32985612 60.32985611v452.4739209c0 16.59071043 13.57421762 30.16492806 30.16492805 30.16492806z" fill="currentColor"></path>
 </svg>
-        <span>63</span>
+        <span>65</span>
       </div>
       <div class="count-box--item">
         <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -1093,7 +254,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1448-Count-good-nodes-in-binary-tree"><span class="toc-number">1.</span> <span class="toc-text">1448 Count good nodes in binary tree</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1822-sign-of-product-of-an-array"><span class="toc-number">2.</span> <span class="toc-text">1822. sign of product of an array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#146-LRU-Cache"><span class="toc-number">3.</span> <span class="toc-text">146. LRU Cache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#200-Number-of-Islands"><span class="toc-number">4.</span> <span class="toc-text">200. Number of Islands</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#151-Reverse-Words-in-a-String"><span class="toc-number">5.</span> <span class="toc-text">151. Reverse Words in a String</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1405-Longest-Happy-String"><span class="toc-number">6.</span> <span class="toc-text">1405.Longest Happy String</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#56-Merge-Intervals"><span class="toc-number">7.</span> <span class="toc-text">56.Merge Intervals</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#222-Count-Complete-Tree-Nodes"><span class="toc-number">8.</span> <span class="toc-text">222.Count Complete Tree Nodes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#54-Spiral-Maxtrix"><span class="toc-number">9.</span> <span class="toc-text">54.Spiral Maxtrix</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#49-Group-Anagrams"><span class="toc-number">10.</span> <span class="toc-text">49.Group Anagrams</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1647-Minimum-Deletions-to-Make-Character-Frequencies-Unique"><span class="toc-number">11.</span> <span class="toc-text">1647.Minimum Deletions to Make Character Frequencies Unique</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1304-Find-N-Unique-Integers-Sum-up-to-Zero"><span class="toc-number">12.</span> <span class="toc-text">1304. Find N Unique Integers Sum up to Zero</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#207-Course-Schedule"><span class="toc-number">13.</span> <span class="toc-text">207.Course Schedule</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#210-Course-Schedule-2"><span class="toc-number">14.</span> <span class="toc-text">210.Course Schedule 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#79-Word-Search"><span class="toc-number">15.</span> <span class="toc-text">79.Word Search</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#212-Word-Search-2"><span class="toc-number">16.</span> <span class="toc-text">212.Word Search 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#17-Letter-Combinations-of-a-Phone-Number"><span class="toc-number">17.</span> <span class="toc-text">17. Letter Combinations of a Phone Number</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#33-Search-in-Rotated-Sorted-Array"><span class="toc-number">18.</span> <span class="toc-text">33. Search in Rotated Sorted Array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#103-Binary-Tree-Zigzag-Level-Order-Traversal"><span class="toc-number">19.</span> <span class="toc-text">103. Binary Tree Zigzag Level Order Traversal</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Median-of-Two-Sorted-Arrays"><span class="toc-number">20.</span> <span class="toc-text">4. Median of Two Sorted Arrays</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#23-Merge-k-Sorted-Lists"><span class="toc-number">21.</span> <span class="toc-text">23. Merge k Sorted Lists</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#322-Coin-Change"><span class="toc-number">22.</span> <span class="toc-text">322. Coin Change</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#994-Rotting-Oranges"><span class="toc-number">23.</span> <span class="toc-text">994. Rotting Oranges</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1344-Angle-Between-Hands-of-a-Clock"><span class="toc-number">24.</span> <span class="toc-text">1344. Angle Between Hands of a Clock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#295-Find-Median-from-Data-Stream"><span class="toc-number">25.</span> <span class="toc-text">295. Find Median from Data Stream</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#706-Design-HashMap"><span class="toc-number">26.</span> <span class="toc-text">706. Design HashMap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#227-Basic-Calculator-II"><span class="toc-number">27.</span> <span class="toc-text">227. Basic Calculator II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%99%A8%E9%97%AE%E9%A2%98-leetcode-224-227-772"><span class="toc-number">28.</span> <span class="toc-text">计算器问题 leetcode 224 227 772</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#116-Populating-Next-Right-Pointers-in-Each-Node"><span class="toc-number">29.</span> <span class="toc-text">116. Populating Next Right Pointers in Each Node</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#273-Integer-to-English-Words"><span class="toc-number">30.</span> <span class="toc-text">273. Integer to English Words</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#198-House-Robber"><span class="toc-number">31.</span> <span class="toc-text">198. House Robber</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Longest-Palindromic-Substring"><span class="toc-number">32.</span> <span class="toc-text">5. Longest Palindromic Substring</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#979-Distribute-Coins-in-Binary-Tree"><span class="toc-number">33.</span> <span class="toc-text">979. Distribute Coins in Binary Tree</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#443-String-Compression"><span class="toc-number">34.</span> <span class="toc-text">443. String Compression</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#93-Restore-IP-Addresses"><span class="toc-number">35.</span> <span class="toc-text">93. Restore IP Addresses</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#25-Reverse-Nodes-in-k-Group"><span class="toc-number">36.</span> <span class="toc-text">25. Reverse Nodes in k-Group</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#297-Serialize-and-Deserialize-Binary-Tree"><span class="toc-number">37.</span> <span class="toc-text">297. Serialize and Deserialize Binary Tree</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#128-Longest-Consecutive-Sequence"><span class="toc-number">38.</span> <span class="toc-text">128. Longest Consecutive Sequence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#462-Minimum-Moves-to-Equal-Array-Elements-II"><span class="toc-number">39.</span> <span class="toc-text">462. Minimum Moves to Equal Array Elements II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#238-Product-of-Array-Except-Self"><span class="toc-number">40.</span> <span class="toc-text">238. Product of Array Except Self</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#22-Generate-Parentheses"><span class="toc-number">41.</span> <span class="toc-text">22. Generate Parentheses</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#42-Trapping-Rain-Water"><span class="toc-number">42.</span> <span class="toc-text">42. Trapping Rain Water</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#28-Implement-strStr-%EF%BC%88%E9%9C%80%E8%A6%81%E9%87%8D%E7%82%B9%E7%9C%8B%EF%BC%89"><span class="toc-number">43.</span> <span class="toc-text">28. Implement strStr() （需要重点看）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#98-Validate-Binary-Search-Tree"><span class="toc-number">44.</span> <span class="toc-text">98. Validate Binary Search Tree</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#73-Set-Matrix-Zeroes"><span class="toc-number">45.</span> <span class="toc-text">73. Set Matrix Zeroes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1275-Find-Winner-on-a-Tic-Tac-Toe-Game"><span class="toc-number">46.</span> <span class="toc-text">1275. Find Winner on a Tic Tac Toe Game</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#36-Valid-Sudoku"><span class="toc-number">47.</span> <span class="toc-text">36. Valid Sudoku</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#20-Valid-Parentheses"><span class="toc-number">48.</span> <span class="toc-text">20. Valid Parentheses</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#75-Sort-Colors"><span class="toc-number">49.</span> <span class="toc-text">75. Sort Colors</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#769-Max-Chunks-To-Make-Sorted"><span class="toc-number">50.</span> <span class="toc-text">769. Max Chunks To Make Sorted</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#895-Maximum-Frequency-Stack"><span class="toc-number">51.</span> <span class="toc-text">895. Maximum Frequency Stack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#41-First-Missing-Positive"><span class="toc-number">52.</span> <span class="toc-text">41. First Missing Positive</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-Container-With-Most-Water"><span class="toc-number">53.</span> <span class="toc-text">11. Container With Most Water</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#31-Next-Permutation"><span class="toc-number">54.</span> <span class="toc-text">31. Next Permutation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8random7%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0random10"><span class="toc-number">55.</span> <span class="toc-text">使用random7函数实现random10</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#380-Insert-Delete-GetRandom-O-1"><span class="toc-number">56.</span> <span class="toc-text">380. Insert Delete GetRandom O(1)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#450-Delete-Node-in-a-BST"><span class="toc-number">57.</span> <span class="toc-text">450. Delete Node in a BST</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#768-Max-Chunks-To-Make-Sorted-II"><span class="toc-number">58.</span> <span class="toc-text">768. Max Chunks To Make Sorted II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1%EF%BD%9En-%E6%95%B4%E6%95%B0%E4%B8%AD-1-%E5%87%BA%E7%8E%B0%E7%9A%84%E6%AC%A1%E6%95%B0"><span class="toc-number">59.</span> <span class="toc-text">1～n 整数中 1 出现的次数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#236-Lowest-Common-Ancestor-of-a-Binary-Tree"><span class="toc-number">60.</span> <span class="toc-text">236. Lowest Common Ancestor of a Binary Tree</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#232-Implement-Queue-using-Stacks"><span class="toc-number">61.</span> <span class="toc-text">.232. Implement Queue using Stacks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%91%E6%8C%87-Offer-54-%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E7%AC%ACk%E5%A4%A7%E8%8A%82%E7%82%B9"><span class="toc-number">62.</span> <span class="toc-text">剑指 Offer 54. 二叉搜索树的第k大节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#225-Implement-Stack-using-Queues"><span class="toc-number">63.</span> <span class="toc-text">225. Implement Stack using Queues</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#935-Knight-Dialer"><span class="toc-number">64.</span> <span class="toc-text">935. Knight Dialer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#171-Excel-Sheet-Column-Number"><span class="toc-number">65.</span> <span class="toc-text">171. Excel Sheet Column Number</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#387-First-Unique-Character-in-a-String"><span class="toc-number">66.</span> <span class="toc-text">387. First Unique Character in a String</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#155-Min-Stack"><span class="toc-number">67.</span> <span class="toc-text">155. Min Stack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#283-Move-Zeroes"><span class="toc-number">68.</span> <span class="toc-text">283. Move Zeroes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#117-Populating-Next-Right-Pointers-in-Each-Node-II"><span class="toc-number">69.</span> <span class="toc-text">117. Populating Next Right Pointers in Each Node II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#215-Kth-Largest-Element-in-an-Array"><span class="toc-number">70.</span> <span class="toc-text">215. Kth Largest Element in an Array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1615-Maximal-Network-Rank"><span class="toc-number">71.</span> <span class="toc-text">1615. Maximal Network Rank</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#43-Multiply-Strings"><span class="toc-number">72.</span> <span class="toc-text">43. Multiply Strings</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#44-Wildcard-Matching"><span class="toc-number">73.</span> <span class="toc-text">44. Wildcard Matching</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#84-Largest-Rectangle-in-Histogram"><span class="toc-number">74.</span> <span class="toc-text">84. Largest Rectangle in Histogram</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#124-Binary-Tree-Maximum-Path-Sum"><span class="toc-number">75.</span> <span class="toc-text">124. Binary Tree Maximum Path Sum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#48-Rotate-Image"><span class="toc-number">76.</span> <span class="toc-text">48. Rotate Image</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#622-Design-Circular-Queue"><span class="toc-number">77.</span> <span class="toc-text">622. Design Circular Queue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#221-Maximal-Square"><span class="toc-number">78.</span> <span class="toc-text">221. Maximal Square</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#540-Single-Element-in-a-Sorted-Array"><span class="toc-number">79.</span> <span class="toc-text">540. Single Element in a Sorted Array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#121-Best-Time-to-Buy-and-Sell-Stock"><span class="toc-number">80.</span> <span class="toc-text">121. Best Time to Buy and Sell Stock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#773-Sliding-Puzzle"><span class="toc-number">81.</span> <span class="toc-text">773. Sliding Puzzle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#51-N-Queens"><span class="toc-number">82.</span> <span class="toc-text">51. N-Queens</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1578-Minimum-Time-to-Make-Rope-Colorful"><span class="toc-number">83.</span> <span class="toc-text">1578. Minimum Time to Make Rope Colorful</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#134-Gas-Station"><span class="toc-number">84.</span> <span class="toc-text">134. Gas Station</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#234-Palindrome-Linked-List"><span class="toc-number">85.</span> <span class="toc-text">234. Palindrome Linked List</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#173-Binary-Search-Tree-Iterator"><span class="toc-number">86.</span> <span class="toc-text">173. Binary Search Tree Iterator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#162-Find-Peak-Element"><span class="toc-number">87.</span> <span class="toc-text">162. Find Peak Element</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#153-Find-Minimum-in-Rotated-Sorted-Array"><span class="toc-number">88.</span> <span class="toc-text">153. Find Minimum in Rotated Sorted Array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#139-Word-Break"><span class="toc-number">89.</span> <span class="toc-text">139. Word Break</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#394-Decode-String"><span class="toc-number">90.</span> <span class="toc-text">394. Decode String</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#114-Flatten-Binary-Tree-to-Linked-List"><span class="toc-number">91.</span> <span class="toc-text">114. Flatten Binary Tree to Linked List</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#300-Longest-Increasing-Subsequence"><span class="toc-number">92.</span> <span class="toc-text">300. Longest Increasing Subsequence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#437-Path-Sum-III"><span class="toc-number">93.</span> <span class="toc-text">437. Path Sum III</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal"><span class="toc-number">94.</span> <span class="toc-text">105. Construct Binary Tree from Preorder and Inorder Traversal</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#101-Symmetric-Tree"><span class="toc-number">95.</span> <span class="toc-text">101. Symmetric Tree</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#287-Find-the-Duplicate-Number"><span class="toc-number">96.</span> <span class="toc-text">287. Find the Duplicate Number</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#39-Combination-Sum"><span class="toc-number">97.</span> <span class="toc-text">39. Combination Sum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#127-Word-Ladder"><span class="toc-number">98.</span> <span class="toc-text">127. Word Ladder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#460-LFU-Cache"><span class="toc-number">99.</span> <span class="toc-text">460. LFU Cache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#403-Frog-Jump"><span class="toc-number">100.</span> <span class="toc-text">403. Frog Jump</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#53-Maximum-Subarray"><span class="toc-number">101.</span> <span class="toc-text">53. Maximum Subarray</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#721-Accounts-Merge%EF%BC%88%E9%9C%80%E5%86%8D%E7%9C%8B%EF%BC%89"><span class="toc-number">102.</span> <span class="toc-text">721. Accounts Merge（需再看）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#50-Pow-x-n"><span class="toc-number">103.</span> <span class="toc-text">50. Pow(x, n)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#142-Linked-List-Cycle-II"><span class="toc-number">104.</span> <span class="toc-text">142. Linked List Cycle II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#628-Maximum-Product-of-Three-Numbers"><span class="toc-number">105.</span> <span class="toc-text">628. Maximum Product of Three Numbers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#72-Edit-Distance"><span class="toc-number">106.</span> <span class="toc-text">72. Edit Distance</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#32-Longest-Valid-Parentheses"><span class="toc-number">107.</span> <span class="toc-text">32. Longest Valid Parentheses</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-3Sum"><span class="toc-number">108.</span> <span class="toc-text">15. 3Sum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#528-Random-Pick-with-Weight"><span class="toc-number">109.</span> <span class="toc-text">528. Random Pick with Weight</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#214-Shortest-Palindrome"><span class="toc-number">110.</span> <span class="toc-text">214. Shortest Palindrome</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#969-Pancake-Sorting"><span class="toc-number">111.</span> <span class="toc-text">969. Pancake Sorting</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1312-Minimum-Insertion-Steps-to-Make-a-String-Palindrome"><span class="toc-number">112.</span> <span class="toc-text">1312. Minimum Insertion Steps to Make a String Palindrome</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Manacher-%E9%A9%AC%E6%8B%89%E8%BD%A6%E7%AE%97%E6%B3%95"><span class="toc-number">113.</span> <span class="toc-text">Manacher 马拉车算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1414-Find-the-Minimum-Number-of-Fibonacci-Numbers-Whose-Sum-Is-K"><span class="toc-number">114.</span> <span class="toc-text">1414. Find the Minimum Number of Fibonacci Numbers Whose Sum Is K</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#639-Decode-Ways-II"><span class="toc-number">115.</span> <span class="toc-text">639. Decode Ways II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#189-Rotate-Array"><span class="toc-number">116.</span> <span class="toc-text">189. Rotate Array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1004-Max-Consecutive-Ones-III"><span class="toc-number">117.</span> <span class="toc-text">1004. Max Consecutive Ones III</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#37-Sudoku-Solver"><span class="toc-number">118.</span> <span class="toc-text">37. Sudoku Solver</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#133-Clone-Graph"><span class="toc-number">119.</span> <span class="toc-text">133. Clone Graph</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#844-Backspace-String-Compare"><span class="toc-number">120.</span> <span class="toc-text">844. Backspace String Compare</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#560-Subarray-Sum-Equals-K"><span class="toc-number">121.</span> <span class="toc-text">560. Subarray Sum Equals K</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#735-Asteroid-Collision"><span class="toc-number">122.</span> <span class="toc-text">735. Asteroid Collision</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1896-Minimum-Cost-to-Change-the-Final-Value-of-Expression%EF%BC%88%E4%B8%8D%E4%BC%9A%EF%BC%89"><span class="toc-number">123.</span> <span class="toc-text">1896. Minimum Cost to Change the Final Value of Expression（不会）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#581-Shortest-Unsorted-Continuous-Subarray"><span class="toc-number">124.</span> <span class="toc-text">581. Shortest Unsorted Continuous Subarray</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#987-Vertical-Order-Traversal-of-a-Binary-Tree"><span class="toc-number">125.</span> <span class="toc-text">987. Vertical Order Traversal of a Binary Tree</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#70-Climbing-Stairs"><span class="toc-number">126.</span> <span class="toc-text">70. Climbing Stairs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1277-Count-Square-Submatrices-with-All-Ones"><span class="toc-number">127.</span> <span class="toc-text">1277. Count Square Submatrices with All Ones</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#556-Next-Greater-Element-III"><span class="toc-number">128.</span> <span class="toc-text">556. Next Greater Element III</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#611-Valid-Triangle-Number"><span class="toc-number">129.</span> <span class="toc-text">611. Valid Triangle Number</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1861-Rotating-the-Box"><span class="toc-number">130.</span> <span class="toc-text">1861. Rotating the Box</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#239-Sliding-Window-Maximum"><span class="toc-number">131.</span> <span class="toc-text">239. Sliding Window Maximum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9C%8B%E5%9B%BE"><span class="toc-number">132.</span> <span class="toc-text">&#x2F;&#x2F;&#x2F;看图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#76-Minimum-Window-Substring"><span class="toc-number">133.</span> <span class="toc-text">76. Minimum Window Substring</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%A2%E8%AF%95%E9%A2%98-17-24-%E6%9C%80%E5%A4%A7%E5%AD%90%E7%9F%A9%E9%98%B5"><span class="toc-number">134.</span> <span class="toc-text">面试题 17.24. 最大子矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1770-Maximum-Score-from-Performing-Multiplication-Operations"><span class="toc-number">135.</span> <span class="toc-text">1770. Maximum Score from Performing Multiplication Operations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#223-Rectangle-Area"><span class="toc-number">136.</span> <span class="toc-text">223. Rectangle Area</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#707-Design-Linked-List"><span class="toc-number">137.</span> <span class="toc-text">707. Design Linked List</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#743-Network-Delay-Time"><span class="toc-number">138.</span> <span class="toc-text">743. Network Delay Time</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#973-K-Closest-Points-to-Origin"><span class="toc-number">139.</span> <span class="toc-text">973. K Closest Points to Origin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1091-Shortest-Path-in-Binary-Matrix"><span class="toc-number">140.</span> <span class="toc-text">1091. Shortest Path in Binary Matrix</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#241-Different-Ways-to-Add-Parentheses"><span class="toc-number">141.</span> <span class="toc-text">241. Different Ways to Add Parentheses</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#395-Longest-Substring-with-At-Least-K-Repeating-Characters"><span class="toc-number">142.</span> <span class="toc-text">395. Longest Substring with At Least K Repeating Characters</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#980-Unique-Paths-III"><span class="toc-number">143.</span> <span class="toc-text">980. Unique Paths III</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#135-Candy"><span class="toc-number">144.</span> <span class="toc-text">135. Candy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#143-Reorder-List"><span class="toc-number">145.</span> <span class="toc-text">143. Reorder List</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%A6%E7%91%9F%E5%A4%AB%E7%8E%AF%E9%97%AE%E9%A2%98"><span class="toc-number">146.</span> <span class="toc-text">约瑟夫环问题:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#525-Contiguous-Array"><span class="toc-number">147.</span> <span class="toc-text">525. Contiguous Array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#55-Jump-Game"><span class="toc-number">148.</span> <span class="toc-text">55. Jump Game</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#152-Maximum-Product-Subarray"><span class="toc-number">149.</span> <span class="toc-text">152. Maximum Product Subarray</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#440-K-th-Smallest-in-Lexicographical-Order"><span class="toc-number">150.</span> <span class="toc-text">440. K-th Smallest in Lexicographical Order</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#136-Single-Number"><span class="toc-number">151.</span> <span class="toc-text">136. Single Number</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#92-Reverse-Linked-List-II"><span class="toc-number">152.</span> <span class="toc-text">92. Reverse Linked List II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#679-24-Game"><span class="toc-number">153.</span> <span class="toc-text">679. 24 Game</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#47-Permutations-II"><span class="toc-number">154.</span> <span class="toc-text">47. Permutations II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-Regular-Expression-Matching"><span class="toc-number">155.</span> <span class="toc-text">10. Regular Expression Matching</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#337-House-Robber-III"><span class="toc-number">156.</span> <span class="toc-text">337. House Robber III</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-3Sum-Closest"><span class="toc-number">157.</span> <span class="toc-text">16. 3Sum Closest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#415-Add-Strings"><span class="toc-number">158.</span> <span class="toc-text">415. Add Strings</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#78-Subsets"><span class="toc-number">159.</span> <span class="toc-text">78. Subsets</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#329-Longest-Increasing-Path-in-a-Matrix"><span class="toc-number">160.</span> <span class="toc-text">329. Longest Increasing Path in a Matrix</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#767-Reorganize-String"><span class="toc-number">161.</span> <span class="toc-text">767. Reorganize String</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1143-Longest-Common-Subsequence"><span class="toc-number">162.</span> <span class="toc-text">1143. Longest Common Subsequence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="toc-number">163.</span> <span class="toc-text">股票问题：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#739-Daily-Temperatures"><span class="toc-number">164.</span> <span class="toc-text">739. Daily Temperatures</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%91%E6%8C%87-Offer-51-%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%80%86%E5%BA%8F%E5%AF%B9"><span class="toc-number">165.</span> <span class="toc-text">剑指 Offer 51. 数组中的逆序对</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#763-Partition-Labels"><span class="toc-number">166.</span> <span class="toc-text">763. Partition Labels</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#416-Partition-Equal-Subset-Sum"><span class="toc-number">167.</span> <span class="toc-text">416. Partition Equal Subset Sum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#516-Longest-Palindromic-Subsequence"><span class="toc-number">168.</span> <span class="toc-text">516. Longest Palindromic Subsequence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1044-Longest-Duplicate-Substring"><span class="toc-number">169.</span> <span class="toc-text">1044. Longest Duplicate Substring</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#30-Substring-with-Concatenation-of-All-Words"><span class="toc-number">170.</span> <span class="toc-text">30. Substring with Concatenation of All Words</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#279-Perfect-Squares"><span class="toc-number">171.</span> <span class="toc-text">279. Perfect Squares</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#343-Integer-Break"><span class="toc-number">172.</span> <span class="toc-text">343. Integer Break</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#787-Cheapest-Flights-Within-K-Stops"><span class="toc-number">173.</span> <span class="toc-text">787. Cheapest Flights Within K Stops</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#842-Split-Array-into-Fibonacci-Sequence"><span class="toc-number">174.</span> <span class="toc-text">842. Split Array into Fibonacci Sequence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#647-Palindromic-Substrings"><span class="toc-number">175.</span> <span class="toc-text">647. Palindromic Substrings</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#494-Target-Sum"><span class="toc-number">176.</span> <span class="toc-text">494. Target Sum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1838-Frequency-of-the-Most-Frequent-Element"><span class="toc-number">177.</span> <span class="toc-text">1838. Frequency of the Most Frequent Element</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#64-Minimum-Path-Sum"><span class="toc-number">178.</span> <span class="toc-text">64. Minimum Path Sum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#518-Coin-Change-2"><span class="toc-number">179.</span> <span class="toc-text">518. Coin Change 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#148-Sort-List"><span class="toc-number">180.</span> <span class="toc-text">148. Sort List</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#80-Remove-Duplicates-from-Sorted-Array-II"><span class="toc-number">181.</span> <span class="toc-text">80. Remove Duplicates from Sorted Array II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#301-Remove-Invalid-Parentheses"><span class="toc-number">182.</span> <span class="toc-text">301. Remove Invalid Parentheses</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#583-Delete-Operation-for-Two-Strings"><span class="toc-number">183.</span> <span class="toc-text">583. Delete Operation for Two Strings</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1849-Splitting-a-String-Into-Descending-Consecutive-Values"><span class="toc-number">184.</span> <span class="toc-text">1849. Splitting a String Into Descending Consecutive Values</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1110-Delete-Nodes-And-Return-Forest"><span class="toc-number">185.</span> <span class="toc-text">1110. Delete Nodes And Return Forest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#621-Task-Scheduler"><span class="toc-number">186.</span> <span class="toc-text">621. Task Scheduler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1048-Longest-String-Chain"><span class="toc-number">187.</span> <span class="toc-text">1048. Longest String Chain</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#IPV4%E5%92%8CIPV6%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">IPV4和IPV6的区别：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%AF%8F%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8D%8F%E8%AE%AE%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">计算机网络七层网络模型和每层网络模型的协议。</span></a></li></ol>
   </div>
 </section>
 
@@ -1124,7 +285,7 @@
       
         <li class="categorys-list-item">
           <a href="/categories/%E7%AE%97%E6%B3%95/">
-            算法 (2)
+            算法 (3)
           </a>
         </li>
       
@@ -1160,7 +321,7 @@
       
         <li class="categorys-list-item">
           <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
-            操作系统 (7)
+            操作系统 (8)
           </a>
         </li>
       
@@ -1201,7 +362,7 @@
   </div>
   <div class="widget-body">
     <div class="tags-cloud">
-      <a href="/tags/Activity/" style="font-size: 13.33px;" class="tags-cloud-3">Activity</a> <a href="/tags/Android%E5%9F%BA%E7%A1%80/" style="font-size: 20px;" class="tags-cloud-10">Android基础</a> <a href="/tags/Handler/" style="font-size: 10px;" class="tags-cloud-0">Handler</a> <a href="/tags/IM/" style="font-size: 11.67px;" class="tags-cloud-2">IM</a> <a href="/tags/JAVA%E5%9F%BA%E7%A1%80/" style="font-size: 18.33px;" class="tags-cloud-8">JAVA基础</a> <a href="/tags/JAVA%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;" class="tags-cloud-0">JAVA多线程</a> <a href="/tags/JAVA%E5%B9%B6%E5%8F%91/" style="font-size: 11.67px;" class="tags-cloud-2">JAVA并发</a> <a href="/tags/JAVA%E9%9B%86%E5%90%88/" style="font-size: 10px;" class="tags-cloud-0">JAVA集合</a> <a href="/tags/JVM/" style="font-size: 13.33px;" class="tags-cloud-3">JVM</a> <a href="/tags/Kotlin%E5%9F%BA%E7%A1%80/" style="font-size: 10px;" class="tags-cloud-0">Kotlin基础</a> <a href="/tags/Service/" style="font-size: 10px;" class="tags-cloud-0">Service</a> <a href="/tags/TCP/" style="font-size: 11.67px;" class="tags-cloud-2">TCP</a> <a href="/tags/operation-system/" style="font-size: 10px;" class="tags-cloud-0">operation system</a> <a href="/tags/spring/" style="font-size: 10px;" class="tags-cloud-0">spring</a> <a href="/tags/%E2%80%98Flutter%E2%80%99/" style="font-size: 10px;" class="tags-cloud-0">‘Flutter’</a> <a href="/tags/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/" style="font-size: 11.67px;" class="tags-cloud-2">四大组件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 15px;" class="tags-cloud-5">操作系统</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 10px;" class="tags-cloud-0">日常</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.67px;" class="tags-cloud-2">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 16.67px;" class="tags-cloud-7">计算机网络</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;" class="tags-cloud-0">设计模式</a>
+      <a href="/tags/Activity/" style="font-size: 13.33px;" class="tags-cloud-3">Activity</a> <a href="/tags/Android%E5%9F%BA%E7%A1%80/" style="font-size: 20px;" class="tags-cloud-10">Android基础</a> <a href="/tags/Handler/" style="font-size: 10px;" class="tags-cloud-0">Handler</a> <a href="/tags/IM/" style="font-size: 11.67px;" class="tags-cloud-2">IM</a> <a href="/tags/JAVA%E5%9F%BA%E7%A1%80/" style="font-size: 18.33px;" class="tags-cloud-8">JAVA基础</a> <a href="/tags/JAVA%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;" class="tags-cloud-0">JAVA多线程</a> <a href="/tags/JAVA%E5%B9%B6%E5%8F%91/" style="font-size: 11.67px;" class="tags-cloud-2">JAVA并发</a> <a href="/tags/JAVA%E9%9B%86%E5%90%88/" style="font-size: 10px;" class="tags-cloud-0">JAVA集合</a> <a href="/tags/JVM/" style="font-size: 13.33px;" class="tags-cloud-3">JVM</a> <a href="/tags/Kotlin%E5%9F%BA%E7%A1%80/" style="font-size: 10px;" class="tags-cloud-0">Kotlin基础</a> <a href="/tags/Service/" style="font-size: 10px;" class="tags-cloud-0">Service</a> <a href="/tags/TCP/" style="font-size: 11.67px;" class="tags-cloud-2">TCP</a> <a href="/tags/operation-system/" style="font-size: 10px;" class="tags-cloud-0">operation system</a> <a href="/tags/spring/" style="font-size: 10px;" class="tags-cloud-0">spring</a> <a href="/tags/%E2%80%98Flutter%E2%80%99/" style="font-size: 10px;" class="tags-cloud-0">‘Flutter’</a> <a href="/tags/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/" style="font-size: 11.67px;" class="tags-cloud-2">四大组件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 15px;" class="tags-cloud-5">操作系统</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 10px;" class="tags-cloud-0">日常</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.33px;" class="tags-cloud-3">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 16.67px;" class="tags-cloud-7">计算机网络</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;" class="tags-cloud-0">设计模式</a>
     </div>
   </div>
 </section>
