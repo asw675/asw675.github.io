@@ -216,7 +216,7 @@
 </ul>
 <h3 id="volatile与synchronized的区别如下："><a href="#volatile与synchronized的区别如下：" class="headerlink" title="volatile与synchronized的区别如下："></a>volatile与synchronized的区别如下：</h3><p>1）volatile本质是告诉JVM当前变量在寄存器中的值是不确定的，需要从主存中读取。synchronized则是锁定当前变量，只有当前线程可以访问该变量，其它线程被阻塞。<br>2）volatile仅能使用在变量级别，synchronized则可以使用在变量、方法。<br>3）volatile仅能实现变量修改的可见性，而synchronized则可以保证变量修改的可见性和原子性。《Java编程思想》上说，定义long或double时，如果使用volatile关键字(简单的赋值与返回操作)，就会获得原子性。(常规状态下，这两个变量由于其长度，其操作不是原子的)<br>4）volatile不会造成线程阻塞，synchronized会造成线程阻塞。<br>5）使用volatile而不是synchronized的唯一安全情况是类中只有一个可变的域。</p>
 <h3 id="AQS-AbstractQueuedSynchronizer"><a href="#AQS-AbstractQueuedSynchronizer" class="headerlink" title="AQS(AbstractQueuedSynchronizer)"></a>AQS(AbstractQueuedSynchronizer)</h3><p>实际上AQS是一个抽象类，由源码可以看出AQS是有以下几个部分组成的：</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/Rnej1nLQibWAgq1icexQ4FcwC9RaUa8Gz7ic02ciabibPVaTnZQNEYpKusibibQBhOm5QiaAGP3KvYDxc6gO3qFMfWiattw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="Image"></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/XNJ3dI"><img src="https://s1.ax1x.com/2022/06/02/XNJ3dI.png" alt="XNJ3dI.png"></a></p>
 <h4 id="state共享变量"><a href="#state共享变量" class="headerlink" title="state共享变量"></a>state共享变量</h4><p>AQS中里一个很重要的字段state，表示同步状态，是由<code>volatile</code>修饰的，用于展示当前临界资源的获锁情况。通过getState()，setState()，compareAndSetState()三个方法进行维护。</p>
 <p>关于state的几个要点：</p>
 <ul>
@@ -260,7 +260,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">selfInterrupt</span><span class="hljs-params">()</span> </span>&#123;<br>    Thread.currentThread().interrupt();<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>过程记不住没关系，下面画张图来总结一下，其实很简单。</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/Rnej1nLQibWAgq1icexQ4FcwC9RaUa8Gz7wd9BviawedKNE7SOZMlmmW02g2y6rmm4NXkOsic5icrDzUrCb9NEx1p2g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="Image"></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/XNJ8ot"><img src="https://s1.ax1x.com/2022/06/02/XNJ8ot.png" alt="XNJ8ot.png"></a></p>
 <h4 id="共享式"><a href="#共享式" class="headerlink" title="共享式"></a>共享式</h4><p>即共享资源可以被多个线程同时占有，直到共享资源被占用完毕。比如ReadWriteLock和CountdownLatch。下面我们从源码去分析其实现原理。</p>
 <p>首先还是看最顶层的acquireShared()方法。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">acquireShared</span><span class="hljs-params">(<span class="hljs-keyword">int</span> arg)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (tryAcquireShared(arg) &lt; <span class="hljs-number">0</span>)<br>        doAcquireShared(arg);<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -375,7 +375,7 @@
         <svg class="icon icon-article" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <path d="M240.51564747 647.74217627h196.07203239c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806V165.10332731c0-33.18142087-30.16492806-60.32985613-60.32985612-60.32985611H245.04038668C225.43318342 104.7734712 210.35071939 119.85593522 210.35071939 139.46313845V617.57724821c0 16.59071043 13.57421762 30.16492806 30.16492808 30.16492806z m663.62841731-452.47392089v482.63884894c0 33.18142087-27.14843525 60.32985613-60.32985612 60.32985613H180.18579134c-33.18142087 0-60.32985613-27.14843525-60.32985612-60.32985613V195.26825538c-49.77213131 0-90.49478418 40.72265287-90.49478417 90.49478417v452.4739209c0 49.77213131 40.72265287 90.49478418 90.49478417 90.49478417h286.56681657c16.59071043 0 30.16492806 13.57421762 30.16492807 30.16492807s13.57421762 30.16492806 30.16492805 30.16492806h90.49478418c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806s13.57421762-30.16492806 30.16492807-30.16492807h286.56681657c49.77213131 0 90.49478418-40.72265287 90.49478417-90.49478417V285.76303955c0-49.77213131-40.72265287-90.49478418-90.49478417-90.49478417zM587.41232014 647.74217627h191.54729318c19.60720323 0 34.68966726-15.08246403 34.68966729-34.68966727V134.93839925c0-16.59071043-13.57421762-30.16492806-30.16492808-30.16492805H617.57724821c-30.16492806 0-60.32985613 27.14843525-60.32985612 60.32985611v452.4739209c0 16.59071043 13.57421762 30.16492806 30.16492805 30.16492806z" fill="currentColor"></path>
 </svg>
-        <span>65</span>
+        <span>67</span>
       </div>
       <div class="count-box--item">
         <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -469,13 +469,13 @@
       
         <li class="categorys-list-item">
           <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
-            操作系统 (8)
+            操作系统 (9)
           </a>
         </li>
       
         <li class="categorys-list-item">
           <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">
-            JAVA基础 (10)
+            JAVA基础 (11)
           </a>
         </li>
       
@@ -510,7 +510,7 @@
   </div>
   <div class="widget-body">
     <div class="tags-cloud">
-      <a href="/tags/Activity/" style="font-size: 13.33px;" class="tags-cloud-3">Activity</a> <a href="/tags/Android%E5%9F%BA%E7%A1%80/" style="font-size: 20px;" class="tags-cloud-10">Android基础</a> <a href="/tags/Handler/" style="font-size: 10px;" class="tags-cloud-0">Handler</a> <a href="/tags/IM/" style="font-size: 11.67px;" class="tags-cloud-2">IM</a> <a href="/tags/JAVA%E5%9F%BA%E7%A1%80/" style="font-size: 18.33px;" class="tags-cloud-8">JAVA基础</a> <a href="/tags/JAVA%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;" class="tags-cloud-0">JAVA多线程</a> <a href="/tags/JAVA%E5%B9%B6%E5%8F%91/" style="font-size: 11.67px;" class="tags-cloud-2">JAVA并发</a> <a href="/tags/JAVA%E9%9B%86%E5%90%88/" style="font-size: 10px;" class="tags-cloud-0">JAVA集合</a> <a href="/tags/JVM/" style="font-size: 13.33px;" class="tags-cloud-3">JVM</a> <a href="/tags/Kotlin%E5%9F%BA%E7%A1%80/" style="font-size: 10px;" class="tags-cloud-0">Kotlin基础</a> <a href="/tags/Service/" style="font-size: 10px;" class="tags-cloud-0">Service</a> <a href="/tags/TCP/" style="font-size: 11.67px;" class="tags-cloud-2">TCP</a> <a href="/tags/operation-system/" style="font-size: 10px;" class="tags-cloud-0">operation system</a> <a href="/tags/spring/" style="font-size: 10px;" class="tags-cloud-0">spring</a> <a href="/tags/%E2%80%98Flutter%E2%80%99/" style="font-size: 10px;" class="tags-cloud-0">‘Flutter’</a> <a href="/tags/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/" style="font-size: 11.67px;" class="tags-cloud-2">四大组件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 15px;" class="tags-cloud-5">操作系统</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 10px;" class="tags-cloud-0">日常</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.33px;" class="tags-cloud-3">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 16.67px;" class="tags-cloud-7">计算机网络</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;" class="tags-cloud-0">设计模式</a>
+      <a href="/tags/Activity/" style="font-size: 14px;" class="tags-cloud-4">Activity</a> <a href="/tags/Android%E5%9F%BA%E7%A1%80/" style="font-size: 20px;" class="tags-cloud-10">Android基础</a> <a href="/tags/Handler/" style="font-size: 10px;" class="tags-cloud-0">Handler</a> <a href="/tags/IM/" style="font-size: 12px;" class="tags-cloud-2">IM</a> <a href="/tags/JAVA%E5%9F%BA%E7%A1%80/" style="font-size: 18px;" class="tags-cloud-8">JAVA基础</a> <a href="/tags/JAVA%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;" class="tags-cloud-0">JAVA多线程</a> <a href="/tags/JAVA%E5%B9%B6%E5%8F%91/" style="font-size: 12px;" class="tags-cloud-2">JAVA并发</a> <a href="/tags/JAVA%E9%9B%86%E5%90%88/" style="font-size: 10px;" class="tags-cloud-0">JAVA集合</a> <a href="/tags/JVM/" style="font-size: 14px;" class="tags-cloud-4">JVM</a> <a href="/tags/Kotlin%E5%9F%BA%E7%A1%80/" style="font-size: 10px;" class="tags-cloud-0">Kotlin基础</a> <a href="/tags/Service/" style="font-size: 10px;" class="tags-cloud-0">Service</a> <a href="/tags/TCP/" style="font-size: 12px;" class="tags-cloud-2">TCP</a> <a href="/tags/operation-system/" style="font-size: 10px;" class="tags-cloud-0">operation system</a> <a href="/tags/spring/" style="font-size: 10px;" class="tags-cloud-0">spring</a> <a href="/tags/%E2%80%98Flutter%E2%80%99/" style="font-size: 10px;" class="tags-cloud-0">‘Flutter’</a> <a href="/tags/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/" style="font-size: 12px;" class="tags-cloud-2">四大组件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 16px;" class="tags-cloud-6">操作系统</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 10px;" class="tags-cloud-0">日常</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 14px;" class="tags-cloud-4">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 16px;" class="tags-cloud-6">计算机网络</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;" class="tags-cloud-0">设计模式</a>
     </div>
   </div>
 </section>
