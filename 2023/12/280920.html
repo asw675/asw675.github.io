@@ -139,7 +139,7 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h4 id=""><a href="#" class="headerlink" title=""></a></h4><h2 id="IPV4和IPV6的区别："><a href="#IPV4和IPV6的区别：" class="headerlink" title="IPV4和IPV6的区别："></a><strong>IPV4和IPV6的区别：</strong></h2><p>　　<strong>一、扩展了路由和寻址的能力</strong></p>
+        <h2 id="IPV4和IPV6的区别："><a href="#IPV4和IPV6的区别：" class="headerlink" title="IPV4和IPV6的区别："></a><strong>IPV4和IPV6的区别：</strong></h2><p>　　<strong>一、扩展了路由和寻址的能力</strong></p>
 <p>　　IPv6把IP地址由32位增加到128位，从而能够支持更大的地址空间，估计在地球表面每平米有4*10^18个IPv6地址，使IP地址在可预见的将来不会用完。</p>
 <p>　　IPv6地址的编码采用类似于CIDR的分层分级结构，如同电话号码。简化了路由，加快了路由速度。</p>
 <p>　　在多点传播地址中增加了一个“范围”域，从而使多点传播不仅仅局限在子网内，可以横跨不同的子网，不同的<a target="_blank" rel="noopener" href="https://product.pconline.com.cn/itbk/wlbg/network/1107/2474105.html">局域网</a>。</p>
@@ -157,6 +157,120 @@
 <p>　　IPv6在设计之初有有着支持移动设备的思想，允许移动终端在切换接入点时保留相同的IP地址。</p>
 <p>　　<strong>八、支持无状态自动地址配置</strong>，简化了地址配置过程。无需<a target="_blank" rel="noopener" href="https://product.pconline.com.cn/itbk/wlbg/network/1305/3304121.html">DNS</a><a target="_blank" rel="noopener" href="https://product.pconline.com.cn/itbk/wlbg/servers/1111/2578691.html">服务器</a>也可完成地址的配置，路由广播地址前缀，各主机根据自己<a target="_blank" rel="noopener" href="https://product.pconline.com.cn/itbk/wlbg/network/1107/2475410.html">MAC地址</a>和收到的地址前缀生成可聚合全球单播地址。这也方便了某一区域内的主机同时更换IP地址前缀。</p>
 <h2 id="计算机网络七层网络模型和每层网络模型的协议。"><a href="#计算机网络七层网络模型和每层网络模型的协议。" class="headerlink" title="计算机网络七层网络模型和每层网络模型的协议。"></a>计算机网络七层网络模型和每层网络模型的协议。</h2><p><img src="https://i.bmp.ovh/imgs/2019/04/4591cbc12cd82c44.gif"></p>
+<h2 id="okhttp断点续传"><a href="#okhttp断点续传" class="headerlink" title="okhttp断点续传"></a>okhttp断点续传</h2><p>1、调用请求获取文件长度<br>2、先判断文件是否找到,找到代表已经下载过,则获取其长度 判断长度是否大于文件长度 大于则创建新文件继续下载或者下载终止<br>3、设置请求头请求范围</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//确定下载的范围,添加此头,则服务器就可以跳过已经下载好的部分  </span><br>               .addHeader(<span class="hljs-string">&quot;RANGE&quot;</span>, <span class="hljs-string">&quot;bytes=&quot;</span> + downloadLength + <span class="hljs-string">&quot;-&quot;</span> + contentLength) <br></code></pre></td></tr></table></figure>
+
+
+<p>4、存储时候设置:RandomAccessFile这个类,但是如果不涉及到多个部分拼接的话是没必要的,直接使用输出流就好了,在输出流的构造方法上添加一个true的参数,代表是在原文件的后面添加数据即可。</p>
+<h2 id="加密算法有了解吗？说说你知道的具体的加密算法"><a href="#加密算法有了解吗？说说你知道的具体的加密算法" class="headerlink" title="加密算法有了解吗？说说你知道的具体的加密算法"></a>加密算法有了解吗？说说你知道的具体的加密算法</h2><h4 id="MD5算法"><a href="#MD5算法" class="headerlink" title="MD5算法"></a>MD5算法</h4><p>MD5 用的是 哈希函数，它的典型应用是对一段信息产生 信息摘要，以 防止被篡改。严格来说，MD5 不是一种 加密算法 而是 摘要算法。无论是多长的输入，MD5 都会输出长度为 128bits 的一个串 (通常用 16 进制 表示为 32 个字符)。</p>
+<p>基本方式为，求余、取余、调整长度、与链接变量进行循环运算，得出结果。</p>
+<h4 id="RSA算法"><a href="#RSA算法" class="headerlink" title="RSA算法"></a>RSA算法</h4><p>RSA 加密算法是目前最有影响力的 公钥加密算法，并且被普遍认为是目前 最优秀的公钥方案 之一。RSA 是第一个能同时用于 加密 和 数字签名 的算法，它能够 抵抗 到目前为止已知的 所有密码攻击，已被 ISO 推荐为公钥数据加密标准。</p>
+<p>RSA 加密算法 基于一个十分简单的数论事实：将两个大 素数 相乘十分容易，但想要对其乘积进行 因式分解 却极其困难，因此可以将 乘积 公开作为 加密密钥。</p>
+<h5 id="计算公私钥"><a href="#计算公私钥" class="headerlink" title="计算公私钥"></a>计算公私钥</h5><ul>
+<li>1.随机选择两个不相等的质数p和q（乙选择了61和53）</li>
+<li>2.计算p和q的乘积n=p×q=61×53=3233</li>
+<li>3.根据本文“欧拉函数”介绍过的公式<br> <code>φ(n)=(p-1)(q-1)</code><br> 代入计算n的欧拉函数值<br> <code>φ(3233)=(61-1)×(53-1)=60×52=3120</code></li>
+<li>4.随机选择一个整数e，条件是<code>1&lt;e&lt;φ(n)</code>，且e与φ(n)互质<br> 乙就在1到3120之间，随机选择了17</li>
+<li>5.因为e与φ(n)互质，根据求模反元素的公式计算e，对于e的模反元素d有：<br> <code>ed≡1(modφ(n))</code><br> 这个式子等价于<br> <code>(ed-1)/φ(n)=k（k为任意正整数）</code><br> 即<br> <code>ed-kφ(n)=1，</code><br> 代入数据得：<code>17d-3120k=1</code><br> 实质上就是对以上这个二元一次方程求解得到一组解为：<code>(d,k)=(2753,-15)</code></li>
+<li>6.将n和e封装成公钥，n和d封装成私钥<br> n=3233，e=17，d=2753<br> 所以公钥就是(3233,17)，私钥就是(3233,2753)</li>
+</ul>
+<h2 id="Android加固"><a href="#Android加固" class="headerlink" title="Android加固"></a><strong>Android加固</strong></h2><p>Android应用安全加固，使用DEX VMP、DEX函数抽取加密及动态还原、DEX文件加壳、SO文件加固、H5文件混淆、SDK加固、资源文件完整性保护、防调试保护、签名校验、防截屏、防劫持等技术，使加固后的应用具备防逆向分析、防二次打包、防动态调试、防动态注入、防数据篡改等安全防护能力。</p>
+<p>代码混淆</p>
+<p>数字签名校验</p>
+<p>动态加载APK</p>
+<h2 id="APK瘦身方法："><a href="#APK瘦身方法：" class="headerlink" title="APK瘦身方法："></a>APK瘦身方法：</h2><h4 id="1-assests目录优化"><a href="#1-assests目录优化" class="headerlink" title="1.assests目录优化"></a>1.assests目录优化</h4><p>assests目录存放的通常是一些通过AssetManager能够检索到的资源，包括MP3、视频、字体、webp的资源，各个App存放内容都很大不相同，列举一些常用的优化方案。</p>
+<ul>
+<li><strong>删除无用字体</strong><pre><code>中文字体一般都比较大，因为字体文件包含了中文好几千个汉字，但是我们实际上在App中并不会全部都使用，甚至我们只用到其中的几个字，这时候我们就可以把字体文件进行删减，在Github上面有一个字体提取工具FontZip。
+</code></pre>
+</li>
+<li><strong>动态下载</strong><pre><code>一些MP3、视频、Webp等资源可以在使用到时再进行下载，不需要放在本地。
+</code></pre>
+</li>
+<li><strong>对资源进行压缩</strong><pre><code>一些MP3、视频、Webp等资源如果必须放在本地，可以压缩成zip文件或者使用7zip进行压缩，在使用到时再进行解压，减小空间的占用。
+</code></pre>
+</li>
+</ul>
+<h4 id="2-lib目录优化"><a href="#2-lib目录优化" class="headerlink" title="2.lib目录优化"></a><strong>2.lib目录优化</strong></h4><ul>
+<li><strong>so裁剪、删除</strong><pre><code>对App引入的so文件进行确认哪些是不需要的，哪些是可以进行裁剪压缩的，哪些是可以避免引入的。例如如果引入的so需要下载上传功能而多引入了一个cURL库导致so增大，这时就可以让Java层代码定义接口，让so来调用，从而避免引入cURL库；再如Fresco库，如果不需要webP图，或者不需要webP动图功能，然后减少Fresco库的依赖，同样可以减小so的大小。
+</code></pre>
+</li>
+<li><strong>只保留armeabi或者armeabi-v7a</strong> ( 只保留一种架构 )<pre><code>Android系统现在支持很多种CPU架构（如mips、arm、x86等），市面上主流机型都是arm架构，x86和mips类型极少。所以可以有选择地保留某些架构的so，从而降低lib文件夹的大小。但是我建议你在开始前先对用户手机的cpu型号进行一次统计，分析自身App对应架构手机的占有率，这样你才能大胆的进行操作，一般只保留armeabi或者armeabi-v7a即可。操作也是比较简单，只需要在根目录的build.gradle下配置：
+</code></pre>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">android &#123;    buildTypes &#123;        ndk &#123;            abiFilters <span class="hljs-string">&quot;armeabi-v7a&quot;</span>        &#125;    &#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果你的App需要支持多种架构，那么就可以在abiFilters里面把多种架构加进去，当然你也可以只保留一种，然后分渠道打包，如Google Play就支持arm和x86等多个渠道打包。</p>
+<h4 id="3-res目录优化"><a href="#3-res目录优化" class="headerlink" title="3.res目录优化"></a><strong>3.res目录优化</strong></h4><ul>
+<li><strong>非重要图片动态加载</strong><pre><code>针对一些非重要的图片，可以选择动态在线加载，严格来说，非首页的图片都可以动态加载，当然，为了提升用户体验，我们会把图片放在本地。但是，一些使用场景非常小或者大小较大的图片，大胆删掉，选择动态加载吧！
+</code></pre>
+</li>
+<li><strong>保真压缩图片</strong><pre><code>可以使用一些图片压缩网站或者工具压缩你的资源文件吧，例如TinyPng、ImageOptim、Zopfli、智图等。
+</code></pre>
+</li>
+<li><strong>使用webp替换png</strong><pre><code>如果你的App只支持Android4.0以上的话，可以把png格式的图片转为webp，相同画质下体积更小。
+</code></pre>
+</li>
+</ul>
+<h2 id="Android屏幕绘制机制"><a href="#Android屏幕绘制机制" class="headerlink" title="Android屏幕绘制机制"></a><strong>Android屏幕绘制机制</strong></h2><ol>
+<li>界面上任何一个 View 的刷新请求最终都会走到 ViewRootImpl 中的scheduleTraversals() 里来安排一次遍历绘制 View 树的任务；</li>
+<li>scheduleTraversals() 会先过滤掉同一帧内的重复调用，在同一帧内只需要安排一次遍历绘制 View 树的任务即可，这个任务会在下一个屏幕刷新信号到来时调用 performTraversals() 遍历 View 树，遍历过程中会将所有需要刷新的 View 进行重绘；</li>
+<li>接着 scheduleTraversals() 会往主线程的消息队列中发送一个同步屏障，拦截这个时刻之后所有的同步消息的执行，但不会拦截异步消息，以此来尽可能的保证当接收到屏幕刷新信号时可以尽可能第一时间处理遍历绘制 View 树的工作；</li>
+<li>发完同步屏障后 scheduleTraversals() 才会开始安排一个遍历绘制 View 树的操作，作法是把 performTraversals() 封装到 Runnable 里面，然后调用 Choreographer 的 postCallback() 方法；</li>
+<li>postCallback() 方法会先将这个 Runnable 任务以当前时间戳放进一个待执行的队列里，然后如果当前是在主线程就会直接调用一个native 层方法，如果不是在主线程，会发一个最高优先级的 message 到主线程，让主线程第一时间调用这个 native 层的方法；</li>
+<li>native 层的这个方法是用来向底层注册监听下一个屏幕刷新信号，当下一个屏幕刷新信号发出时，底层就会回调 Choreographer 的onVsync() 方法来通知上层 app；</li>
+<li>onVsync() 方法被回调时，会往主线程的消息队列中发送一个执行 doFrame() 方法的消息，这个消息是异步消息，所以不会被同步屏障拦截住；</li>
+<li>doFrame() 方法会去取出之前放进待执行队列里的任务来执行，取出来的这个任务实际上是 ViewRootImpl 的 doTraversal() 操作；</li>
+<li>上述第4步到第8步涉及到的消息都手动设置成了异步消息，所以不会受到同步屏障的拦截；</li>
+<li>doTraversal() 方法会先移除主线程的同步屏障，然后调用 performTraversals() 开始根据当前状态判断是否需要执行performMeasure() 测量、perfromLayout() 布局、performDraw() 绘制流程，在这几个流程中都会去遍历 View 树来刷新需要更新的View；</li>
+</ol>
+<h2 id="JVM-内存模型"><a href="#JVM-内存模型" class="headerlink" title="JVM 内存模型"></a>JVM 内存模型</h2><h4 id="线程隔离数据区"><a href="#线程隔离数据区" class="headerlink" title="线程隔离数据区"></a><strong>线程隔离数据区</strong></h4><p>（线程私有数据：多个线程访问这个变量但是对称对这个变量的访问不会产生影响。线程访问的都是这个数据的副本。）</p>
+<ul>
+<li><strong>程序计数器(Program Counter Register)：</strong></li>
+</ul>
+<p>​                一小块内存空间，单前线程所执行的字节码行号指示器。字节码解释器工作时，通过改变这个计数器的值来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器来完成。</p>
+<ul>
+<li>​    <strong>JVM虚拟机栈(Java Virtual Machine Stacks)：</strong><br>​        Java方法执行内存模型，用于存储局部变量，操作数栈，动态链接，方法出口等信息。是线程私有的。</li>
+<li><strong>本地方法栈(Native Method Stacks)：</strong><pre><code>   为JVM用到的Native方法服务，Sun HotSpot 虚拟机把本地方法栈和JVM虚拟机栈合二为一。是线程私有的。
+</code></pre>
+</li>
+</ul>
+<h4 id="线程共享的数据区（进程所有）"><a href="#线程共享的数据区（进程所有）" class="headerlink" title="线程共享的数据区（进程所有）"></a><strong>线程共享的数据区</strong>（进程所有）</h4><ul>
+<li><p><strong>方法区Method Area）：</strong></p>
+<p>​    用于存储JVM加载的类信息、常量、静态变量、即使编译器编译后的代码等数据。</p>
+</li>
+<li><p><strong>运行时常量池Runtime Constant Pool）：</strong></p>
+<p>​    是方法区的一部分，用于存放编译器生成的各种字面量和符号引用，这部分内容将在类加载后存放到方法取得运行时常量池中。具备动态性，用的比较多的就是String类的intern()方法。</p>
+</li>
+<li><p><strong>JVM堆 Java Virtual Machine Heap）：</strong></p>
+</li>
+</ul>
+<p>​    存放所有对象实例的地方。<br>新生代，由Eden Space 和大小相同的两块Survivor组成<br>旧生待，存放经过多次垃圾回收仍然存活的对象</p>
+<h2 id="堆与栈的讨论："><a href="#堆与栈的讨论：" class="headerlink" title="堆与栈的讨论："></a>堆与栈的讨论：</h2><h4 id="管理方式："><a href="#管理方式：" class="headerlink" title="管理方式："></a>管理方式：</h4><p>堆中资源由程序员控制（容易产生memory leak）。<br>栈资源由编译器自动管理，无需手工控制。</p>
+<h4 id="系统响应："><a href="#系统响应：" class="headerlink" title="系统响应："></a>系统响应：</h4><p>对于堆，应知道系统有一个记录空闲内存地址的链表，当系统收到程序申请时，遍历该链表，寻找第一个空间大于申请空间的堆结点，删除空闲结点链表中的该结点，并将该结点空间分配给程序（大多数系统会在这块内存空间首地址记录本次分配的大小，这样delete才能正确释放本内存空间，另外系统会将多余的部分重新放入空闲链表中）。<br>对于栈，只要栈的剩余空间大于所申请空间，系统为程序提供内存，否则报异常提示栈溢出。</p>
+<h4 id="空间大小："><a href="#空间大小：" class="headerlink" title="空间大小："></a>空间大小：</h4><p>堆是不连续的内存区域（因为系统是用链表来存储空闲内存地址，自然不是连续的），堆大小受限于计算机系统中有效的虚拟内存（32bit系统理论上是4G），所以堆的空间比较灵活，比较大。<br>栈是一块连续的内存区域，大小是操作系统预定好的，windows下栈大小是2M（也有是1M，在编译时确定，VC中可设置）。</p>
+<h4 id="碎片问题："><a href="#碎片问题：" class="headerlink" title="碎片问题："></a>碎片问题：</h4><p>对于堆，频繁的new/delete会造成大量碎片，使程序效率降低。<br>对于栈，它是一个先进后出的队列，进出一一对应，不会产生碎片。</p>
+<h4 id="生长方向："><a href="#生长方向：" class="headerlink" title="生长方向："></a>生长方向：</h4><p>堆向上，向高地址方向增长。<br>栈向下，向低地址方向增长。</p>
+<h4 id="分配方式："><a href="#分配方式：" class="headerlink" title="分配方式："></a>分配方式：</h4><p>堆都是动态分配（没有静态分配的堆）。<br>栈有静态分配和动态分配，静态分配由编译器完成（如局部变量分配），动态分配由alloca函数分配，但栈的动态分配的资源由编译器进行释放，无需程序员实现。</p>
+<h4 id="分配效率："><a href="#分配效率：" class="headerlink" title="分配效率："></a>分配效率：</h4><p>堆由C/C++函数库提供，机制很复杂。所以堆的效率比栈低很多。<br>栈是极其系统提供的数据结构，计算机在底层对栈提供支持，分配专门寄存器存放栈地址，栈操作有专门指令</p>
+<h2 id="页表怎么维护的？放在哪里了？"><a href="#页表怎么维护的？放在哪里了？" class="headerlink" title="页表怎么维护的？放在哪里了？"></a>页表怎么维护的？放在哪里了？</h2><p><strong>页表存放在物理内存中，页表基地址寄存器和各级页表项中存放的都是物理地址，而不是虚拟地址。</strong></p>
+<h2 id="什么是文件描述符？"><a href="#什么是文件描述符？" class="headerlink" title="什么是文件描述符？"></a>什么是文件描述符？</h2><p>在 类Unix操作系统 上，普遍将操作系统上的资源抽象成文件这一概念，诸如硬件设备、普通文件、scoket套接字、可移动存储等介质都被抽象为文件。那么，「文件描述符」 和 「文件」 之前有什么关系呢？</p>
+<p>首先，来看看 「文件描述符」是怎么出现的？</p>
+<p>在 Linux 操作系统中，当一个应用程序或进程操作系统资源时，首先会触发文件调用事件，通过应用程序或进程发送一个调用文件的信号给操作系统内核，内核会在 <code>打开文件表</code> 中增加一条记录，同时将 打开文件表中新增的记录 返回给应用程序或进程，而应用程序或进程接收到来自内核返回的信息，称为 <code>文件描述符(file desrciption)</code>。</p>
+<p>实际上，通过 内核 返回的文件描述符正是 <code>打开文件表</code> 中该文件的索引记录，是一个非负整数。文件描述符 通常从 3 开始记录。</p>
+<p>在Linux操作系统上，每个进程都有三个标准的 「POSIX」文件描述符，对应三个标准流，按照索引以 0 开始，分别是 <code>Standard Input(标准输入)</code>、<code>Standard Output(标准输出)</code>、<code>Standard Error(标准错误)</code>。</p>
+<h2 id="僵尸进程"><a href="#僵尸进程" class="headerlink" title="僵尸进程"></a>僵尸进程</h2><p>就是已经结束了的进程，但是没有从进程表中删除。太多了会导致进程表里面条目满了，进而导致系统崩溃，倒是不占用其他系统资源。**最后有defunct的标记，就表明是僵尸进程。</p>
+<p>​        正常情况下我们可以用 SIGKILL 信号来杀死进程，但是僵尸进程已经死了， 你不能杀死已经死掉的东西。 因此你需要输入的命令应该是</p>
+<p>　　01kill -s SIGCHLD pid</p>
+<p>　　将这里的 pid 替换成父进程的进程 id，这样父进程就会删除所有以及完成并死掉的子进程了。</p>
+<h2 id="Parcelable和Serializable有什么用，它们有什么差别？"><a href="#Parcelable和Serializable有什么用，它们有什么差别？" class="headerlink" title="Parcelable和Serializable有什么用，它们有什么差别？"></a><strong>Parcelable和Serializable有什么用，它们有什么差别？</strong></h2><p>Parcelable和Serializable是两个接口，它们的作用是让实现了其中一个接口的类的对象能够被序列化和反序列化。</p>
+<ul>
+<li>​    Serializable是java提供的序列化接口，它是一个空的接口，仅标识该类型可序列化的，具体的序列化/反序列化工作由 ObjectInputStream(readObject)/ObjectOutputStream(writeObject) 完成，这个过程包含大量的I/O操作，使用比较简单，但需要考量性能的影响。使用场景：将对象持久化到存储介质或者通过网络传输。</li>
+<li>​    Parcelable接口是Android平台下的序列化接口，通常跨进程传递的数据都要正确实现这个接口，比如Intent，Bitmap等。Parcelable实现起来比Serializable复杂，但性能较好。使用场景：在内存中实现序列化，例如跨进程传递。若某个字段不需要序列化，在实现 writeToParcel 方法中忽略此字段即可。</li>
+</ul>
+<h2 id="大文件分块下载"><a href="#大文件分块下载" class="headerlink" title="大文件分块下载"></a>大文件分块下载</h2><p>通过多线程，每个线程下载不同的部分</p>
+<p>例如一个400M的文件，四个线程下载，0-100 部分 100-200 部分 200-300 部分 300-400 部分</p>
+<p>在http请求头里设置请求的范围即可</p>
 
       </section>
 
@@ -254,7 +368,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#IPV4%E5%92%8CIPV6%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">IPV4和IPV6的区别：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%AF%8F%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8D%8F%E8%AE%AE%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">计算机网络七层网络模型和每层网络模型的协议。</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#IPV4%E5%92%8CIPV6%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">IPV4和IPV6的区别：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%AF%8F%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8D%8F%E8%AE%AE%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">计算机网络七层网络模型和每层网络模型的协议。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#okhttp%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0"><span class="toc-number">3.</span> <span class="toc-text">okhttp断点续传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E6%9C%89%E4%BA%86%E8%A7%A3%E5%90%97%EF%BC%9F%E8%AF%B4%E8%AF%B4%E4%BD%A0%E7%9F%A5%E9%81%93%E7%9A%84%E5%85%B7%E4%BD%93%E7%9A%84%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">加密算法有了解吗？说说你知道的具体的加密算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android%E5%8A%A0%E5%9B%BA"><span class="toc-number">5.</span> <span class="toc-text">Android加固</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#APK%E7%98%A6%E8%BA%AB%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-number">6.</span> <span class="toc-text">APK瘦身方法：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android%E5%B1%8F%E5%B9%95%E7%BB%98%E5%88%B6%E6%9C%BA%E5%88%B6"><span class="toc-number">7.</span> <span class="toc-text">Android屏幕绘制机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-number">8.</span> <span class="toc-text">JVM 内存模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A0%86%E4%B8%8E%E6%A0%88%E7%9A%84%E8%AE%A8%E8%AE%BA%EF%BC%9A"><span class="toc-number">9.</span> <span class="toc-text">堆与栈的讨论：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E8%A1%A8%E6%80%8E%E4%B9%88%E7%BB%B4%E6%8A%A4%E7%9A%84%EF%BC%9F%E6%94%BE%E5%9C%A8%E5%93%AA%E9%87%8C%E4%BA%86%EF%BC%9F"><span class="toc-number">10.</span> <span class="toc-text">页表怎么维护的？放在哪里了？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%EF%BC%9F"><span class="toc-number">11.</span> <span class="toc-text">什么是文件描述符？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B"><span class="toc-number">12.</span> <span class="toc-text">僵尸进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Parcelable%E5%92%8CSerializable%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8%EF%BC%8C%E5%AE%83%E4%BB%AC%E6%9C%89%E4%BB%80%E4%B9%88%E5%B7%AE%E5%88%AB%EF%BC%9F"><span class="toc-number">13.</span> <span class="toc-text">Parcelable和Serializable有什么用，它们有什么差别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E6%96%87%E4%BB%B6%E5%88%86%E5%9D%97%E4%B8%8B%E8%BD%BD"><span class="toc-number">14.</span> <span class="toc-text">大文件分块下载</span></a></li></ol>
   </div>
 </section>
 
