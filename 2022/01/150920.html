@@ -156,7 +156,7 @@
 <h3 id="2、可达性分析算法"><a href="#2、可达性分析算法" class="headerlink" title="2、可达性分析算法"></a>2、可达性分析算法</h3><h3 id="算法思路："><a href="#算法思路：" class="headerlink" title="算法思路："></a>算法思路：</h3><p>通过一系列的称为”GC Roots”的对象作为起始点，从这些节点开始往下搜索，</p>
 <p>搜索所有走过的路径称为引用链(Reference Chain)，当一个对象到 GC Roots 没有任何</p>
 <p>引用链相连时，则证明此对象是不可用的。</p>
-<p><img src="https://img-blog.csdn.net/2018070716063341?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3lobF9qeHk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="img"></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/XaGhPx"><img src="https://s1.ax1x.com/2022/06/04/XaGhPx.png" alt="XaGhPx.png"></a></p>
 <p>可达性分析算法判定对象是否可以回收的图例中，绿色部分为仍然存活的对象，黄色部分</p>
 <p>判定可回收的对象。黄色部分 object5、object6、object7 虽然相互关联，但是它们到</p>
 <p>GC Roots 是不可达的，也就是没有与 GC Roots 建立引用链，所以它们将被判定为是</p>

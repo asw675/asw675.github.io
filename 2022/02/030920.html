@@ -146,7 +146,7 @@
 <p>G1收集器可预测垃圾回收的停顿时间（建立可预测的停顿时间模型）</p>
 <h4 id="区别三：-垃圾碎片"><a href="#区别三：-垃圾碎片" class="headerlink" title="区别三： 垃圾碎片"></a>区别三： 垃圾碎片</h4><p>CMS收集器是使用“标记-清除”算法进行的垃圾回收，容易产生内存碎片</p>
 <p>G1收集器使用的是“标记-整理”算法，进行了空间整合，降低了内存空间碎片。</p>
-<h4 id="区别四：-垃圾回收的过程不一样"><a href="#区别四：-垃圾回收的过程不一样" class="headerlink" title="区别四： 垃圾回收的过程不一样"></a>区别四： 垃圾回收的过程不一样</h4><p><img src="https://upload-images.jianshu.io/upload_images/10819106-3ada1f0a939574ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/672/format/webp" alt="img"></p>
+<h4 id="区别四：-垃圾回收的过程不一样"><a href="#区别四：-垃圾回收的过程不一样" class="headerlink" title="区别四： 垃圾回收的过程不一样"></a>区别四： 垃圾回收的过程不一样</h4><p><img src="https://s3.bmp.ovh/imgs/2022/06/04/71151d2f6a64f532.png"></p>
 <h3 id="CMS回收垃圾的4个阶段"><a href="#CMS回收垃圾的4个阶段" class="headerlink" title="CMS回收垃圾的4个阶段"></a>CMS回收垃圾的4个阶段</h3><p><strong>初始标记阶段</strong>：会让线程全部停止，也就是 Stop the World 状态<br><strong>并发标记阶段</strong>：对所有的对象进行追踪，这个阶段最耗费时。但这个阶段是和系统并发运行的，所以不会对系统运行造成影响<br><strong>重新标记阶段</strong>：由于第二阶段是并发执行的，一边标记垃圾对象，一边创建新对象，老对象会变成垃圾对象。 所以第三阶段也会进入 Stop the World 状态，并且重新标记，标记的是第二阶段中变动过的少数对象，所以运行速度很快<br><strong>并发清理阶段</strong>： 这个阶段也是会耗费很多时间，但由于是并发运行的，所以对系统不会造成很大的影响</p>
 <h3 id="CMS的总结和优缺点"><a href="#CMS的总结和优缺点" class="headerlink" title="CMS的总结和优缺点"></a><strong>CMS的总结和优缺点</strong></h3><p>CMS采用 标记-清理 的算法，标记出垃圾对象，清除垃圾对象。算法是基于老年代执行的，因为新生代产生无法接受该算法产生的碎片垃圾。</p>
 <p><strong>优点</strong>：并发收集，低停顿</p>
@@ -161,7 +161,7 @@
 <li>空间整理：和CMS一样采用标记-清理的算法，但是G1不会产生空间碎片，这样就有效的使用了连续空间，不会导致连续空间不足提前造成GC的触发</li>
 </ol>
 <p>G1把Java内存拆分成多等份，多个域（Region），逻辑上存在新生代和老年代的概念，但是没有严格区分。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/10819106-fd6fe23616eadba9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/624/format/webp" alt="img"></p>
+<p><img src="https://s3.bmp.ovh/imgs/2022/06/04/7e6d24c144d9630b.png"></p>
 <h3 id="大对象的处理"><a href="#大对象的处理" class="headerlink" title="大对象的处理"></a>大对象的处理</h3><p>除了上面优点之外，还有一个优点，那就是对大对象的处理。在CMS内存中，如果一个对象过大，进入S1、S2区域的时候大于改分配的区域，对象会直接进入老年代。G1处理大对象时会判断对象是否大于一个Region大小的50%，如果大于50%就会横跨多个Region进行存放</p>
 <h3 id="G1回收垃圾的4个阶段"><a href="#G1回收垃圾的4个阶段" class="headerlink" title="G1回收垃圾的4个阶段"></a>G1回收垃圾的4个阶段</h3><ul>
 <li>初始标记</li>

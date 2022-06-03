@@ -142,7 +142,7 @@
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
         <h3 id="JAVA类加载过程"><a href="#JAVA类加载过程" class="headerlink" title="JAVA类加载过程"></a>JAVA类加载过程</h3><p>类的生命周期：加载、链接（验证、准备、解析）、初始化、使用、卸载。</p>
-<p><img src="https://img2020.cnblogs.com/blog/808275/202003/808275-20200320130825074-181307935.png" alt="img"></p>
+<p><img src="https://s3.bmp.ovh/imgs/2022/06/04/17618deb6920ac49.png"></p>
 <h4 id="加载："><a href="#加载：" class="headerlink" title="加载："></a>加载：</h4><p>加载是类加载过程的一个阶段，这两个概念一定不要混淆。在加载阶段, 虚拟机需要完成以下三件事情:</p>
 <p>（1）Java虚拟机将.class文件读入内存，并为之创建一个Class对象。</p>
 <p>（2）任何类被使用时系统都会为其创建一个且仅有一个Class对象。</p>
@@ -159,9 +159,9 @@
 <li>初始化一个类的子类（首先会初始化父类）</li>
 <li>JVM启动时标明的启动类，即文件名和类名相同的那个类 </li>
 </ol>
-<p><img src="https://img2020.cnblogs.com/blog/808275/202003/808275-20200320130850948-1671288040.png" alt="img"></p>
+<p><img src="https://s3.bmp.ovh/imgs/2022/06/04/767c87e08b0ca0ac.png"></p>
 <h3 id="双亲委派机制"><a href="#双亲委派机制" class="headerlink" title="双亲委派机制"></a><strong>双亲委派机制</strong></h3><p>这里说明一下双亲委派机制：</p>
-<p> <img src="https://img2020.cnblogs.com/blog/808275/202003/808275-20200320130919370-686563880.png" alt="img"></p>
+<p> <img src="https://s3.bmp.ovh/imgs/2022/06/04/845cb4b4b54c96ea.png"></p>
 <p>​    双亲委派机制，其工作原理的是，如果一个类加载器收到了类加载请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行，如果父类加载器还存在其父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的启动类加载器，如果父类加载器可以完成类加载任务，就成功返回，倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载，这就是双亲委派模式，即每个儿子都很懒，每次有活就丢给父亲去干，直到父亲说这件事我也干不了时，儿子自己才想办法去完成。</p>
 <p>   <strong>双亲委派机制的优势</strong>：</p>
 <p>​    采用双亲委派模式的是好处是Java类随着它的类加载器一起具备了一种带有优先级的层次关系，通过这种层级关可以避免类的重复加载，当父亲已经加载了该类时，就没有必要子ClassLoader再加载一次。</p>
