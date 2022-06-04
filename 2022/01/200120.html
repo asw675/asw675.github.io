@@ -147,7 +147,13 @@
 <p>​    1.创建一个Runnable接口的实现类<br>​    2.在实现类中重写Runnable接口的run方法，设置线程任务<br>​    3.创建一个Runnable接口的实现类对象<br>​    4.创建Thread类对象，构造方法中传递Runnable接口的实现类对象<br>​    5.调用Thread类中的start方法，开启新的线程执行方法</p>
 <p><strong>方法三 实现Callable接口</strong></p>
 <p><strong>方法四 线程池</strong></p>
-<h3 id="Runnable-和-Thread-的区别"><a href="#Runnable-和-Thread-的区别" class="headerlink" title="Runnable 和 Thread 的区别"></a>Runnable 和 Thread 的区别</h3><h2 id="Java线程调度机制"><a href="#Java线程调度机制" class="headerlink" title="Java线程调度机制"></a>Java线程调度机制</h2><p><strong>1.抢占式线程调度，</strong>每个线程可能会有自己的优先级，但是优先及并不意味着高优先级的线程一定会被调度，而是由cup随机的选择，所谓抢占式的线程调度，就是说一个线程在执行自己的任务时，虽然任务还没有执行完，但是cpu会迫使它暂停，让其它线程占有cpu的使用权。</p>
+<h3 id="Runnable-和-Thread-的区别"><a href="#Runnable-和-Thread-的区别" class="headerlink" title="Runnable 和 Thread 的区别"></a>Runnable 和 Thread 的区别</h3><ol>
+<li>Runnable的实现方式是实现其接口即可</li>
+<li>Thread的实现方式是继承其类</li>
+<li>Runnable接口支持多继承，但基本上用不到</li>
+<li>Thread实现了Runnable接口并进行了扩展，而Thread和Runnable的实质是实现的关系，不是同类东西，所以Runnable或Thread本身没有可比性。</li>
+</ol>
+<h2 id="Java线程调度机制"><a href="#Java线程调度机制" class="headerlink" title="Java线程调度机制"></a>Java线程调度机制</h2><p><strong>1.抢占式线程调度，</strong>每个线程可能会有自己的优先级，但是优先及并不意味着高优先级的线程一定会被调度，而是由cup随机的选择，所谓抢占式的线程调度，就是说一个线程在执行自己的任务时，虽然任务还没有执行完，但是cpu会迫使它暂停，让其它线程占有cpu的使用权。</p>
 <p><strong>2.协作式线程调度，</strong>每个线程可以有自己的优先级，但优先级并不意味着高优先级的线程一定会被最先调度，而是由cpu时机选择的，所谓协作式的线程调度，就是说一个线程在执行自己的任务时，不允许被中途打断，一定等当前线程将任务执行完毕后才会释放对cpu的占有，其它线程才可以抢占该cpu。</p>
 <p><strong>Java在调度机制上采用的时抢占式的线程调度机制。</strong>（线程调度由操作系统决定）</p>
 <ol>
