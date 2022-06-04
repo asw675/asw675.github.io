@@ -146,23 +146,21 @@
 <p><strong>方法二 实现Runnable接口</strong></p>
 <p>​    1.创建一个Runnable接口的实现类<br>​    2.在实现类中重写Runnable接口的run方法，设置线程任务<br>​    3.创建一个Runnable接口的实现类对象<br>​    4.创建Thread类对象，构造方法中传递Runnable接口的实现类对象<br>​    5.调用Thread类中的start方法，开启新的线程执行方法</p>
 <p><strong>方法三 实现Callable接口</strong></p>
+<ol>
+<li>Callable 可以在任务结束的时候提供一个返回值，Runnable 无法提供这个功能</li>
+<li>Callable 的 call 方法分可以抛出异常，而 Runnable 的 run 方法不能抛出异常。</li>
+</ol>
 <p><strong>方法四 线程池</strong></p>
 <h3 id="Runnable-和-Thread-的区别"><a href="#Runnable-和-Thread-的区别" class="headerlink" title="Runnable 和 Thread 的区别"></a>Runnable 和 Thread 的区别</h3><ol>
 <li>Runnable的实现方式是实现其接口即可</li>
 <li>Thread的实现方式是继承其类</li>
 <li>Runnable接口支持多继承，但基本上用不到</li>
 <li>Thread实现了Runnable接口并进行了扩展，而Thread和Runnable的实质是实现的关系，不是同类东西，所以Runnable或Thread本身没有可比性。</li>
-</ol>
-<h2 id="Java线程调度机制"><a href="#Java线程调度机制" class="headerlink" title="Java线程调度机制"></a>Java线程调度机制</h2><p><strong>1.抢占式线程调度，</strong>每个线程可能会有自己的优先级，但是优先及并不意味着高优先级的线程一定会被调度，而是由cup随机的选择，所谓抢占式的线程调度，就是说一个线程在执行自己的任务时，虽然任务还没有执行完，但是cpu会迫使它暂停，让其它线程占有cpu的使用权。</p>
-<p><strong>2.协作式线程调度，</strong>每个线程可以有自己的优先级，但优先级并不意味着高优先级的线程一定会被最先调度，而是由cpu时机选择的，所谓协作式的线程调度，就是说一个线程在执行自己的任务时，不允许被中途打断，一定等当前线程将任务执行完毕后才会释放对cpu的占有，其它线程才可以抢占该cpu。</p>
-<p><strong>Java在调度机制上采用的时抢占式的线程调度机制。</strong>（线程调度由操作系统决定）</p>
-<ol>
-<li>Runnable的实现方式是实现其接口即可</li>
-<li>Thread的实现方式是继承其类</li>
-<li>Runnable接口支持多继承，但基本上用不到</li>
-<li>Thread实现了Runnable接口并进行了扩展，而Thread和Runnable的实质是实现的关系，不是同类东西，所以Runnable或Thread本身没有可比性。</li>
 <li>所以使用上Runnable更加的灵活，因为是实现接口</li>
 </ol>
+<h2 id="Java线程调度机制"><a href="#Java线程调度机制" class="headerlink" title="Java线程调度机制"></a>Java线程调度机制</h2><p><strong>1.抢占式线程调度，</strong>每个线程可能会有自己的优先级，但是优先及并不意味着高优先级的线程一定会被调度，而是由cpu随机的选择，所谓抢占式的线程调度，就是说一个线程在执行自己的任务时，虽然任务还没有执行完，但是cpu会迫使它暂停，让其它线程占有cpu的使用权。</p>
+<p><strong>2.协作式线程调度，</strong>每个线程可以有自己的优先级，但优先级并不意味着高优先级的线程一定会被最先调度，而是由cpu随机选择的，所谓协作式的线程调度，就是说一个线程在执行自己的任务时，不允许被中途打断，一定等当前线程将任务执行完毕后才会释放对cpu的占有，其它线程才可以抢占该cpu。</p>
+<p><strong>Java在调度机制上采用的时抢占式的线程调度机制。</strong>（线程调度由操作系统决定）</p>
 <h2 id="Java线程与操作系统线程的关系"><a href="#Java线程与操作系统线程的关系" class="headerlink" title="Java线程与操作系统线程的关系"></a>Java线程与操作系统线程的关系</h2><h4 id="Java中的线程就是调用操作系统的线程"><a href="#Java中的线程就是调用操作系统的线程" class="headerlink" title="Java中的线程就是调用操作系统的线程"></a>Java中的线程就是调用操作系统的线程</h4><p>Java thread创建线程启动 -&gt; 调用JNI方法start0 -&gt; 在JVM中进行一系列的方法调用，最后调用pthread_create创建线程（linux中）</p>
 <h2 id="Java线程的状态有几种"><a href="#Java线程的状态有几种" class="headerlink" title="Java线程的状态有几种"></a>Java线程的状态有几种</h2><p><strong>新建(new Thread)</strong></p>
 <p>当创建Thread类的一个实例(对象)时，此线程进入新建状态(未被启动)</p>
@@ -203,8 +201,8 @@
 <p>（4）update，要更新的最新值。</p>
 <p>Linux的X86下主要是通过cmpxchgl这个指令在CPU级完成CAS操作的，但在多处理器情况下必须使用lock指令加锁来完成。</p>
 <h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><p>​    多线程访问同一个共享变量的时候容易出现并发问题，特别是多个线程对一个变量进行写入的时候，为了保证线程安全，一般使用者在访问共享变量的时候需要进行额外的同步措施才能保证线程安全性。ThreadLocal是除了加锁这种同步方式之外的一种保证一种规避多线程访问出现线程不安全的方法，当我们在创建一个变量后，如果每个线程对其进行访问的时候访问的都是线程自己的变量这样就不会存在线程不安全问题。</p>
-<p>　　ThreadLocal是JDK包提供的，它提供线程本地变量，如果创建一乐ThreadLocal变量，那么访问这个变量的每个线程都会有这个变量的一个副本，在实际多线程操作的时候，操作的是自己本地内存中的变量，从而规避了线程安全问题，如下图所示</p>
-<p><img src="https://img2018.cnblogs.com/blog/1368768/201906/1368768-20190613220434628-1803630402.png" alt="img"></p>
+<p>　　ThreadLocal是JDK包提供的，它提供线程本地变量，如果创建一个ThreadLocal变量，那么访问这个变量的每个线程都会有这个变量的一个副本，在实际多线程操作的时候，操作的是自己本地内存中的变量，从而规避了线程安全问题，如下图所示</p>
+<p><img src="https://s3.bmp.ovh/imgs/2022/06/05/6fffa6536cfdceca.png"></p>
 <p>里面有个类似于HashMap，key保存线程</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">set</span><span class="hljs-params">(T value)</span> </span>&#123;<br>    <span class="hljs-comment">//(1)获取当前线程（调用者线程）</span><br>    Thread t = Thread.currentThread();<br>    <span class="hljs-comment">//(2)以当前线程作为key值，去查找对应的线程变量，找到对应的map</span><br>    ThreadLocalMap map = getMap(t);<br>    <span class="hljs-comment">//(3)如果map不为null，就直接添加本地变量，key为当前定义的ThreadLocal变量的this引用，值为添加的本地变量值</span><br>    <span class="hljs-keyword">if</span> (map != <span class="hljs-keyword">null</span>)<br>        map.set(<span class="hljs-keyword">this</span>, value);<br>    <span class="hljs-comment">//(4)如果map为null，说明首次添加，需要首先创建出对应的map</span><br>    <span class="hljs-keyword">else</span><br>        createMap(t, value);<br>&#125;<br></code></pre></td></tr></table></figure>
 
