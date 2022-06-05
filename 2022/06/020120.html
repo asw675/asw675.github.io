@@ -139,7 +139,11 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="泛型通配符"><a href="#泛型通配符" class="headerlink" title="泛型通配符"></a>泛型通配符</h2><h4 id="种类："><a href="#种类：" class="headerlink" title="种类："></a>种类：</h4><p>　　T：表示确定的类型，最常用的泛型表示方法。<br>　　? ：表示不确定的类型，类似于通配符。<br>　　K：一般用于键值对中的 –&gt;键<br>　　v：一般用于键值对中的 –&gt;值<br>　　E：表示枚举。</p>
+        <h2 id="JAVA泛型的作用"><a href="#JAVA泛型的作用" class="headerlink" title="JAVA泛型的作用"></a>JAVA泛型的作用</h2><p> Java泛型被引入的好处是安全简单。</p>
+<p>在Java SE 1.5之前，没有泛型的情况的下，通过对类型Object的引用来实现参数的“任意化”，“任意化”带来的缺点是要做显式的强制类型转换，而这种转换是要求开发者对实际参数类型可以预知的情况下进行的。对于强制类型转换错误的情况，编译器可能不提示错误，在运行的时候才出现异常，这是一个安全隐患。</p>
+<p>泛型的好处是在编译的时候检查类型安全，并且所有的强制转换都是自动和隐式的，提高代码的重用率。</p>
+<p>Java的泛型是伪泛型，因为，在编译期间，所有的泛型信息都会被擦除掉。</p>
+<h2 id="泛型通配符"><a href="#泛型通配符" class="headerlink" title="泛型通配符"></a>泛型通配符</h2><h4 id="种类："><a href="#种类：" class="headerlink" title="种类："></a>种类：</h4><p>　　T：表示确定的类型，最常用的泛型表示方法。<br>　　? ：表示不确定的类型，类似于通配符。<br>　　K：一般用于键值对中的 –&gt;键<br>　　v：一般用于键值对中的 –&gt;值<br>　　E：表示枚举。</p>
 <ol>
 <li><h4 id="无边界的通配符-Unbounded-Wildcards-就是-lt-gt-比如List-lt-gt"><a href="#无边界的通配符-Unbounded-Wildcards-就是-lt-gt-比如List-lt-gt" class="headerlink" title="无边界的通配符(Unbounded Wildcards), 就是&lt;?&gt;, 比如List&lt;?&gt;"></a>无边界的通配符(Unbounded Wildcards), 就是<code>&lt;?&gt;</code>, 比如<code>List&lt;?&gt;</code></h4></li>
 </ol>
@@ -262,7 +266,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E9%80%9A%E9%85%8D%E7%AC%A6"><span class="toc-number">1.</span> <span class="toc-text">泛型通配符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">泛型的实现原理</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA%E6%B3%9B%E5%9E%8B%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">JAVA泛型的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E9%80%9A%E9%85%8D%E7%AC%A6"><span class="toc-number">2.</span> <span class="toc-text">泛型通配符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">泛型的实现原理</span></a></li></ol>
   </div>
 </section>
 
