@@ -24,7 +24,7 @@
 
   
 
-  <title>JAVA：TreeMap底层原理 | ReasonLee</title>
+  <title>操作系统：什么是死锁 | ReasonLee</title>
 
   
 
@@ -102,20 +102,20 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">JAVA：TreeMap底层原理</h1>
+          <h1 class="title-wrap">操作系统：什么是死锁</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-01-24T17:20:12.000Z" itemprop="datePublished">2022-01-25</time>
+            <time  class="article-date" datetime="2022-06-05T22:20:14.000Z" itemprop="datePublished">2022-06-06</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">📒 JAVA基础</a></li>
+    <li><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📒 操作系统</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/JAVA%E5%9F%BA%E7%A1%80/">🏷️ JAVA基础</a></li>
+    <li><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">🏷️ 操作系统</a></li>
   
 </ul>
         </div>
@@ -139,17 +139,17 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="TreeMap概述"><a href="#TreeMap概述" class="headerlink" title="TreeMap概述"></a>TreeMap概述</h2><ol>
-<li>TreeMap存储K-V键值对，通过红黑树（R-B tree）实现；</li>
-<li>TreeMap继承了NavigableMap接口，NavigableMap接口继承了SortedMap接口，可支持一系列的导航定位以及导航操作的方法，当然只是提供了接口，需要TreeMap自己去实现；</li>
-<li>TreeMap实现了Cloneable接口，可被克隆，实现了Serializable接口，可序列化；</li>
-<li>TreeMap因为是通过红黑树实现，红黑树结构天然支持排序，默认情况下通过Key值的自然顺序进行排序；</li>
-</ol>
-<p>​        <strong>TreeMap不是线程安全的</strong></p>
-<h2 id="Put方法"><a href="#Put方法" class="headerlink" title="Put方法"></a>Put方法</h2><p>​    就是红黑树的插入方法，时间复杂度为O(logn)</p>
-<h2 id="Get方法"><a href="#Get方法" class="headerlink" title="Get方法"></a>Get方法</h2><p>​    因为红黑树是一科二分搜索树，所以采用二分查找的方法，时间复杂度为O(logn)</p>
-<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p>​    因为是一颗红黑树，所以整棵树是有序的，在一些排序的场合可以用到。</p>
-<p>​    默认按照key的字典顺序来排序，可以自定义排序。</p>
+        <h2 id="什么是死锁"><a href="#什么是死锁" class="headerlink" title="什么是死锁"></a>什么是死锁</h2><p>多个线程同时被阻塞，它们中的一个或者全部都在等待某个资源被释放。由于线程被无限期地阻塞，因此程序不可能正常终止。</p>
+<p>两个或以上的进程因为争夺资源而造成互相等待资源的现象称为死锁。</p>
+<h2 id="死锁产生的四个必要条件"><a href="#死锁产生的四个必要条件" class="headerlink" title="死锁产生的四个必要条件"></a>死锁产生的四个必要条件</h2><p>1、互斥使用，即当资源被一个线程使用(占有)时，别的线程不能使用<br>2、不可抢占，资源请求者不能强制从资源占有者手中夺取资源，资源只能由资源占有者主动释放。<br>3、请求和保持，即当资源请求者在请求其他的资源的同时保持对原有资源的占有。<br>4、循环等待，即存在一个等待队列：P1占有P2的资源，P2占有P3的资源，P3占有P1的资源。这样就形成了一个等待环路。</p>
+<h2 id="具体死锁的操作代码实列"><a href="#具体死锁的操作代码实列" class="headerlink" title="具体死锁的操作代码实列"></a>具体死锁的操作代码实列</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DeadLock</span> </span>&#123;<br><br>    <span class="hljs-comment">//创建两个对象</span><br>    <span class="hljs-keyword">static</span> Object a = <span class="hljs-keyword">new</span> Object();<br>    <span class="hljs-keyword">static</span> Object b = <span class="hljs-keyword">new</span> Object();<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            <span class="hljs-keyword">synchronized</span> (a) &#123;<br>                System.out.println(Thread.currentThread().getName()+<span class="hljs-string">&quot; 持有锁a，试图获取锁b&quot;</span>);<br>                <span class="hljs-keyword">try</span> &#123;<br>                    TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);<br>                &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>                    e.printStackTrace();<br>                &#125;<br>                <span class="hljs-keyword">synchronized</span> (b) &#123;<br>                    System.out.println(Thread.currentThread().getName()+<span class="hljs-string">&quot; 获取锁b&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;,<span class="hljs-string">&quot;A&quot;</span>).start();<br>    <br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            <span class="hljs-keyword">synchronized</span> (b) &#123;<br>                System.out.println(Thread.currentThread().getName()+<span class="hljs-string">&quot; 持有锁b，试图获取锁a&quot;</span>);<br>                <span class="hljs-keyword">try</span> &#123;<br>                    TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);<br>                &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>                    e.printStackTrace();<br>                &#125;<br>                <span class="hljs-keyword">synchronized</span> (a) &#123;<br>                    System.out.println(Thread.currentThread().getName()+<span class="hljs-string">&quot; 获取锁a&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;,<span class="hljs-string">&quot;B&quot;</span>).start();<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="如何防范死锁？"><a href="#如何防范死锁？" class="headerlink" title="如何防范死锁？"></a>如何防范死锁？</h2><p>1.尽量避免使用多个锁（如果有可能的话）。</p>
+<p>2.规范的使用多个锁，并设计好锁的获取顺序。</p>
+<p>3.随用随放。即是，手里有锁，如果还要获得别的锁，必须释放全部资源才能各取所需。</p>
+<p>4.规范好循环等待条件。比如，使用超时循环等待，提高程序可控性</p>
 
       </section>
 
@@ -162,8 +162,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/02/030920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">JVM：CMS和G1的区别</h2>
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">复习计划</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -177,8 +177,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/230120.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">JAVA：常见问题汇总</h2>
+        <a href="/2022/06/021520.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">操作系统：IO模型</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -247,7 +247,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TreeMap%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">TreeMap概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Put%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">Put方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Get%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">Get方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-number">4.</span> <span class="toc-text">优点</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%AD%BB%E9%94%81"><span class="toc-number">1.</span> <span class="toc-text">什么是死锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%BB%E9%94%81%E4%BA%A7%E7%94%9F%E7%9A%84%E5%9B%9B%E4%B8%AA%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">死锁产生的四个必要条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E6%AD%BB%E9%94%81%E7%9A%84%E6%93%8D%E4%BD%9C%E4%BB%A3%E7%A0%81%E5%AE%9E%E5%88%97"><span class="toc-number">3.</span> <span class="toc-text">具体死锁的操作代码实列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%98%B2%E8%8C%83%E6%AD%BB%E9%94%81%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">如何防范死锁？</span></a></li></ol>
   </div>
 </section>
 
