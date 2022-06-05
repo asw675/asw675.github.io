@@ -238,6 +238,7 @@
 <p>函数内通过 epoll机制的epoll_wait() 函数来进行线程的阻塞和超时调起；</p>
 <p>当epoll_wait() 返回，eventCount 小于等于0 说明没有事件，使用goto返回，返回的 result 的值都小于0<br>当epoll_wait() 返回，eventCount大于0则说明有事件，判断事件是否为EPOLLIN事件，是则调到 awoken() 函数</p>
 <p>mWakeEventFd: 通过系统调用eventfd注册eventfd 对象，用于实现事件的等待和通知，并返回mWakeEventFd一个文件描述符。使用epoll监听mWakeEventFd的可读事件。</p>
+<p>Fd就是File Descriptor，文件描述符的意思</p>
 <p>唤醒就是往管道中写入内容，前面说了通过epoll_ctl() 函数对管道注册了监听，当有内容往管道写时，epoll_wait() 函数就会被唤醒，唤醒的流程就是这么简单。</p>
 <h4 id="epoll-wait"><a href="#epoll-wait" class="headerlink" title="epoll_wait"></a>epoll_wait</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">epoll_wait</span><span class="hljs-params">(<span class="hljs-keyword">int</span> epfd, struct epoll_event * events, <span class="hljs-keyword">int</span> maxevents, <span class="hljs-keyword">int</span> timeout)</span></span>;<br></code></pre></td></tr></table></figure>
 
