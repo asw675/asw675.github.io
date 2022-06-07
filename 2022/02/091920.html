@@ -155,7 +155,7 @@
 <p>​        <a target="_blank" rel="noopener" href="https://imgtu.com/i/H8iW8I"><img src="https://s4.ax1x.com/2022/02/09/H8iW8I.png" alt="H8iW8I.png"></a></p>
 <h3 id="广播接收器注册"><a href="#广播接收器注册" class="headerlink" title="广播接收器注册"></a>广播接收器注册</h3><ul>
 <li><h4 id="静态注册"><a href="#静态注册" class="headerlink" title="静态注册"></a>静态注册</h4><ul>
-<li>注册方式：在AndroidManifest.xml里通过**<receive>**标签声明</li>
+<li>注册方式：在AndroidManifest.xml里通过<code>&lt;receive&gt;</code>标签声明</li>
 <li>当此 <code>App</code>首次启动时，系统会<strong>自动</strong>实例化，并注册到系统中。（在PackageMangerService服务中）</li>
 <li>①android系统启动之后会解析系统特定目录下的apk文件，并执行解析；<br>②解析Manifest流程：Zygote进程 –&gt; SystemServer进程 –&gt; PackageManagerService服务 –&gt; scanDirLI方法 –&gt; scanPackageLI方法 –&gt; PackageParser.parserPackage方法；<br>③解析完成Manifest之后会将apk的Manifest信息保存在Settings对象中并持久化，删除软件时，信息会被删除，新安装的apk会重复调用scanDirLi；</li>
 <li>缺点耗电，占内存</li>
