@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#3367D6"/>
+  <link rel="apple-touch-icon" href="/icons-192.png">
+  <link rel="manifest" href="/manifest.json">
+  
+  <meta name="generator" content="Hexo 5.4.0">
+
+  
+    <meta name="description" content="偷偷写点东西">
+  
+
+  
+
+  
+    <meta name="author" content="ReasonLee">
+  
+
+  
+
+  
+
+  <title>Android：屏幕绘制机制 | ReasonLee</title>
+
+  
+
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@1.1.3/index.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlightjs@9.16.2/styles/monokai.css">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+<body>
+  <div class="root-container">
+    
+<!-- header container -->
+<header class="header-container post">
+  
+    <div class="post-image" style="background-image: url(https://wallpapers.com/images/high/toradora-taiga-aisaka-eating-ithmocq6tsax591p.jpg)"></div>
+  
+
+  <!-- navbar -->
+<nav class="navbar">
+  <div class="navbar-content">
+    <!-- logo -->
+    <div class="navbar-logo">
+      <a href="/">
+        
+          ReasonLee
+        
+      </a>
+    </div>
+    <!-- link -->
+    <div class="navbar-link">
+      <div class="navbar-btn">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <ul class="navbar-list">
+        
+          <li class="navbar-list-item"><a href="/">首页</a></li>
+        
+          <li class="navbar-list-item"><a href="/links">友链</a></li>
+        
+          <li class="navbar-list-item"><a href="/about">关于</a></li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+    <div class="header-content">
+      <div class="post-text layout-block">
+        <div class="layout-margin">
+          <h1 class="title-wrap">Android：屏幕绘制机制</h1>
+          <h2 class="title-sub-wrap">
+            <strong>ReasonLee</strong>
+            <span>发布于</span>
+            <time  class="article-date" datetime="2022-06-06T01:18:12.000Z" itemprop="datePublished">2022-06-06</time>
+          </h2>
+          <ul class="wrap-list dark">
+  
+    <li><a href="/categories/Android%E5%9F%BA%E7%A1%80/">📒 Android基础</a></li>
+  
+</ul>
+          <ul class="wrap-list dark">
+  
+    <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
+  
+</ul>
+        </div>
+      </div>
+    </div>
+  
+
+  
+  
+  
+</header>
+
+    <!-- 文章 -->
+
+<!-- 文章内容 -->
+<div class="body-container">
+  <article class="content-container layout-block post-container">
+    <div class="article-info">
+      
+      
+      
+      
+      <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
+        <p>之前我们说到handler的同步屏障在屏幕刷新机制里面有用到，今天我们就来看看这个屏幕刷新机制<br><br>Android屏幕在很多时候都会进行刷新，来保证使用的流畅度。<br><br>比较常见的就是调用invalidate()方法，但这个invalidate方法是不是立刻会刷新屏幕呢，那又未必。<br></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">invalidate</span><span class="hljs-params">()</span> </span>&#123;<br>    mDirty.set(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, mWidth, mHeight);<br>    <span class="hljs-keyword">if</span> (!mWillDrawSoon) &#123;<br>        scheduleTraversals();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里的dirty其实就是需要刷新的区域，不仅是android，在flutter里，需要刷新的view也叫dirty，因为屏幕刷新是局部的，如果每次刷新都要重新绘制整个页面，那开销未免太大，所以这里是用dirty来存储需要刷新的区域。</p>
+<p>接下来就走到了scheduleTraversals()方法，其实任何刷新请求都会走到这个方法，不仅仅是invalidate这个方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">scheduleTraversals</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!mTraversalScheduled) &#123;  <span class="hljs-comment">// 注释1</span><br>        mTraversalScheduled = <span class="hljs-keyword">true</span>;<br>        mTraversalBarrier = mHandler.getLooper().getQueue().postSyncBarrier();  <span class="hljs-comment">// 注释2</span><br>        mChoreographer.postCallback(<br>                Choreographer.CALLBACK_TRAVERSAL, mTraversalRunnable, <span class="hljs-keyword">null</span>);  <span class="hljs-comment">// 注释3</span><br>        <span class="hljs-keyword">if</span> (!mUnbufferedInputDispatch) &#123;<span class="hljs-comment">// 注释1</span><br>            scheduleConsumeBatchedInput();<br>        &#125;<br>        notifyRendererOfFramePending();<span class="hljs-comment">//底层渲染的方法，暂时不讨论这个</span><br>        pokeDrawLockIfNeeded();<span class="hljs-comment">//一个window相关的方法，获取drawLock的，有兴趣的可以自己了解</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>scheduleTraversals()方法中，需要注意的点我已经写上注释了。<br></p>
+<p><strong>首先来看注释一</strong>：注释1有两处，主要的作用就是防止多次刷新请求。相当于一次Vsnyc信号发出后，在这16ms里面，我只需要刷新一次就行了，其他的请求等到下个16ms再说，这样保证了有序执行。<br></p>
+<p>mTraversalScheduled在unscheduleTraversals和doTraversal方法中会置为false，意思就是我开始刷新了，你（scheduleTraversals）可以着手计算下一个16ms需要刷新的view了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">unscheduleTraversals</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (mTraversalScheduled) &#123;<br>        mTraversalScheduled = <span class="hljs-keyword">false</span>;<br>        mHandler.getLooper().getQueue().removeSyncBarrier(mTraversalBarrier);<br>        mChoreographer.removeCallbacks(<br>                Choreographer.CALLBACK_TRAVERSAL, mTraversalRunnable, <span class="hljs-keyword">null</span>);<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">doTraversal</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (mTraversalScheduled) &#123;<br>        mTraversalScheduled = <span class="hljs-keyword">false</span>;<br>        mHandler.getLooper().getQueue().removeSyncBarrier(mTraversalBarrier);<br><br>        <span class="hljs-keyword">if</span> (mProfile) &#123;<br>            Debug.startMethodTracing(<span class="hljs-string">&quot;ViewAncestor&quot;</span>);<br>        &#125;<br><br>        performTraversals();<br><br>        <span class="hljs-keyword">if</span> (mProfile) &#123;<br>            Debug.stopMethodTracing();<br>            mProfile = <span class="hljs-keyword">false</span>;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>然后看注释二</strong>：这里就是发出同步屏障的地方，用来保证这个屏幕刷新事件优先执行。</p>
+<p><strong>最后是注释三</strong>：准备好前期工作后，注释三这里就是实际执行刷新的地方，会把这个刷新的事件封装到runnable里，然后postCallBack发出去。<br></p>
+<p>先来看看postCallBack里面。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Posts a callback to run on the next frame.</span><br><span class="hljs-comment">     * &lt;p&gt;</span><br><span class="hljs-comment">     * The callback runs once then is automatically removed.</span><br><span class="hljs-comment">     * &lt;/p&gt;</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> callbackType The callback type.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> action The callback action to run during the next frame.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> token The callback token, or null if none.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@see</span> #removeCallbacks</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@hide</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@TestApi</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">postCallback</span><span class="hljs-params">(<span class="hljs-keyword">int</span> callbackType, Runnable action, Object token)</span> </span>&#123;<br>        postCallbackDelayed(callbackType, action, token, <span class="hljs-number">0</span>);<span class="hljs-comment">//这里进去</span><br>    &#125;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Posts a callback to run on the next frame after the specified delay.</span><br><span class="hljs-comment">     * &lt;p&gt;</span><br><span class="hljs-comment">     * The callback runs once then is automatically removed.</span><br><span class="hljs-comment">     * &lt;/p&gt;</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> callbackType The callback type.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> action The callback action to run during the next frame after the specified delay.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> token The callback token, or null if none.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> delayMillis The delay time in milliseconds.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@see</span> #removeCallback</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@hide</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@TestApi</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">postCallbackDelayed</span><span class="hljs-params">(<span class="hljs-keyword">int</span> callbackType,</span></span><br><span class="hljs-function"><span class="hljs-params">            Runnable action, Object token, <span class="hljs-keyword">long</span> delayMillis)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (action == <span class="hljs-keyword">null</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">&quot;action must not be null&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">if</span> (callbackType &lt; <span class="hljs-number">0</span> || callbackType &gt; CALLBACK_LAST) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">&quot;callbackType is invalid&quot;</span>);<br>        &#125;<br><br>        postCallbackDelayedInternal(callbackType, action, token, delayMillis); <span class="hljs-comment">//这里进去</span><br>    &#125;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">postCallbackDelayedInternal</span><span class="hljs-params">(<span class="hljs-keyword">int</span> callbackType,</span></span><br><span class="hljs-function"><span class="hljs-params">            Object action, Object token, <span class="hljs-keyword">long</span> delayMillis)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (DEBUG_FRAMES) &#123;<br>            Log.d(TAG, <span class="hljs-string">&quot;PostCallback: type=&quot;</span> + callbackType<br>                    + <span class="hljs-string">&quot;, action=&quot;</span> + action + <span class="hljs-string">&quot;, token=&quot;</span> + token<br>                    + <span class="hljs-string">&quot;, delayMillis=&quot;</span> + delayMillis);<br>        &#125;<br><br>        <span class="hljs-keyword">synchronized</span> (mLock) &#123;<br>            <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> now = SystemClock.uptimeMillis();<br>            <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> dueTime = now + delayMillis;<br>            mCallbackQueues[callbackType].addCallbackLocked(dueTime, action, token);<br><br>            <span class="hljs-keyword">if</span> (dueTime &lt;= now) &#123;<br>                scheduleFrameLocked(now);<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                Message msg = mHandler.obtainMessage(MSG_DO_SCHEDULE_CALLBACK, action);<br>                msg.arg1 = callbackType;<br>                msg.setAsynchronous(<span class="hljs-keyword">true</span>);<br>                mHandler.sendMessageAtTime(msg, dueTime);<br>            &#125;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里先看scheduleFrameLocked(now)，前面postCallback传进来一个delayMillis为0的参数，所以这里dueTime是==now的，会走到这个方法里面。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">scheduleFrameLocked</span><span class="hljs-params">(<span class="hljs-keyword">long</span> now)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!mFrameScheduled) &#123;<br>        mFrameScheduled = <span class="hljs-keyword">true</span>;<br>        <span class="hljs-keyword">if</span> (USE_VSYNC) &#123;<br>            <span class="hljs-keyword">if</span> (DEBUG_FRAMES) &#123;<br>                Log.d(TAG, <span class="hljs-string">&quot;Scheduling next frame on vsync.&quot;</span>);<br>            &#125;<br><br>            <span class="hljs-comment">// If running on the Looper thread, then schedule the vsync immediately,</span><br>            <span class="hljs-comment">// otherwise post a message to schedule the vsync from the UI thread</span><br>            <span class="hljs-comment">// as soon as possible.</span><br>            <span class="hljs-keyword">if</span> (isRunningOnLooperThreadLocked()) &#123;<br>                scheduleVsyncLocked();<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                Message msg = mHandler.obtainMessage(MSG_DO_SCHEDULE_VSYNC);<br>                msg.setAsynchronous(<span class="hljs-keyword">true</span>);<br>                mHandler.sendMessageAtFrontOfQueue(msg);<br>            &#125;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> nextFrameTime = Math.max(<br>                    mLastFrameTimeNanos / TimeUtils.NANOS_PER_MS + sFrameDelay, now);<br>            <span class="hljs-keyword">if</span> (DEBUG_FRAMES) &#123;<br>                Log.d(TAG, <span class="hljs-string">&quot;Scheduling next frame in &quot;</span> + (nextFrameTime - now) + <span class="hljs-string">&quot; ms.&quot;</span>);<br>            &#125;<br>            Message msg = mHandler.obtainMessage(MSG_DO_FRAME);<br>            msg.setAsynchronous(<span class="hljs-keyword">true</span>);<br>            mHandler.sendMessageAtTime(msg, nextFrameTime);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>先看有vsync垂直同步信号的时候的刷新情况。里面有个英文注释大概的就是如果当前在有looper的线程（一般是主线程）里就直接执行，如果不在，就post一个message到UI线程里执行。<br><br><br><br>所以我们直接看执行的方法scheduleVsyncLocked()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">scheduleVsyncLocked</span><span class="hljs-params">()</span> </span>&#123;<br>    mDisplayEventReceiver.scheduleVsync();<br>&#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Schedules a single vertical sync pulse to be delivered when the next</span><br><span class="hljs-comment"> * display frame begins.</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">scheduleVsync</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (mReceiverPtr == <span class="hljs-number">0</span>) &#123;<br>        Log.w(TAG, <span class="hljs-string">&quot;Attempted to schedule a vertical sync pulse but the display event &quot;</span><br>                + <span class="hljs-string">&quot;receiver has already been disposed.&quot;</span>);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        nativeScheduleVsync(mReceiverPtr);<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// Called from native code.</span><br><span class="hljs-meta">@SuppressWarnings(&quot;unused&quot;)</span><br><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dispatchVsync</span><span class="hljs-params">(<span class="hljs-keyword">long</span> timestampNanos, <span class="hljs-keyword">int</span> builtInDisplayId, <span class="hljs-keyword">int</span> frame)</span> </span>&#123;<br>    onVsync(timestampNanos, builtInDisplayId, frame);<br>&#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Called when a vertical sync pulse is received.</span><br><span class="hljs-comment"> * The recipient should render a frame and then call &#123;<span class="hljs-doctag">@link</span> #scheduleVsync&#125;</span><br><span class="hljs-comment"> * to schedule the next vertical sync pulse.</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> timestampNanos The timestamp of the pulse, in the &#123;<span class="hljs-doctag">@link</span> System#nanoTime()&#125;</span><br><span class="hljs-comment"> * timebase.</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> builtInDisplayId The surface flinger built-in display id such as</span><br><span class="hljs-comment"> * &#123;<span class="hljs-doctag">@link</span> SurfaceControl#BUILT_IN_DISPLAY_ID_MAIN&#125;.</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> frame The frame number.  Increases by one for each vertical sync interval.</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onVsync</span><span class="hljs-params">(<span class="hljs-keyword">long</span> timestampNanos, <span class="hljs-keyword">int</span> builtInDisplayId, <span class="hljs-keyword">int</span> frame)</span> </span>&#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>看注释说是在下一个垂直同步信号到来的时候刷新，那这个native方法就是注册监听这个垂直同步信号的方法了，下面的called from native code也看得出来，native方法监听到信号后返回到java层。这个onVsync方法在choreographer中被重写了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FrameDisplayEventReceiver</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">DisplayEventReceiver</span></span><br><span class="hljs-class">          <span class="hljs-keyword">implements</span> <span class="hljs-title">Runnable</span> </span>&#123;<br>      <span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> mHavePendingVsync;<br>      <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> mTimestampNanos;<br>      <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> mFrame;<br><br>      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">FrameDisplayEventReceiver</span><span class="hljs-params">(Looper looper, <span class="hljs-keyword">int</span> vsyncSource)</span> </span>&#123;<br>          <span class="hljs-keyword">super</span>(looper, vsyncSource);<br>      &#125;<br><br>      <span class="hljs-meta">@Override</span><br>      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onVsync</span><span class="hljs-params">(<span class="hljs-keyword">long</span> timestampNanos, <span class="hljs-keyword">int</span> builtInDisplayId, <span class="hljs-keyword">int</span> frame)</span> </span>&#123;<br>          <span class="hljs-comment">// Ignore vsync from secondary display.</span><br>          <span class="hljs-comment">// This can be problematic because the call to scheduleVsync() is a one-shot.</span><br>          <span class="hljs-comment">// We need to ensure that we will still receive the vsync from the primary</span><br>          <span class="hljs-comment">// display which is the one we really care about.  Ideally we should schedule</span><br>          <span class="hljs-comment">// vsync for a particular display.</span><br>          <span class="hljs-comment">// At this time Surface Flinger won&#x27;t send us vsyncs for secondary displays</span><br>          <span class="hljs-comment">// but that could change in the future so let&#x27;s log a message to help us remember</span><br>          <span class="hljs-comment">// that we need to fix this.</span><br>          <span class="hljs-keyword">if</span> (builtInDisplayId != SurfaceControl.BUILT_IN_DISPLAY_ID_MAIN) &#123;<br>              Log.d(TAG, <span class="hljs-string">&quot;Received vsync from secondary display, but we don&#x27;t support &quot;</span><br>                      + <span class="hljs-string">&quot;this case yet.  Choreographer needs a way to explicitly request &quot;</span><br>                      + <span class="hljs-string">&quot;vsync for a specific display to ensure it doesn&#x27;t lose track &quot;</span><br>                      + <span class="hljs-string">&quot;of its scheduled vsync.&quot;</span>);<br>              scheduleVsync();<br>              <span class="hljs-keyword">return</span>;<br>          &#125;<br><br>          <span class="hljs-comment">// Post the vsync event to the Handler.</span><br>          <span class="hljs-comment">// The idea is to prevent incoming vsync events from completely starving</span><br>          <span class="hljs-comment">// the message queue.  If there are no messages in the queue with timestamps</span><br>          <span class="hljs-comment">// earlier than the frame time, then the vsync event will be processed immediately.</span><br>          <span class="hljs-comment">// Otherwise, messages that predate the vsync event will be handled first.</span><br>          <span class="hljs-keyword">long</span> now = System.nanoTime();<br>          <span class="hljs-keyword">if</span> (timestampNanos &gt; now) &#123;<br>              Log.w(TAG, <span class="hljs-string">&quot;Frame time is &quot;</span> + ((timestampNanos - now) * <span class="hljs-number">0.000001f</span>)<br>                      + <span class="hljs-string">&quot; ms in the future!  Check that graphics HAL is generating vsync &quot;</span><br>                      + <span class="hljs-string">&quot;timestamps using the correct timebase.&quot;</span>);<br>              timestampNanos = now;<br>          &#125;<br><br>          <span class="hljs-keyword">if</span> (mHavePendingVsync) &#123;<br>              Log.w(TAG, <span class="hljs-string">&quot;Already have a pending vsync event.  There should only be &quot;</span><br>                      + <span class="hljs-string">&quot;one at a time.&quot;</span>);<br>          &#125; <span class="hljs-keyword">else</span> &#123;<br>              mHavePendingVsync = <span class="hljs-keyword">true</span>;<br>          &#125;<br><br>          mTimestampNanos = timestampNanos;<br>          mFrame = frame;<br>          Message msg = Message.obtain(mHandler, <span class="hljs-keyword">this</span>);<br>          msg.setAsynchronous(<span class="hljs-keyword">true</span>);<br>          mHandler.sendMessageAtTime(msg, timestampNanos / TimeUtils.NANOS_PER_MS);<span class="hljs-comment">//这里</span><br>      &#125;<br><br>      <span class="hljs-meta">@Override</span><br>      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;<br>          mHavePendingVsync = <span class="hljs-keyword">false</span>;<br>          doFrame(mTimestampNanos, mFrame); <span class="hljs-comment">//这里</span><br>      &#125;<br>  &#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>重点看中文注释的部分</strong>，收到vsync信号后，会发一个异步消息用来优先执行doFrame方法。<br><br>上面scheduleFrameLocked方法里面，不用vsync机制的话，也是直接发消息到doFrame方法里面，所以说这个方法就是实际刷新页面的方法。（这个用不用垂直同步信号的区别就自己上网查了，这里就不深入讲了）<br></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">doFrame</span><span class="hljs-params">(<span class="hljs-keyword">long</span> frameTimeNanos, <span class="hljs-keyword">int</span> frame)</span> </span>&#123;<br>    …………省略…………<br><br>    <span class="hljs-keyword">try</span> &#123;<br>        Trace.traceBegin(Trace.TRACE_TAG_VIEW, <span class="hljs-string">&quot;Choreographer#doFrame&quot;</span>);<br>        AnimationUtils.lockAnimationClock(frameTimeNanos / TimeUtils.NANOS_PER_MS);<br><br>        mFrameInfo.markInputHandlingStart();<br>        doCallbacks(Choreographer.CALLBACK_INPUT, frameTimeNanos);<br><br>        mFrameInfo.markAnimationsStart();<br>        doCallbacks(Choreographer.CALLBACK_ANIMATION, frameTimeNanos);<br><br>        mFrameInfo.markPerformTraversalsStart();<br>        doCallbacks(Choreographer.CALLBACK_TRAVERSAL, frameTimeNanos); <span class="hljs-comment">//看这里</span><br><br>        doCallbacks(Choreographer.CALLBACK_COMMIT, frameTimeNanos);<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>        AnimationUtils.unlockAnimationClock();<br>        Trace.traceEnd(Trace.TRACE_TAG_VIEW);<br>    &#125;<br>    <br>    <br>    以下省略<br><br></code></pre></td></tr></table></figure>
+
+<p>这个方法有点长，我们看重要的地方。还记得在viewRootImpl发过来的那个callBack吗</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">mChoreographer.postCallback(<br>                    Choreographer.CALLBACK_TRAVERSAL, mTraversalRunnable, <span class="hljs-keyword">null</span>);<br>                    <br>doCallbacks(Choreographer.CALLBACK_TRAVERSAL, frameTimeNanos);<br></code></pre></td></tr></table></figure>
+<p>在这里就doCallBack了，终于执行了这个runnable了。也就是说Choreographer这里主要做的就是调用底层方法监听垂直同步信号，等到下一个信号来的时候告诉viewRootImpl可以开始刷新了。<br></p>
+<p>回到viewRootImpl这里</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">final</span> TraversalRunnable mTraversalRunnable = <span class="hljs-keyword">new</span> TraversalRunnable(); <span class="hljs-comment">//就是这个runnable</span><br><br><span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TraversalRunnable</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Runnable</span> </span>&#123;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;<br>            doTraversal();<br>        &#125;<br>    &#125;<br>    <br>       <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">doTraversal</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (mTraversalScheduled) &#123;<br>            mTraversalScheduled = <span class="hljs-keyword">false</span>;<br>            mHandler.getLooper().getQueue().removeSyncBarrier(mTraversalBarrier);<br><br>            <span class="hljs-keyword">if</span> (mProfile) &#123;<br>                Debug.startMethodTracing(<span class="hljs-string">&quot;ViewAncestor&quot;</span>);<br>            &#125;<br><br>            performTraversals(); <span class="hljs-comment">//就是这里</span><br><br>            <span class="hljs-keyword">if</span> (mProfile) &#123;<br>                Debug.stopMethodTracing();<br>                mProfile = <span class="hljs-keyword">false</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+<p>终于来到了熟悉的方法了，performTraversals这个方法大家估计都听过了，代码比较长，这里就不贴了。他里面会遍历全部的view，根据状态来调用performMeasure() 测量、perfromLayout() 布局、performDraw() 绘制这些流程，分别对应一个view的三个方法。</p>
+<p>好了，这就是android一次屏幕刷新大概的流程。</p>
+<p><strong>仅供参考，欢迎指正</strong></p>
+
+      </section>
+
+      
+      
+        <nav class="article-nav">
+          
+            <div class="article-nav-item layout-padding">
+  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
+    
+    <div class="card-text">
+      
+        <a href="/2023/01/101920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">复习计划</h2>
+        </a>
+      
+      <div class="card-text--row">Newer</div>
+    </div>
+  </article>
+</div>
+          
+          
+            <div class="article-nav-item layout-padding">
+  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
+    
+    <div class="card-text">
+      
+        <a href="/2022/06/060620.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">操作系统：什么是死锁</h2>
+        </a>
+      
+      <div class="card-text--row">Older</div>
+    </div>
+  </article>
+</div>
+          
+        </nav>
+      
+
+      <section class="page-message-container layout-padding">
+        
+
+
+  
+  
+
+  
+  
+
+
+      </section>
+    </div>
+    <div class="widget-info">
+      <section class="widget-author widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-body">
+    
+      <img src="https://img2.baidu.com/it/u=306228493,3347220292&amp;fm=26&amp;fmt=auto&amp;gp=0.jpg" class="soft-size--round soft-style--box" alt="Yusen">
+    
+    
+      <h2>Yusen</h2>
+    
+    
+      <p>惹啊</p>
+    
+
+    <div class="count-box">
+      <div class="count-box--item">
+        <svg class="icon icon-article" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M240.51564747 647.74217627h196.07203239c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806V165.10332731c0-33.18142087-30.16492806-60.32985613-60.32985612-60.32985611H245.04038668C225.43318342 104.7734712 210.35071939 119.85593522 210.35071939 139.46313845V617.57724821c0 16.59071043 13.57421762 30.16492806 30.16492808 30.16492806z m663.62841731-452.47392089v482.63884894c0 33.18142087-27.14843525 60.32985613-60.32985612 60.32985613H180.18579134c-33.18142087 0-60.32985613-27.14843525-60.32985612-60.32985613V195.26825538c-49.77213131 0-90.49478418 40.72265287-90.49478417 90.49478417v452.4739209c0 49.77213131 40.72265287 90.49478418 90.49478417 90.49478417h286.56681657c16.59071043 0 30.16492806 13.57421762 30.16492807 30.16492807s13.57421762 30.16492806 30.16492805 30.16492806h90.49478418c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806s13.57421762-30.16492806 30.16492807-30.16492807h286.56681657c49.77213131 0 90.49478418-40.72265287 90.49478417-90.49478417V285.76303955c0-49.77213131-40.72265287-90.49478418-90.49478417-90.49478417zM587.41232014 647.74217627h191.54729318c19.60720323 0 34.68966726-15.08246403 34.68966729-34.68966727V134.93839925c0-16.59071043-13.57421762-30.16492806-30.16492808-30.16492805H617.57724821c-30.16492806 0-60.32985613 27.14843525-60.32985612 60.32985611v452.4739209c0 16.59071043 13.57421762 30.16492806 30.16492805 30.16492806z" fill="currentColor"></path>
+</svg>
+        <span>69</span>
+      </div>
+      <div class="count-box--item">
+        <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M900.3614811 257.09082106h-339.81629553l-67.96326003-101.9448889c-19.41807444-29.12711113-48.54518557-43.69066667-82.52681443-43.69066667H123.6385189c-53.39970333 0-97.09036999 43.69066667-97.09037113 97.09036999v582.54222222c0 53.39970333 43.69066667 97.09036999 97.09037113 97.09037002h776.7229622c53.39970333 0 97.09036999-43.69066667 97.09037113-97.09037002V354.18119104c0-53.39970333-43.69066667-97.09036999-97.09037113-97.09036998z m-97.09036999 242.72592554H220.72888889c-24.27259221 0-48.54518557-24.27259221-48.54518556-48.54518556s24.27259221-48.54518557 48.54518556-48.54518444h582.54222222c24.27259221 0 48.54518557 24.27259221 48.54518556 48.54518444s-24.27259221 48.54518557-48.54518556 48.54518556z" fill="currentColor"></path>
+</svg>
+        11
+      </div>
+      <div class="count-box--item">
+        <svg class="icon icon-tags" viewBox="0 0 1098 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M283.42180005 272q0-28.38857157-20.09142843-48.48000001t-48.47999998-20.09142842-48.48000002 20.09142842-20.09142846 48.48000001 20.09142846 48.48 48.48000002 20.09142843 48.47999998-20.09142843 20.09142843-48.48zM855.0332285 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.03999997 263.58857157q-20.9142853 19.81714313-48.75428534 19.81714312-28.38857157 0-48.20571468-19.81714312l-383.04-383.58857157q-20.36571468-19.81714313-34.55999999-54.10285688t-14.19428534-62.6742853l0-222.85714313q0-27.84000002 20.36571469-48.20571469t48.2057147-20.36571466l222.85714313 0q28.38857157 0 62.6742853 14.19428529t54.65142842 34.55999999l383.04000001 382.49142843q19.81714313 20.9142853 19.81714314 48.75428532zM1060.74751475 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.04 263.58857157q-20.9142853 19.81714313-48.75428531 19.81714312-19.26857155 0-31.61142843-7.47428531t-28.38857159-24.13714314l251.79428534-251.7942853q19.81714313-19.81714313 19.81714308-48.20571469 0-27.84000002-19.81714308-48.75428531l-383.04000001-382.49142845q-20.36571468-20.36571468-54.65142842-34.55999999t-62.67428532-14.19428534l120 0q28.38857157 0 62.67428532 14.19428534t54.65142842 34.55999999l383.03999998 382.49142845q19.81714313 20.9142853 19.81714314 48.75428531z" fill="currentColor"></path>
+</svg>
+        21
+      </div>
+    </div>
+  </div>
+</section>
+
+      
+<section class="widget-toc widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-toc" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M134.50666666 767.46666668H460.8c27.73333333 0 50.24000001 22.50666668 50.24000001 50.23999999v50.13333333c0 27.73333333-22.50666668 50.24000001-50.24000001 50.24000001H134.50666666c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.24000001v-50.13333333c0.10666668-27.73333333 22.50666668-50.24000001 50.24000001-50.24000001zM84.37333332 541.65333333h326.18666669c27.73333333 0 50.24000001 22.39999999 50.23999999 50.13333334v50.24000001c0 27.73333333-22.50666668 50.24000001-50.24000002 50.23999999H84.37333332c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.23999999v-50.24000001c0-27.73333333 22.50666668-50.13333334 50.24000001-50.13333334zM134.50666666 315.83999999H460.8c27.73333333 0 50.24000001 22.50666668 50.24000001 50.24000001v50.24000001c0 27.73333333-22.50666668 50.13333334-50.24000001 50.13333333H134.50666666c-27.73333333 0-50.24000001-22.39999999-50.23999999-50.13333333v-50.24000001c0.10666668-27.84000001 22.50666668-50.24000001 50.24000001-50.23999999zM209.81333332 89.91999999h326.18666671c27.73333333 0 50.24000001 22.39999999 50.23999997 50.13333335v50.23999999c0 27.73333333-22.50666668 50.24000001-50.24000001 50.24000001H209.81333332c-27.73333333 0-50.24000001-22.50666668-50.23999999-50.24000001v-50.24000001c0-27.73333333 22.50666668-50.13333334 50.24000001-50.13333333zM692.05333333 623.36l274.66666669 176.00000002c23.36000001 14.93333333 30.08 45.97333334 15.14666666 69.33333332L954.77333334 910.93333333c-14.93333333 23.25333334-45.97333334 30.08-69.33333335 15.14666667l-274.66666666-176c-23.36000001-14.93333333-30.08-45.97333334-15.14666667-69.33333333l27.09333334-42.24000001c14.93333333-23.36000001 46.08000001-30.08 69.33333333-15.14666666z" fill="currentColor"></path>
+</svg>
+    <span>TOC</span>
+  </div>
+  <div class="widget-body">
+    
+  </div>
+</section>
+
+
+      
+<section class="widet-notice widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-notice" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M512 945.02305225v28.15620663a24.27259221 24.27259221 0 0 1-24.27259221 24.27259335H394.0352a48.54518557 48.54518557 0 0 1-41.74885888-23.78714112l-110.68302222-184.47170332a132.04290333 132.04290333 0 0 1-17.47626667-48.54518557h118.4502511a200.97706667 200.97706667 0 0 1 76.21594113 14.56355556l20.38897777 133.49925888a48.54518557 48.54518557 0 0 0 36.40888888 27.67075555l16.01991111 2.91271112a24.27259221 24.27259221 0 0 1 20.38897778 25.72894889zM997.45185223 463.45481443a194.18074112 194.18074112 0 0 1-38.8361489 116.50844445 24.75804445 24.75804445 0 0 1-36.4088889 0l-34.95253333-34.95253333a24.27259221 24.27259221 0 0 1-2.91271111-30.58346667 97.09036999 97.09036999 0 0 0 0-106.79940665 24.27259221 24.27259221 0 0 1 2.91271111-30.58346666l34.95253333-34.95253334a24.75804445 24.75804445 0 0 1 18.93262223-7.28177777 26.2144 26.2144 0 0 1 17.47626667 9.70903665A194.18074112 194.18074112 0 0 1 997.45185223 463.45481443z m-194.18074112-388.36148111v776.72296335a48.54518557 48.54518557 0 0 1-48.54518556 48.54518443h-28.64165888a48.54518557 48.54518557 0 0 1-33.98163001-14.07810332l-145.63555556-143.20829668A291.27111111 291.27111111 0 0 0 342.57730333 657.63555556H172.18370333a145.63555556 145.63555556 0 0 1-145.63555556-145.63555556v-97.09036999a145.63555556 145.63555556 0 0 1 145.63555556-145.63555556h170.3936a291.27111111 291.27111111 0 0 0 206.31703779-85.43952668l145.63555555-143.20829554a48.54518557 48.54518557 0 0 1 33.98162888-14.07810446H754.72592555a48.54518557 48.54518557 0 0 1 48.54518556 48.54518555z" fill="currentColor"></path>
+</svg>
+    <span>NOTICE</span>
+  </div>
+  <div class="widget-body">
+    <p>麻中麻</p>
+  </div>
+</section>
+
+
+      <section class="widget-categorys widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M900.3614811 257.09082106h-339.81629553l-67.96326003-101.9448889c-19.41807444-29.12711113-48.54518557-43.69066667-82.52681443-43.69066667H123.6385189c-53.39970333 0-97.09036999 43.69066667-97.09037113 97.09036999v582.54222222c0 53.39970333 43.69066667 97.09036999 97.09037113 97.09037002h776.7229622c53.39970333 0 97.09036999-43.69066667 97.09037113-97.09037002V354.18119104c0-53.39970333-43.69066667-97.09036999-97.09037113-97.09036998z m-97.09036999 242.72592554H220.72888889c-24.27259221 0-48.54518557-24.27259221-48.54518556-48.54518556s24.27259221-48.54518557 48.54518556-48.54518444h582.54222222c24.27259221 0 48.54518557 24.27259221 48.54518556 48.54518444s-24.27259221 48.54518557-48.54518556 48.54518556z" fill="currentColor"></path>
+</svg>
+    <span>CATEGORYS</span>
+  </div>
+  <div class="widget-body">
+    <ul class="categorys-list">
+      
+        <li class="categorys-list-item">
+          <a href="/categories/%E7%AE%97%E6%B3%95/">
+            算法 (3)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/operation-system/">
+            operation system (1)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/spring/">
+            spring (1)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/%E6%97%A5%E5%B8%B8/">
+            日常 (1)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+            计算机网络 (7)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/IM/">
+            IM (2)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+            操作系统 (10)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">
+            JAVA基础 (11)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/Android%E5%9F%BA%E7%A1%80/">
+            Android基础 (28)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/Kotlin%E5%9F%BA%E7%A1%80/">
+            Kotlin基础 (1)
+          </a>
+        </li>
+      
+        <li class="categorys-list-item">
+          <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+            设计模式 (1)
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+</section>
+
+      <section class="widget-tags widget-item  layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-tags" viewBox="0 0 1098 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M283.42180005 272q0-28.38857157-20.09142843-48.48000001t-48.47999998-20.09142842-48.48000002 20.09142842-20.09142846 48.48000001 20.09142846 48.48 48.48000002 20.09142843 48.47999998-20.09142843 20.09142843-48.48zM855.0332285 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.03999997 263.58857157q-20.9142853 19.81714313-48.75428534 19.81714312-28.38857157 0-48.20571468-19.81714312l-383.04-383.58857157q-20.36571468-19.81714313-34.55999999-54.10285688t-14.19428534-62.6742853l0-222.85714313q0-27.84000002 20.36571469-48.20571469t48.2057147-20.36571466l222.85714313 0q28.38857157 0 62.6742853 14.19428529t54.65142842 34.55999999l383.04000001 382.49142843q19.81714313 20.9142853 19.81714314 48.75428532zM1060.74751475 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.04 263.58857157q-20.9142853 19.81714313-48.75428531 19.81714312-19.26857155 0-31.61142843-7.47428531t-28.38857159-24.13714314l251.79428534-251.7942853q19.81714313-19.81714313 19.81714308-48.20571469 0-27.84000002-19.81714308-48.75428531l-383.04000001-382.49142845q-20.36571468-20.36571468-54.65142842-34.55999999t-62.67428532-14.19428534l120 0q28.38857157 0 62.67428532 14.19428534t54.65142842 34.55999999l383.03999998 382.49142845q19.81714313 20.9142853 19.81714314 48.75428531z" fill="currentColor"></path>
+</svg>
+    <span>TAGS</span>
+  </div>
+  <div class="widget-body">
+    <div class="tags-cloud">
+      <a href="/tags/Activity/" style="font-size: 13.33px;" class="tags-cloud-3">Activity</a> <a href="/tags/Android%E5%9F%BA%E7%A1%80/" style="font-size: 20px;" class="tags-cloud-10">Android基础</a> <a href="/tags/Handler/" style="font-size: 10px;" class="tags-cloud-0">Handler</a> <a href="/tags/IM/" style="font-size: 11.67px;" class="tags-cloud-2">IM</a> <a href="/tags/JAVA%E5%9F%BA%E7%A1%80/" style="font-size: 18.33px;" class="tags-cloud-8">JAVA基础</a> <a href="/tags/JAVA%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;" class="tags-cloud-0">JAVA多线程</a> <a href="/tags/JAVA%E5%B9%B6%E5%8F%91/" style="font-size: 11.67px;" class="tags-cloud-2">JAVA并发</a> <a href="/tags/JAVA%E9%9B%86%E5%90%88/" style="font-size: 10px;" class="tags-cloud-0">JAVA集合</a> <a href="/tags/JVM/" style="font-size: 13.33px;" class="tags-cloud-3">JVM</a> <a href="/tags/Kotlin%E5%9F%BA%E7%A1%80/" style="font-size: 10px;" class="tags-cloud-0">Kotlin基础</a> <a href="/tags/Service/" style="font-size: 10px;" class="tags-cloud-0">Service</a> <a href="/tags/TCP/" style="font-size: 11.67px;" class="tags-cloud-2">TCP</a> <a href="/tags/operation-system/" style="font-size: 10px;" class="tags-cloud-0">operation system</a> <a href="/tags/spring/" style="font-size: 10px;" class="tags-cloud-0">spring</a> <a href="/tags/%E2%80%98Flutter%E2%80%99/" style="font-size: 10px;" class="tags-cloud-0">‘Flutter’</a> <a href="/tags/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/" style="font-size: 11.67px;" class="tags-cloud-2">四大组件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 16.67px;" class="tags-cloud-7">操作系统</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 10px;" class="tags-cloud-0">日常</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.33px;" class="tags-cloud-3">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 15px;" class="tags-cloud-5">计算机网络</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;" class="tags-cloud-0">设计模式</a>
+    </div>
+  </div>
+</section>
+    </div>
+  </article>
+</div>
+
+    <!-- footer container -->
+<footer id="footer" class="footer">
+  <div class="footer-container">
+    
+    <div class="social-icons">
+      
+        
+      
+        
+      
+        
+      
+        
+          <a href="https://github.com/asw675/" class="soft-size--primary soft-style--box" target="_blank" rel="noopener noreferrer">
+            <svg class="icon icon-github" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M64.6 512c0 195.6 125.4 361.9 300.1 422.9 23.5 5.9 19.9-10.8 19.9-22.2v-77.6c-135.8 15.9-141.3-74-150.5-89-18.5-31.5-61.9-39.5-49-54.5 31-15.9 62.5 4 98.9 58 26.4 39.1 77.9 32.5 104.1 26 5.7-23.5 17.9-44.5 34.7-60.9-140.7-25.2-199.4-111.1-199.4-213.3 0-49.5 16.4-95.1 48.4-131.8-20.4-60.6 1.9-112.4 4.9-120.1 58.2-5.2 118.5 41.6 123.3 45.3 33.1-8.9 70.8-13.7 112.9-13.7 42.4 0 80.3 4.9 113.5 13.9 11.3-8.6 67.3-48.8 121.4-43.9 2.9 7.7 24.7 58.3 5.5 118.1 32.5 36.8 49 82.8 49 132.4 0 102.3-59 188.3-200.2 213.2 23.5 23.3 38.1 55.5 38.1 91.1v112.7c0.8 9 0 17.9 15.1 17.9C832.7 877 960.4 709.4 960.4 512.1c0-247.5-200.6-447.9-447.9-447.9C265 64.1 64.6 264.5 64.6 512z"></path>
+</svg>
+          </a>
+        
+      
+        
+      
+    </div>
+     
+    <p>&copy; 2022 <a href="/" target="_blank">ReasonLee</a></p>
+
+    
+
+    <p>Powered by <a href="https://hexo.io" target="_blank" rel="noopener noreferrer">Hexo</a> Theme - <a href="https://github.com/miiiku/flex-block" target="_blank" rel="noopener noreferrer author">flex-block</a></p>
+
+    <p>
+      <a href="javascript:;" id="theme-light">🌞 浅色</a>
+      <a href="javascript:;" id="theme-dark">🌛 深色</a>
+      <a href="javascript:;" id="theme-auto">🤖️ 自动</a>
+    </p>
+  </div>
+</footer>
+  </div>
+
+  <div class="back-to-top-fixed soft-size--round soft-style--box">
+    <svg class="icon icon-back-to-top" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <path d="M725.333333 426.666667c-12.8 0-21.333333-4.266667-29.866667-12.8l-213.333333-213.333333c-17.066667-17.066667-17.066667-42.666667 0-59.733333s42.666667-17.066667 59.733333 0l213.333333 213.333333c17.066667 17.066667 17.066667 42.666667 0 59.733333C746.666667 422.4 738.133333 426.666667 725.333333 426.666667z"></path>
+      <path d="M298.666667 426.666667c-12.8 0-21.333333-4.266667-29.866667-12.8-17.066667-17.066667-17.066667-42.666667 0-59.733333l213.333333-213.333333c17.066667-17.066667 42.666667-17.066667 59.733333 0s17.066667 42.666667 0 59.733333l-213.333333 213.333333C320 422.4 311.466667 426.666667 298.666667 426.666667z"></path>
+      <path d="M512 896c-25.6 0-42.666667-17.066667-42.666667-42.666667L469.333333 170.666667c0-25.6 17.066667-42.666667 42.666667-42.666667s42.666667 17.066667 42.666667 42.666667l0 682.666667C554.666667 878.933333 537.6 896 512 896z"></path>
+    </svg>
+  </div>
+
+  
+  <!-- aplayer -->
+
+
+<!-- dplayer -->
+
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+  <!-- 尾部用户自定义相关内容 -->
+</body>
+</html>
