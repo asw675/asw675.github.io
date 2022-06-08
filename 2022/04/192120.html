@@ -162,7 +162,19 @@
 <p><strong>3、更新数据</strong><br>    recycleView可以支持在添加，删除或者移动Item的时候，RecyclerView.ItemAnimator添加动画效果，而listview不支持。而且RecyclerView有四重缓存，而ListView只有二重缓存。ListView和RecyclerView最大的区别在于数据源改变时的缓存的处理逻辑，ListView是”一锅端”，将所有的mActiveViews都移入了二级缓存mScrapViews，而RecyclerView则是更加灵活地对每个View修改标志位，区分是否重新bindView。</p>
 <p><strong>4、自定义适配器</strong><br>    ListView的适配器继承ArrayAdapter;RecycleView的适配器继承RecyclerAdapter,并将范类指定为子项对象类.ViewHolder(内部类)。</p>
 <p><strong>5、绑定事件不同</strong><br>    ListView是在主方法中ListView对象的setOnItemClickListener方法；RecyclerView则是在子项具体的View中去注册事件。</p>
-<h4 id="由于ListView中的RecycleBin缓存机制，在一些固定的数量的列表中，ListView的性能优于RecycleView。"><a href="#由于ListView中的RecycleBin缓存机制，在一些固定的数量的列表中，ListView的性能优于RecycleView。" class="headerlink" title="由于ListView中的RecycleBin缓存机制，在一些固定的数量的列表中，ListView的性能优于RecycleView。"></a>由于ListView中的RecycleBin缓存机制，在一些固定的数量的列表中，ListView的性能优于RecycleView。</h4>
+<h4 id="由于ListView中的RecycleBin缓存机制，在一些固定的数量的列表中，ListView的性能优于RecycleView。"><a href="#由于ListView中的RecycleBin缓存机制，在一些固定的数量的列表中，ListView的性能优于RecycleView。" class="headerlink" title="由于ListView中的RecycleBin缓存机制，在一些固定的数量的列表中，ListView的性能优于RecycleView。"></a>由于ListView中的RecycleBin缓存机制，在一些固定的数量的列表中，ListView的性能优于RecycleView。</h4><h2 id="Android屏幕绘制机制"><a href="#Android屏幕绘制机制" class="headerlink" title="Android屏幕绘制机制"></a><strong>Android屏幕绘制机制</strong></h2><ol>
+<li>界面上任何一个 View 的刷新请求最终都会走到 ViewRootImpl 中的scheduleTraversals() 里来安排一次遍历绘制 View 树的任务；</li>
+<li>scheduleTraversals() 会先过滤掉同一帧内的重复调用，在同一帧内只需要安排一次遍历绘制 View 树的任务即可，这个任务会在下一个屏幕刷新信号到来时调用 performTraversals() 遍历 View 树，遍历过程中会将所有需要刷新的 View 进行重绘；</li>
+<li>接着 scheduleTraversals() 会往主线程的消息队列中发送一个同步屏障，拦截这个时刻之后所有的同步消息的执行，但不会拦截异步消息，以此来尽可能的保证当接收到屏幕刷新信号时可以尽可能第一时间处理遍历绘制 View 树的工作；</li>
+<li>发完同步屏障后 scheduleTraversals() 才会开始安排一个遍历绘制 View 树的操作，作法是把 performTraversals() 封装到 Runnable 里面，然后调用 Choreographer 的 postCallback() 方法；</li>
+<li>postCallback() 方法会先将这个 Runnable 任务以当前时间戳放进一个待执行的队列里，然后如果当前是在主线程就会直接调用一个native 层方法，如果不是在主线程，会发一个最高优先级的 message 到主线程，让主线程第一时间调用这个 native 层的方法；</li>
+<li>native 层的这个方法是用来向底层注册监听下一个屏幕刷新信号，当下一个屏幕刷新信号发出时，底层就会回调 Choreographer 的onVsync() 方法来通知上层 app；</li>
+<li>onVsync() 方法被回调时，会往主线程的消息队列中发送一个执行 doFrame() 方法的消息，这个消息是异步消息，所以不会被同步屏障拦截住；</li>
+<li>doFrame() 方法会去取出之前放进待执行队列里的任务来执行，取出来的这个任务实际上是 ViewRootImpl 的 doTraversal() 操作；</li>
+<li>上述第4步到第8步涉及到的消息都手动设置成了异步消息，所以不会受到同步屏障的拦截；</li>
+<li>doTraversal() 方法会先移除主线程的同步屏障，然后调用 performTraversals() 开始根据当前状态判断是否需要执行performMeasure() 测量、perfromLayout() 布局、performDraw() 绘制流程，在这几个流程中都会去遍历 View 树来刷新需要更新的View；</li>
+</ol>
+
       </section>
 
       
@@ -259,7 +271,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SurfaceView%E5%92%8CView%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">SurfaceView和View的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Activity-Window-View%E4%B8%89%E8%80%85%E7%9A%84%E5%B7%AE%E5%88%AB"><span class="toc-number">2.</span> <span class="toc-text">Activity Window View三者的差别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Window-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">Window 是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RecyclerView-%E5%92%8C-ListView"><span class="toc-number">3.</span> <span class="toc-text">RecyclerView 和 ListView</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SurfaceView%E5%92%8CView%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">SurfaceView和View的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Activity-Window-View%E4%B8%89%E8%80%85%E7%9A%84%E5%B7%AE%E5%88%AB"><span class="toc-number">2.</span> <span class="toc-text">Activity Window View三者的差别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Window-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">Window 是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RecyclerView-%E5%92%8C-ListView"><span class="toc-number">3.</span> <span class="toc-text">RecyclerView 和 ListView</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android%E5%B1%8F%E5%B9%95%E7%BB%98%E5%88%B6%E6%9C%BA%E5%88%B6"><span class="toc-number">4.</span> <span class="toc-text">Android屏幕绘制机制</span></a></li></ol>
   </div>
 </section>
 
