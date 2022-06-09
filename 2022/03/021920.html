@@ -155,6 +155,18 @@
 <p>一个<code>View</code>的<code>MeasureSpec</code>由父布局<code>MeasureSpec</code>和自身的<code>LayoutParams</code>共同产生。父布局的<code>MeasureSpec</code>从何而来？从父布局的父布局而来。最顶层的布局是<code>DecorView</code>，常用的<code>setContent(view)</code>便是设置<code>DecorView</code>。<code>DecorView</code>的<code>MeasureSpec</code>是通过<code>ViewRootImpl</code>中的<code>getRootMeasureSpec</code>方法得到的。</p>
 <h2 id="Measure"><a href="#Measure" class="headerlink" title="Measure"></a>Measure</h2><p><code>onMeasure</code>方法最终是调用<code>getDefaultSize</code>方法得到实际的测量值。当子<code>View</code>的<code>LayoutParams</code>为<code>wrap_content</code>时，最终的SpecMode都是<code>AT_MOST</code>，SpecSize为父容器剩余空间大小。在<code>getDefaultSize</code>方法中，对于<code>AT_MOST</code>和<code>EXACTLY</code>均是直接使用父容器传进来的值，这可能不是我们想要的值，所以自定义<code>View</code>时要重写<code>onMeasure</code>方法处理<code>AT_MOST</code>，否则使用<code>wrap_content</code>相当于使用<code>match_parent</code>。</p>
 <p>对于<code>ViewGroup</code>，测量完自己还要调用子<code>View</code>的<code>measure</code>方法，各个子元素再递归去执行这个过程。</p>
+<ol>
+<li><p>mesure() ：测量方法的入口，在此开始各种测量。 </p>
+</li>
+<li><p> onMeasure() ：开始测量的真正流程，主要是通过getDea***tSize（）以及传入的宽、高MesaureSpec来确定相关大小。确定大小够会调用set方法把大小进行保存。 </p>
+</li>
+<li><p> mesaureChildren（）：测量字View的入口，会遍历所有子View进行测量。若有子View才会调用，否则不会调用。 </p>
+</li>
+<li><p> measureChild（）：测量子View的开始逻辑，这里会执行自此新的measure逻辑。 </p>
+</li>
+<li><p>进行相关的set方法进行保存。</p>
+</li>
+</ol>
 <h2 id="Layout"><a href="#Layout" class="headerlink" title="Layout"></a>Layout</h2><p>Layout的作用是<code>ViewGroup</code>用来确定子元素的位置，当<code>ViewGroup</code>的位置被确定以后，它在<code>onLayout</code>中会遍历所有的子元素并调用其<code>layout</code>方法，在<code>layout</code>方法中<code>onLayout</code>方法又会被调用。<code>onlayout</code>方法是抽象方法，所以自定义<code>ViewGroup</code>时需要实现这个方法确定子元素的布局。常用的<code>LinearLayout</code>以及<code>RelativeLayout</code>方法均重写了这个方法。</p>
 <h2 id="Draw"><a href="#Draw" class="headerlink" title="Draw"></a>Draw</h2><p>draw 过程中一共分成7步，其中两步我们直接直接跳过不分析了。</p>
 <p>第一步：<code>drawBackground(canvas)</code>： 作用就是绘制 View 的背景。</p>
@@ -232,7 +244,7 @@
         <svg class="icon icon-article" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <path d="M240.51564747 647.74217627h196.07203239c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806V165.10332731c0-33.18142087-30.16492806-60.32985613-60.32985612-60.32985611H245.04038668C225.43318342 104.7734712 210.35071939 119.85593522 210.35071939 139.46313845V617.57724821c0 16.59071043 13.57421762 30.16492806 30.16492808 30.16492806z m663.62841731-452.47392089v482.63884894c0 33.18142087-27.14843525 60.32985613-60.32985612 60.32985613H180.18579134c-33.18142087 0-60.32985613-27.14843525-60.32985612-60.32985613V195.26825538c-49.77213131 0-90.49478418 40.72265287-90.49478417 90.49478417v452.4739209c0 49.77213131 40.72265287 90.49478418 90.49478417 90.49478417h286.56681657c16.59071043 0 30.16492806 13.57421762 30.16492807 30.16492807s13.57421762 30.16492806 30.16492805 30.16492806h90.49478418c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806s13.57421762-30.16492806 30.16492807-30.16492807h286.56681657c49.77213131 0 90.49478418-40.72265287 90.49478417-90.49478417V285.76303955c0-49.77213131-40.72265287-90.49478418-90.49478417-90.49478417zM587.41232014 647.74217627h191.54729318c19.60720323 0 34.68966726-15.08246403 34.68966729-34.68966727V134.93839925c0-16.59071043-13.57421762-30.16492806-30.16492808-30.16492805H617.57724821c-30.16492806 0-60.32985613 27.14843525-60.32985612 60.32985611v452.4739209c0 16.59071043 13.57421762 30.16492806 30.16492805 30.16492806z" fill="currentColor"></path>
 </svg>
-        <span>69</span>
+        <span>70</span>
       </div>
       <div class="count-box--item">
         <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -338,7 +350,7 @@
       
         <li class="categorys-list-item">
           <a href="/categories/Android%E5%9F%BA%E7%A1%80/">
-            Android基础 (28)
+            Android基础 (29)
           </a>
         </li>
       
