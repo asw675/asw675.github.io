@@ -168,8 +168,16 @@
 <p><a target="_blank" rel="noopener" href="https://imgtu.com/i/La01De"><img src="https://s1.ax1x.com/2022/04/18/La01De.png" alt="La01De.png"></a></p>
 <ul>
 <li><h4 id="RetryAndFollowUpInterceptor-（和重定向有关）"><a href="#RetryAndFollowUpInterceptor-（和重定向有关）" class="headerlink" title="RetryAndFollowUpInterceptor （和重定向有关）"></a>RetryAndFollowUpInterceptor （和重定向有关）</h4></li>
-<li><h4 id="BridgeInterceptor（起到桥接作用，对请求头做了一些处理）"><a href="#BridgeInterceptor（起到桥接作用，对请求头做了一些处理）" class="headerlink" title="BridgeInterceptor（起到桥接作用，对请求头做了一些处理）"></a>BridgeInterceptor（起到桥接作用，对请求头做了一些处理）</h4></li>
-<li><h4 id="CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）"><a href="#CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）" class="headerlink" title="CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）"></a>CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）</h4></li>
+<li><h4 id="BridgeInterceptor（起到桥接作用，对请求头做了一些处理，例如编码、压缩处理、设置cookie、内容长度设置。）"><a href="#BridgeInterceptor（起到桥接作用，对请求头做了一些处理，例如编码、压缩处理、设置cookie、内容长度设置。）" class="headerlink" title="BridgeInterceptor（起到桥接作用，对请求头做了一些处理，例如编码、压缩处理、设置cookie、内容长度设置。）"></a>BridgeInterceptor（起到桥接作用，对请求头做了一些处理，例如编码、压缩处理、设置cookie、内容长度设置。）</h4></li>
+<li><h4 id="CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）"><a href="#CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）" class="headerlink" title="CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）"></a>CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）</h4><ul>
+<li><p>判断是否有可用缓存，有的话若无网络则使用。</p>
+</li>
+<li><p>网络请求回来之后判断是否需要更新缓存，若是更新。若不是则更新命中率。</p>
+</li>
+<li><p>如果判断当前缓存失效，删除</p>
+</li>
+</ul>
+</li>
 <li><h4 id="ConnectInterceptor"><a href="#ConnectInterceptor" class="headerlink" title="ConnectInterceptor"></a>ConnectInterceptor</h4><ul>
 <li>如果call中的连接不为空，直接用旧的连接。</li>
 <li>如果<strong>连接池</strong>可以获取到，从连接池获取。</li>
