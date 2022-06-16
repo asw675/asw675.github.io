@@ -160,18 +160,27 @@
 
 <h4 id="原理概述"><a href="#原理概述" class="headerlink" title="原理概述"></a>原理概述</h4><p>通过监听Activity的onDestory，手动调用GC，然后通过ReferenceQueue+WeakReference，来判断Activity对象是否被回收，然后结合dump Heap的hpof文件，通过Haha开源库分析泄露的位置</p>
 <ul>
-<li><strong>注册Activity的生命周期的监听器</strong><pre><code>通过Application.registerActivityLifecycleCallbacks()方法注册Activity的生命周期的监听器，每一个Actvity的生命周期都会回调到这个ActivityLifecycleCallbacks上，如果一个Activity走到了onDestory，那么就意味着他就不再存在，然后检测这个Activity是否是真的被销毁
-</code></pre>
+<li><p><strong>注册Activity的生命周期的监听器</strong></p>
+<ul>
+<li>通过Application.registerActivityLifecycleCallbacks()方法注册Activity的生命周期的监听器，每一个Actvity的生命周期都会回调到这ActivityLifecycleCallbacks上，如果一个Activity走到了onDestory，那么就意味着他就不再存在，然后检测这个Activity是否是真的被销毁</li>
+</ul>
 </li>
-<li><strong>通过ReferenceQueue+WeakReference，来判断对象是否被回收</strong><pre><code>  WeakReference创建时，可以传入一个ReferenceQueue对象，假如WeakReference中引用对象被回收，那么就会把WeakReference对象添加到ReferenceQueue中，可以通过ReferenceQueue中是否为空来判断，被引用对象是否被回收
-</code></pre>
-详细介绍推荐博客：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/964fbc30151a">https://www.jianshu.com/p/964fbc30151a</a></li>
-<li><strong>MessageQueue中加入一个IdleHandler来得到主线程空闲回调</strong></li>
-<li><strong>手动调用GC后还调用了System.runFinalization();，这个是强制调用已失去引用对象的finalize方法</strong><pre><code>  在可达性算法中，不可达对象，也不是非死不可，这时他们处于“缓刑”阶段，要宣告一个对象真正死亡需要至少俩个标记阶段， 如果发现对象没有引用链，则会进行第一次标记，并进行一次筛选，筛选的条件是此对象是否有必要进行finalize（）方法，当对象没有覆盖finalize(),或者finalize（）已经调用过，这俩种都视为“没有必要执行”
-</code></pre>
+<li><p><strong>通过ReferenceQueue+WeakReference，来判断对象是否被回收</strong></p>
+<ul>
+<li>WeakReference创建时，可以传入一个ReferenceQueue对象，假如WeakReference中引用对象被回收，那么就会把WeakReference对象添加到ReferenceQueue中，可以通过ReferenceQueue中是否为空来判断，被引用对象是否被回收<br>详细介绍推荐博客：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/964fbc30151a">https://www.jianshu.com/p/964fbc30151a</a></li>
+</ul>
 </li>
-<li><strong>Apolication中可通过processName判断是否是任务执行进程</strong><pre><code>  通过processName，来判断进程
-</code></pre>
+<li><p><strong>MessageQueue中加入一个IdleHandler来得到主线程空闲回调</strong></p>
+</li>
+<li><p><strong>手动调用GC后还调用了System.runFinalization();，这个是强制调用已失去引用对象的finalize方法</strong></p>
+<ul>
+<li> 在可达性算法中，不可达对象，也不是非死不可，这时他们处于“缓刑”阶段，要宣告一个对象真正死亡需要至少俩个标记阶段， 如果发现对象没有引用链，则会进行第一次标记，并进行一次筛选，筛选的条件是此对象是否有必要进行finalize（）方法，当对象没有覆盖finalize(),或者finalize（）已经调用过，这俩种都视为“没有必要执行”</li>
+</ul>
+</li>
+<li><p><strong>Apolication中可通过processName判断是否是任务执行进程</strong></p>
+<ul>
+<li>通过processName，来判断进程</li>
+</ul>
 </li>
 </ul>
 <h3 id="如何判断内存泄漏："><a href="#如何判断内存泄漏：" class="headerlink" title="如何判断内存泄漏："></a>如何判断内存泄漏：</h3><ul>
