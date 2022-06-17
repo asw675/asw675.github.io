@@ -24,7 +24,7 @@
 
   
 
-  <title>Android：OKHttp | ReasonLee</title>
+  <title>Flutter 一些使用上的问题记录 | ReasonLee</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Android：OKHttp</h1>
+          <h1 class="title-wrap">Flutter 一些使用上的问题记录</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-04-18T11:20:12.000Z" itemprop="datePublished">2022-04-18</time>
+            <time  class="article-date" datetime="2022-05-23T10:20:12.000Z" itemprop="datePublished">2022-05-23</time>
           </h2>
           <ul class="wrap-list dark">
   
@@ -117,7 +117,7 @@
   
     <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
   
-    <li><a href="/tags/Activity/">🏷️ Activity</a></li>
+    <li><a href="/tags/%E2%80%98Flutter%E2%80%99/">🏷️ ‘Flutter’</a></li>
   
 </ul>
         </div>
@@ -141,80 +141,26 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="OKHTTP-设计思想"><a href="#OKHTTP-设计思想" class="headerlink" title="OKHTTP 设计思想"></a>OKHTTP 设计思想</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">OkHttpClient client = <span class="hljs-keyword">new</span> OkHttpClient();<br><br>mOkHttpClient = <span class="hljs-keyword">new</span> OkHttpClient.Builder() <span class="hljs-comment">// 添加一些拦截器</span><br>                            .addInterceptor(loggingInterceptor)<br>    						.build()<br>  <br></code></pre></td></tr></table></figure>
+        <h2 id="Flutter-更新ModalBottomSheet中的状态（state）"><a href="#Flutter-更新ModalBottomSheet中的状态（state）" class="headerlink" title="Flutter 更新ModalBottomSheet中的状态（state）"></a>Flutter 更新ModalBottomSheet中的状态（state）</h2><p>Flutter中的ModalBottomSheet是一个底部弹窗，使用showModalBottomSheet可以调用它。</p>
+<p>  <strong>大致使用方法为</strong></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs dart">  showModalBottomSheet(context:context, builder:(BuildContext context)&#123;<br>          <span class="hljs-keyword">return</span> Container(<br>              child:OutlineButton(<br>                          child:Text(<span class="hljs-string">&quot;aa&quot;</span>)<br>            ),<br>        ),<br>&#125;<br></code></pre></td></tr></table></figure>
 
+<p>但是如果我们要更改他的状态时。假设我点击这个button，aa就变为bb。</p>
+<p><strong>一般的做法为：</strong></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-built_in">bool</span> btnState=<span class="hljs-keyword">false</span>;<br> showModalBottomSheet(context:context, builder:(BuildContext context)&#123;<br>          <span class="hljs-keyword">return</span> Container(<br>                  child:OutlineButton(<br>                      onPressed: ()&#123;<br>                                setState(() &#123;<br>                                  btnState=!btnState;<br>                                &#125;);<br>                              &#125;,<br>                      child:Stack(<br>                                children: &lt;Widget&gt;[<br>                                  Opacity(<br>                                    opacity: btnState ? <span class="hljs-number">0.0</span> : <span class="hljs-number">1.0</span>,<br>                                    child: Text(<span class="hljs-string">&quot;aa&quot;</span>),<br>                                  ),<br>                                  Opacity(<br>                                      opacity: btnState ? <span class="hljs-number">1.0</span> : <span class="hljs-number">0.0</span>,<br>                                      child: Text(<span class="hljs-string">&quot;bb&quot;</span>),<br>                                  ),<br>                                ],<br>                              ),<br> ),<br>        ),<br>&#125;<br></code></pre></td></tr></table></figure>
 
+<p>这在一般的statefulwidget里是可行的，但是在modalbottomsheet中却是不可行的。（不信你可以试一下）</p>
+<p>具体原因是这里调用setState的话，是更新showModalBottomSheet所在的class的状态，可以理解为showModalBottomSheet打开了一个新的页面，而这个setState更新的是老页面。那更新老页面的方法更新新页面当然不能成功啦。（前朝的剑斩今朝的官？）</p>
+<p><strong>Q：那我要在这里面修改布局状态要怎么做呢？</strong></p>
+<p>问得好，这里就要引入一个工具<strong>StatefulBuilder</strong>了</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-built_in">bool</span> btnState=<span class="hljs-keyword">false</span>;<br> showModalBottomSheet(context:context, builder:(BuildContext context)&#123;<br>          <span class="hljs-keyword">return</span> StatefulBuilder(<br>          builder:(context1, state) &#123;<span class="hljs-comment">///<span class="markdown">这里的state就是setState</span></span><br>            <span class="hljs-keyword">return</span> Container(<br>                  child:OutlineButton(<br>                      onPressed: ()&#123;<br>                               state(() &#123;<span class="hljs-comment">///<span class="markdown">为了区分把setState改个名字</span></span><br>                                  btnState=!btnState;<br>                                &#125;);<br>                              &#125;,<br>                      child:Stack(<br>                                children: &lt;Widget&gt;[<br>                                  Opacity(<br>                                    opacity: btnState ? <span class="hljs-number">0.0</span> : <span class="hljs-number">1.0</span>,<br>                                    child: Text(<span class="hljs-string">&quot;aa&quot;</span>),<br>                                  ),<br>                                  Opacity(<br>                                      opacity: btnState ? <span class="hljs-number">1.0</span> : <span class="hljs-number">0.0</span>,<br>                                      child: Text(<span class="hljs-string">&quot;bb&quot;</span>),<br>                                  ),<br>                                ],<br>                              ),<br> ),<br>        ),<br>&#125;<br>）<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h3 id="构造器模式"><a href="#构造器模式" class="headerlink" title="构造器模式"></a>构造器模式</h3><p> <strong>先来看看build</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Builder</span><span class="hljs-params">()</span> </span>&#123; <br>            dispatcher = <span class="hljs-keyword">new</span> Dispatcher();<br>            protocols = DEFAULT_PROTOCOLS;<br>            connectionSpecs = DEFAULT_CONNECTION_SPECS;<br>            eventListenerFactory = EventListener.factory(EventListener.NONE);<br>            proxySelector = ProxySelector.getDefault();<br>            cookieJar = CookieJar.NO_COOKIES;<br>            socketFactory = SocketFactory.getDefault();<br>            hostnameVerifier = OkHostnameVerifier.INSTANCE;<br>            certificatePinner = CertificatePinner.DEFAULT;<br>            proxyAuthenticator = Authenticator.NONE;<br>            authenticator = Authenticator.NONE;<br>            connectionPool = <span class="hljs-keyword">new</span> ConnectionPool();<br>            dns = Dns.SYSTEM;<br>            followSslRedirects = <span class="hljs-keyword">true</span>;<br>            followRedirects = <span class="hljs-keyword">true</span>;<br>            retryOnConnectionFailure = <span class="hljs-keyword">true</span>;<br>            connectTimeout = <span class="hljs-number">10_000</span>;<br>            readTimeout = <span class="hljs-number">10_000</span>;<br>            writeTimeout = <span class="hljs-number">10_000</span>;<br>            pingInterval = <span class="hljs-number">0</span>;<br>        &#125;<br></code></pre></td></tr></table></figure>
+<p>为当前页面构建一个builder，这样才能使用setState更新当前页面的状态</p>
+<h2 id="Flutter-解决ListView多层嵌套的各种问题"><a href="#Flutter-解决ListView多层嵌套的各种问题" class="headerlink" title="Flutter 解决ListView多层嵌套的各种问题"></a>Flutter 解决ListView多层嵌套的各种问题</h2><p>关键代码</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs dart">ListView(<br>      children: &lt;Widget&gt;[<br>          ListView(<br>                shrinkWrap: <span class="hljs-keyword">true</span>, <span class="hljs-comment">//为true可以解决子控件必须设置高度的问题</span><br>                physics:NeverScrollableScrollPhysics(),<span class="hljs-comment">//禁用滑动事件</span><br>          ),<br>    ],<br>    )<br></code></pre></td></tr></table></figure>
 
-<p>这里用到了构造器设计模式，用于在初始化的时候，给okClient添加或者自定义一些参数，变量。</p>
-<p>并且使得代码可读性变强。</p>
-<h3 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h3><p>OKhttp的 newCall 方法使用了工厂方法模式</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Factory</span> </span>&#123;<br>    <span class="hljs-function">Call <span class="hljs-title">newCall</span><span class="hljs-params">(Request request)</span></span>;<br>  &#125;<br><br><span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> Call <span class="hljs-title">newCall</span><span class="hljs-params">(Request request)</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> RealCall.newRealCall(<span class="hljs-keyword">this</span>, request, <span class="hljs-keyword">false</span> <span class="hljs-comment">/* for web socket */</span>);<br>    &#125;<br></code></pre></td></tr></table></figure>
-
-
-
-<p>并且enqueue异步请求里，Dispatcher讲call 加入到队列里，然后通过线程池来执行call</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> ExecutorService <span class="hljs-title">executorService</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (executorService == <span class="hljs-keyword">null</span>) &#123;<br>            <span class="hljs-comment">//TODO 线程池的相关概念 需要理解</span><br>            <span class="hljs-comment">//TODO 核心线程 最大线程 非核心线程闲置60秒回收 任务队列</span><br>            executorService = <span class="hljs-keyword">new</span> ThreadPoolExecutor(<span class="hljs-number">0</span>, Integer.MAX_VALUE, <span class="hljs-number">60</span>, TimeUnit.SECONDS,<br>                    <span class="hljs-keyword">new</span> SynchronousQueue&lt;Runnable&gt;(), Util.threadFactory(<span class="hljs-string">&quot;OkHttp Dispatcher&quot;</span>,<br>                    <span class="hljs-keyword">false</span>));<br>        &#125;<br>        <span class="hljs-keyword">return</span> executorService;<br>    &#125;<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li>该线程池与Android下的 Executors.newCachedThreadPool() 比较类似；</li>
-<li>无任务上限，自动回收闲置60s的线程，适用于大量耗时较短的任务；</li>
-<li>虽然线程池无任务上限，但是Dispatcher对入口enqueue()进行了把关，最大的异步任务数默认是64，同一个主机默认是5，当然这两个默认值是可以修改的，Dispatcher提供的修改接口；</li>
-</ul>
-<p>然后execute()的时候就进到拦截器链里，通过各个拦截器来构建请求。</p>
-<h3 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h3><p>OKHttp的连接简历是通过五个拦截器来实现的</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/La01De"><img src="https://s1.ax1x.com/2022/04/18/La01De.png" alt="La01De.png"></a></p>
-<ul>
-<li><h4 id="RetryAndFollowUpInterceptor-（和重定向有关）"><a href="#RetryAndFollowUpInterceptor-（和重定向有关）" class="headerlink" title="RetryAndFollowUpInterceptor （和重定向有关）"></a>RetryAndFollowUpInterceptor （和重定向有关）</h4></li>
-<li><h4 id="BridgeInterceptor（起到桥接作用，对请求头做了一些处理，例如编码、压缩处理、设置cookie、内容长度设置。）"><a href="#BridgeInterceptor（起到桥接作用，对请求头做了一些处理，例如编码、压缩处理、设置cookie、内容长度设置。）" class="headerlink" title="BridgeInterceptor（起到桥接作用，对请求头做了一些处理，例如编码、压缩处理、设置cookie、内容长度设置。）"></a>BridgeInterceptor（起到桥接作用，对请求头做了一些处理，例如编码、压缩处理、设置cookie、内容长度设置。）</h4></li>
-<li><h4 id="CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）"><a href="#CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）" class="headerlink" title="CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）"></a>CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）</h4><ul>
-<li><p>判断是否有可用缓存，有的话若无网络则使用。</p>
-</li>
-<li><p>网络请求回来之后判断是否需要更新缓存，若是更新。若不是则更新命中率。</p>
-</li>
-<li><p>如果判断当前缓存失效，删除</p>
-</li>
-</ul>
-</li>
-<li><h4 id="ConnectInterceptor"><a href="#ConnectInterceptor" class="headerlink" title="ConnectInterceptor"></a>ConnectInterceptor</h4><ul>
-<li>如果call中的连接不为空，直接用旧的连接。</li>
-<li>如果<strong>连接池</strong>可以获取到，从连接池获取。</li>
-<li>如果没有连接则新建一个连接。</li>
-<li>放入连接池。</li>
-</ul>
-</li>
-<li><h4 id="CallServerInterceptor（对请求和返回进行处理）"><a href="#CallServerInterceptor（对请求和返回进行处理）" class="headerlink" title="CallServerInterceptor（对请求和返回进行处理）"></a>CallServerInterceptor（对请求和返回进行处理）</h4></li>
-</ul>
-<h3 id="观察者模式（Observer）"><a href="#观察者模式（Observer）" class="headerlink" title="观察者模式（Observer）"></a>观察者模式（Observer）</h3><p>一个是EventListener，另一个是WebSocketListener。两者都可以看作是生命周期监听器，前者监听请求/响应，后者监听websocket。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>OkhttpClient 实现了Call.Factory,负责为Request 创建 Call；</li>
-<li>RealCall 为Call的具体实现，其enqueue() 异步请求接口通过Dispatcher()调度器利用ExcutorService实现，而最终进行网络请求时和同步的execute()接口一致，都是通过</li>
-<li>getResponseWithInterceptorChain() 中利用 Interceptor 链条，责任链模式 分层实现缓存、透明压缩、网络 IO 等功能；最终将响应数据返回给用户。</li>
-</ul>
-<h2 id="OKHttp连接池"><a href="#OKHttp连接池" class="headerlink" title="OKHttp连接池"></a>OKHttp连接池</h2><h4 id="连接池的意义"><a href="#连接池的意义" class="headerlink" title="连接池的意义"></a>连接池的意义</h4><ul>
-<li>频繁的进行建立Sokcet连接（TCP三次握手）和断开Socket（TCP四次分手）是非常消耗网络资源和浪费时间的，HTTP中的keepalive连接对于 降低延迟和提升速度有非常重要的作用。</li>
-<li>复用连接就需要对连接进行管理，这里就引入了连接池的概念。</li>
-<li>Okhttp支持5个并发KeepAlive，默认链路生命为5分钟(链路空闲后，保持存活的时间)，连接池有ConectionPool实现，对连接进行回收和管理。</li>
-</ul>
-<blockquote>
-<p>okhttp中连接池存储空间是一个队列，并且该队列是一个ArrayDeque，它是一个双端队列</p>
-</blockquote>
-<p>连接池部分主要是在<code>RealConnectionPool</code>类中，该类用<code>connections(双端队列)</code>存储所有的连接，<code>cleanupRunnable</code>是专门用来清除超时的<code>RealConnection</code>，既然有清除的任务，那肯定有清除的线程池，没错，该线程池<code>(executor)</code>跟okhttp处理异步时候的线程池是一样的，<code>keepAliveDurationNs</code>表示每一个连接keep-alive的时间，默认是5分钟，<code>maxIdleConnections</code>连接池的最大容量，默认是5个。<code>RealConnection</code>中有<code>transmitters</code>字段，用来保存该连接的transmitter个数，通过里面的transmitter个数来标记该<code>RealConnection</code>有没有在使用中。</p>
-<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><ul>
-<li>连接池是为了解决频繁的进行建立Sokcet连接（TCP三次握手）和断开Socket（TCP四次分手）。</li>
-<li>Okhttp的连接池支持最大5个链路的keep-alive连接，并且默认keep-alive的时间是5分钟。</li>
-<li>连接池实现的类是RealConnectionPool，它负责存储与清除的工作，存储是通过ArrayDeque的双端队列存储，删除交给了线程池处理cleanupRunnable的任务。</li>
-<li>在每次创建RealConnection或从连接池中拿一次RealConnection会给RealConnection的</li>
-</ul>
-<p>transmitters集合添加一个若引用的transmitter对象，添加它主要是为了后面判断该连接是否在使用中</p>
-<ul>
-<li>在连接池中找连接的时候会对比连接池中相同host的连接。</li>
-<li>如果在连接池中找不到连接的话，会创建连接，创建完后会存储到连接池中。</li>
-<li>在把连接放入连接池中时，会把清除操作的任务放入到线程池中执行，删除任务中会判断当前连接有没有在使用中，有没有正在使用通过RealConnection的transmitters集合的size是否为0来判断 （如果Transmitter对象不为空，说明该连接在被使用着），如果不在使用中，找出空闲时间最长的连接，如果空闲时间最长的连接超过了keep-alive默认的5分钟或者空闲的连接数超过了最大的keep-alive连接数5个的话，会把存活时间最长的连接从连接池中删除。保证keep-alive的最大空闲时间和最大的连接数。</li>
-</ul>
-
+<p>如果需要两个listview同时滑动，则需要向他们传同一个scrollcontroller</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dart">ScrollController _scrollController;<br>ListView(<br>  controller:_scrollController,<br>    children: &lt;Widget&gt;[<br>        ListView(<br>              controller:_scrollController,<br>        ),<br>  ],<br>  )<br><br></code></pre></td></tr></table></figure>
       </section>
 
       
@@ -226,8 +172,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/04/210920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">kotlin 相关问题</h2>
+        <a href="/2022/05/232320.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Flutter 详解</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -241,8 +187,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/03/231920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：View滑动冲突</h2>
+        <a href="/2022/05/231321.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：Jetpack 使用</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -311,7 +257,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#OKHTTP-%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3"><span class="toc-number">1.</span> <span class="toc-text">OKHTTP 设计思想</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">构造器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">工厂模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.3.</span> <span class="toc-text">责任链模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%EF%BC%88Observer%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">观察者模式（Observer）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">2.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OKHttp%E8%BF%9E%E6%8E%A5%E6%B1%A0"><span class="toc-number">3.</span> <span class="toc-text">OKHttp连接池</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Flutter-%E6%9B%B4%E6%96%B0ModalBottomSheet%E4%B8%AD%E7%9A%84%E7%8A%B6%E6%80%81%EF%BC%88state%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">Flutter 更新ModalBottomSheet中的状态（state）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flutter-%E8%A7%A3%E5%86%B3ListView%E5%A4%9A%E5%B1%82%E5%B5%8C%E5%A5%97%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">Flutter 解决ListView多层嵌套的各种问题</span></a></li></ol>
   </div>
 </section>
 

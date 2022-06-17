@@ -24,7 +24,7 @@
 
   
 
-  <title>Android：OKHttp | ReasonLee</title>
+  <title>Android：Jetpack 使用 | ReasonLee</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Android：OKHttp</h1>
+          <h1 class="title-wrap">Android：Jetpack 使用</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-04-18T11:20:12.000Z" itemprop="datePublished">2022-04-18</time>
+            <time  class="article-date" datetime="2022-05-23T05:21:12.000Z" itemprop="datePublished">2022-05-23</time>
           </h2>
           <ul class="wrap-list dark">
   
@@ -116,8 +116,6 @@
           <ul class="wrap-list dark">
   
     <li><a href="/tags/Android%E5%9F%BA%E7%A1%80/">🏷️ Android基础</a></li>
-  
-    <li><a href="/tags/Activity/">🏷️ Activity</a></li>
   
 </ul>
         </div>
@@ -141,79 +139,38 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="OKHTTP-设计思想"><a href="#OKHTTP-设计思想" class="headerlink" title="OKHTTP 设计思想"></a>OKHTTP 设计思想</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">OkHttpClient client = <span class="hljs-keyword">new</span> OkHttpClient();<br><br>mOkHttpClient = <span class="hljs-keyword">new</span> OkHttpClient.Builder() <span class="hljs-comment">// 添加一些拦截器</span><br>                            .addInterceptor(loggingInterceptor)<br>    						.build()<br>  <br></code></pre></td></tr></table></figure>
+        <p>LiveData和viewModel是Google大佬新推出的开发框架jetpack中的两个组件，对应的是MVVM开发模式。本身来说LiveData和viewModel这两个东西之前也有个人的实现，只不过现在谷歌把这俩组件官方化了，消除差异。（Google教我写代码）</p>
+<p>概念这些网上一搜一大把的，这里只是入门一下这两个东西，把最基本的使用说一说，毕竟东西要会用了才能去理解原理。（车都不会开，研究车的发动机有啥用呢）</p>
+<p>首先，我们定义MVVM模型中的View层，定义两个Fragment</p>
+<p><strong>View层</strong></p>
+<p>第一个Fragment</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs plain"><br>&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt;<br><br>&lt;LinearLayout xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;<br><br>android:orientation&#x3D;&quot;vertical&quot; android:layout_width&#x3D;&quot;match_parent&quot;<br><br>android:layout_height&#x3D;&quot;match_parent&quot;&gt;<br><br>&lt;TextView<br><br>android:layout_marginTop&#x3D;&quot;100dp&quot;<br><br>android:id&#x3D;&quot;@+id&#x2F;text&quot;<br><br>android:layout_gravity&#x3D;&quot;center&quot;<br><br>android:layout_width&#x3D;&quot;wrap_content&quot;<br><br>android:layout_height&#x3D;&quot;wrap_content&quot; &#x2F;&gt;<br><br>&lt;&#x2F;LinearLayout&gt;<br><br></code></pre></td></tr></table></figure>
 
+<p>第二个Fragment</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs plain"><br>&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt;<br><br>&lt;LinearLayout xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;<br><br>android:orientation&#x3D;&quot;vertical&quot; android:layout_width&#x3D;&quot;match_parent&quot;<br><br>android:layout_height&#x3D;&quot;match_parent&quot;&gt;<br><br>&lt;Button<br><br>android:layout_gravity&#x3D;&quot;center&quot;<br><br>android:id&#x3D;&quot;@+id&#x2F;btn_change&quot;<br><br>android:layout_width&#x3D;&quot;wrap_content&quot;<br><br>android:layout_height&#x3D;&quot;wrap_content&quot; &#x2F;&gt;<br><br>&lt;&#x2F;LinearLayout&gt;<br><br></code></pre></td></tr></table></figure>
 
+<p><strong>Model层</strong></p>
+<p>然后定义MVVM模型中的Model层，一个LiveData，这个data与第一个fragment的Text有关，我们可以这样定义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs plain"><br>public class MyLiveData extends MutableLiveData&lt;String&gt; &#123;<br><br>@Override<br><br>protected void onActive() &#123;<br><br>&#x2F;&#x2F;当 LiveData 具有活动状态的 Observer 的时候会调用这个函数。在这个函数中，我们开始监听数据变化。<br><br>Log.e(&quot;MyLiveData:&quot;,&quot;call the onActive()&quot;);<br><br>super.onActive();<br><br>&#125;<br><br>@Override<br><br>protected void onInactive() &#123;<br><br>&#x2F;&#x2F;当 LiveData 没有活动状态的 Observer 的时候会调用这个函数。所以在这个函数中取消更新数据来避免无所谓的耗电。<br><br>Log.e(&quot;MyLiveData:&quot;,&quot;call the onInactive()&quot;);<br><br>super.onInactive();<br><br>&#125;<br><br>&#125;<br><br></code></pre></td></tr></table></figure>
 
-<h3 id="构造器模式"><a href="#构造器模式" class="headerlink" title="构造器模式"></a>构造器模式</h3><p> <strong>先来看看build</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Builder</span><span class="hljs-params">()</span> </span>&#123; <br>            dispatcher = <span class="hljs-keyword">new</span> Dispatcher();<br>            protocols = DEFAULT_PROTOCOLS;<br>            connectionSpecs = DEFAULT_CONNECTION_SPECS;<br>            eventListenerFactory = EventListener.factory(EventListener.NONE);<br>            proxySelector = ProxySelector.getDefault();<br>            cookieJar = CookieJar.NO_COOKIES;<br>            socketFactory = SocketFactory.getDefault();<br>            hostnameVerifier = OkHostnameVerifier.INSTANCE;<br>            certificatePinner = CertificatePinner.DEFAULT;<br>            proxyAuthenticator = Authenticator.NONE;<br>            authenticator = Authenticator.NONE;<br>            connectionPool = <span class="hljs-keyword">new</span> ConnectionPool();<br>            dns = Dns.SYSTEM;<br>            followSslRedirects = <span class="hljs-keyword">true</span>;<br>            followRedirects = <span class="hljs-keyword">true</span>;<br>            retryOnConnectionFailure = <span class="hljs-keyword">true</span>;<br>            connectTimeout = <span class="hljs-number">10_000</span>;<br>            readTimeout = <span class="hljs-number">10_000</span>;<br>            writeTimeout = <span class="hljs-number">10_000</span>;<br>            pingInterval = <span class="hljs-number">0</span>;<br>        &#125;<br></code></pre></td></tr></table></figure>
+<p>这里之所以不继承LiveData&lt;&gt;的原因是，LiveData的setValue方法是protected的，我们无法直接调用它，所以谷歌给我们提供了一个MutableLiveData方法给我们继承。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/17393403-900b5fcc18a63be6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="clipboard.png"></p>
+<p><strong>ViewModel层</strong></p>
+<p>最后定义MVVM模型中的ViewModel层，像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs plain"><br>public class MyViewModel extends ViewModel &#123;<br><br>MutableLiveData&lt;String&gt; liveData &#x3D; new MyLiveData();<br><br>public MutableLiveData&lt;String&gt; getLiveData()&#123;<br><br>return liveData;<br><br>&#125;<br><br>public void change(String s)&#123;<br><br>getLiveData().setValue(s);<br><br>&#125;<br><br>@Override<br><br>protected void onCleared() &#123;<br><br>Log.e(&quot;MyViewModel&quot;,&quot;call the onCleared&quot;);<br><br>super.onCleared();<br><br>&#125;<br><br>&#125;<br><br></code></pre></td></tr></table></figure>
 
-<p>这里用到了构造器设计模式，用于在初始化的时候，给okClient添加或者自定义一些参数，变量。</p>
-<p>并且使得代码可读性变强。</p>
-<h3 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h3><p>OKhttp的 newCall 方法使用了工厂方法模式</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Factory</span> </span>&#123;<br>    <span class="hljs-function">Call <span class="hljs-title">newCall</span><span class="hljs-params">(Request request)</span></span>;<br>  &#125;<br><br><span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> Call <span class="hljs-title">newCall</span><span class="hljs-params">(Request request)</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> RealCall.newRealCall(<span class="hljs-keyword">this</span>, request, <span class="hljs-keyword">false</span> <span class="hljs-comment">/* for web socket */</span>);<br>    &#125;<br></code></pre></td></tr></table></figure>
+<p>在ViewModel中对数据进行操作，所以将livedata在这里实例化，这里定义一个change方法，表示改变这个text。</p>
+<p>最后两个fragment的实现像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs plain"><br>public class OneFragment extends Fragment &#123;<br><br>private MyViewModel viewModel;<br><br>private TextView text;<br><br>@Nullable<br><br>@Override<br><br>public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) &#123;<br><br>return inflater.inflate(R.layout.fragment_one,container,false);<br><br>&#125;<br><br>@Override<br><br>public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) &#123;<br><br>super.onViewCreated(view, savedInstanceState);<br><br>text &#x3D; (TextView) view.findViewById(R.id.text);<br><br>viewModel &#x3D; ViewModelProviders.of(getActivity()).get(MyViewModel.class);<br><br>viewModel.getLiveData().observe(this, new Observer&lt;String&gt;() &#123;<br><br>@Override<br><br>public void onChanged(@Nullable String s) &#123;<br><br>Log.e(&quot;cccccc&quot;,&quot;change&quot;);<br><br>text.setText(s);<br><br>&#125;<br><br>&#125;);<br><br>&#125;<br><br>&#125;<br><br></code></pre></td></tr></table></figure>
 
+<p>第二个Fragment</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs plain">public class TwoFragment extends Fragment &#123;<br><br>private Button btnChange;<br><br>private MyViewModel viewModel;<br><br>@Nullable<br><br>@Override<br><br>public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) &#123;<br><br>return inflater.inflate(R.layout.fragment_two,container,false);<br><br>&#125;<br><br>@Override<br><br>public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) &#123;<br><br>super.onViewCreated(view, savedInstanceState);<br><br>btnChange &#x3D; (Button) view.findViewById(R.id.btn_change);<br><br>viewModel &#x3D; ViewModelProviders.of(getActivity()).get(MyViewModel.class);<br><br>btnChange.setOnClickListener(new View.OnClickListener() &#123;<br><br>@Override<br><br>public void onClick(View v) &#123;<br><br>viewModel.change(&quot;改变&quot;);<br><br>&#125;<br><br>&#125;);<br><br>&#125;<br><br>&#125;<br><br></code></pre></td></tr></table></figure>
 
-
-<p>并且enqueue异步请求里，Dispatcher讲call 加入到队列里，然后通过线程池来执行call</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> ExecutorService <span class="hljs-title">executorService</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (executorService == <span class="hljs-keyword">null</span>) &#123;<br>            <span class="hljs-comment">//TODO 线程池的相关概念 需要理解</span><br>            <span class="hljs-comment">//TODO 核心线程 最大线程 非核心线程闲置60秒回收 任务队列</span><br>            executorService = <span class="hljs-keyword">new</span> ThreadPoolExecutor(<span class="hljs-number">0</span>, Integer.MAX_VALUE, <span class="hljs-number">60</span>, TimeUnit.SECONDS,<br>                    <span class="hljs-keyword">new</span> SynchronousQueue&lt;Runnable&gt;(), Util.threadFactory(<span class="hljs-string">&quot;OkHttp Dispatcher&quot;</span>,<br>                    <span class="hljs-keyword">false</span>));<br>        &#125;<br>        <span class="hljs-keyword">return</span> executorService;<br>    &#125;<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li>该线程池与Android下的 Executors.newCachedThreadPool() 比较类似；</li>
-<li>无任务上限，自动回收闲置60s的线程，适用于大量耗时较短的任务；</li>
-<li>虽然线程池无任务上限，但是Dispatcher对入口enqueue()进行了把关，最大的异步任务数默认是64，同一个主机默认是5，当然这两个默认值是可以修改的，Dispatcher提供的修改接口；</li>
-</ul>
-<p>然后execute()的时候就进到拦截器链里，通过各个拦截器来构建请求。</p>
-<h3 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h3><p>OKHttp的连接简历是通过五个拦截器来实现的</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/La01De"><img src="https://s1.ax1x.com/2022/04/18/La01De.png" alt="La01De.png"></a></p>
-<ul>
-<li><h4 id="RetryAndFollowUpInterceptor-（和重定向有关）"><a href="#RetryAndFollowUpInterceptor-（和重定向有关）" class="headerlink" title="RetryAndFollowUpInterceptor （和重定向有关）"></a>RetryAndFollowUpInterceptor （和重定向有关）</h4></li>
-<li><h4 id="BridgeInterceptor（起到桥接作用，对请求头做了一些处理，例如编码、压缩处理、设置cookie、内容长度设置。）"><a href="#BridgeInterceptor（起到桥接作用，对请求头做了一些处理，例如编码、压缩处理、设置cookie、内容长度设置。）" class="headerlink" title="BridgeInterceptor（起到桥接作用，对请求头做了一些处理，例如编码、压缩处理、设置cookie、内容长度设置。）"></a>BridgeInterceptor（起到桥接作用，对请求头做了一些处理，例如编码、压缩处理、设置cookie、内容长度设置。）</h4></li>
-<li><h4 id="CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）"><a href="#CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）" class="headerlink" title="CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）"></a>CacheInterceptor（OKHttp缓存实现的地方，获取缓存的策略并处理）</h4><ul>
-<li><p>判断是否有可用缓存，有的话若无网络则使用。</p>
-</li>
-<li><p>网络请求回来之后判断是否需要更新缓存，若是更新。若不是则更新命中率。</p>
-</li>
-<li><p>如果判断当前缓存失效，删除</p>
-</li>
-</ul>
-</li>
-<li><h4 id="ConnectInterceptor"><a href="#ConnectInterceptor" class="headerlink" title="ConnectInterceptor"></a>ConnectInterceptor</h4><ul>
-<li>如果call中的连接不为空，直接用旧的连接。</li>
-<li>如果<strong>连接池</strong>可以获取到，从连接池获取。</li>
-<li>如果没有连接则新建一个连接。</li>
-<li>放入连接池。</li>
-</ul>
-</li>
-<li><h4 id="CallServerInterceptor（对请求和返回进行处理）"><a href="#CallServerInterceptor（对请求和返回进行处理）" class="headerlink" title="CallServerInterceptor（对请求和返回进行处理）"></a>CallServerInterceptor（对请求和返回进行处理）</h4></li>
-</ul>
-<h3 id="观察者模式（Observer）"><a href="#观察者模式（Observer）" class="headerlink" title="观察者模式（Observer）"></a>观察者模式（Observer）</h3><p>一个是EventListener，另一个是WebSocketListener。两者都可以看作是生命周期监听器，前者监听请求/响应，后者监听websocket。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>OkhttpClient 实现了Call.Factory,负责为Request 创建 Call；</li>
-<li>RealCall 为Call的具体实现，其enqueue() 异步请求接口通过Dispatcher()调度器利用ExcutorService实现，而最终进行网络请求时和同步的execute()接口一致，都是通过</li>
-<li>getResponseWithInterceptorChain() 中利用 Interceptor 链条，责任链模式 分层实现缓存、透明压缩、网络 IO 等功能；最终将响应数据返回给用户。</li>
-</ul>
-<h2 id="OKHttp连接池"><a href="#OKHttp连接池" class="headerlink" title="OKHttp连接池"></a>OKHttp连接池</h2><h4 id="连接池的意义"><a href="#连接池的意义" class="headerlink" title="连接池的意义"></a>连接池的意义</h4><ul>
-<li>频繁的进行建立Sokcet连接（TCP三次握手）和断开Socket（TCP四次分手）是非常消耗网络资源和浪费时间的，HTTP中的keepalive连接对于 降低延迟和提升速度有非常重要的作用。</li>
-<li>复用连接就需要对连接进行管理，这里就引入了连接池的概念。</li>
-<li>Okhttp支持5个并发KeepAlive，默认链路生命为5分钟(链路空闲后，保持存活的时间)，连接池有ConectionPool实现，对连接进行回收和管理。</li>
-</ul>
-<blockquote>
-<p>okhttp中连接池存储空间是一个队列，并且该队列是一个ArrayDeque，它是一个双端队列</p>
-</blockquote>
-<p>连接池部分主要是在<code>RealConnectionPool</code>类中，该类用<code>connections(双端队列)</code>存储所有的连接，<code>cleanupRunnable</code>是专门用来清除超时的<code>RealConnection</code>，既然有清除的任务，那肯定有清除的线程池，没错，该线程池<code>(executor)</code>跟okhttp处理异步时候的线程池是一样的，<code>keepAliveDurationNs</code>表示每一个连接keep-alive的时间，默认是5分钟，<code>maxIdleConnections</code>连接池的最大容量，默认是5个。<code>RealConnection</code>中有<code>transmitters</code>字段，用来保存该连接的transmitter个数，通过里面的transmitter个数来标记该<code>RealConnection</code>有没有在使用中。</p>
-<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><ul>
-<li>连接池是为了解决频繁的进行建立Sokcet连接（TCP三次握手）和断开Socket（TCP四次分手）。</li>
-<li>Okhttp的连接池支持最大5个链路的keep-alive连接，并且默认keep-alive的时间是5分钟。</li>
-<li>连接池实现的类是RealConnectionPool，它负责存储与清除的工作，存储是通过ArrayDeque的双端队列存储，删除交给了线程池处理cleanupRunnable的任务。</li>
-<li>在每次创建RealConnection或从连接池中拿一次RealConnection会给RealConnection的</li>
-</ul>
-<p>transmitters集合添加一个若引用的transmitter对象，添加它主要是为了后面判断该连接是否在使用中</p>
-<ul>
-<li>在连接池中找连接的时候会对比连接池中相同host的连接。</li>
-<li>如果在连接池中找不到连接的话，会创建连接，创建完后会存储到连接池中。</li>
-<li>在把连接放入连接池中时，会把清除操作的任务放入到线程池中执行，删除任务中会判断当前连接有没有在使用中，有没有正在使用通过RealConnection的transmitters集合的size是否为0来判断 （如果Transmitter对象不为空，说明该连接在被使用着），如果不在使用中，找出空闲时间最长的连接，如果空闲时间最长的连接超过了keep-alive默认的5分钟或者空闲的连接数超过了最大的keep-alive连接数5个的话，会把存活时间最长的连接从连接池中删除。保证keep-alive的最大空闲时间和最大的连接数。</li>
-</ul>
+<p>类似与观察者模式，监听这个liveData的变化，并对view进行更新。可以看到这里View层（就是这两个fragment）只做展示工作，数据操作的交给viewModel去实现，将逻辑分离了出来。</p>
+<p>最后，其实还有一个组件dataBinding用起来更好用，实现了Data和view的双向绑定，大家有空也可以尝试一下。</p>
+<p>最后实现结果像这样，点击Button改变另一个fragment中的text<br><img src="https://upload-images.jianshu.io/upload_images/17393403-279f6807a910f2f6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="微信图片_20190821153945.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/17393403-bdab93c5286de70b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="微信图片_20190821153950.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/17393403-ad0c927aaa94aa1e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="微信图片_20190821153955.png"></p>
 
       </section>
 
@@ -226,8 +183,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/04/210920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">kotlin 相关问题</h2>
+        <a href="/2022/05/231820.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Flutter 一些使用上的问题记录</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -241,8 +198,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/03/231920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Android：View滑动冲突</h2>
+        <a href="/2022/05/230320.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：Jetpack 源码系列</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -311,7 +268,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#OKHTTP-%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3"><span class="toc-number">1.</span> <span class="toc-text">OKHTTP 设计思想</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">构造器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">工厂模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.3.</span> <span class="toc-text">责任链模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%EF%BC%88Observer%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">观察者模式（Observer）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">2.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OKHttp%E8%BF%9E%E6%8E%A5%E6%B1%A0"><span class="toc-number">3.</span> <span class="toc-text">OKHttp连接池</span></a></li></ol>
+    
   </div>
 </section>
 
