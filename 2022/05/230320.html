@@ -139,8 +139,7 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <p>LiveData 之 </p>
-<p><strong><code>void observe(LifecycleOwner owner,Observer observer)</code></strong></p>
+        <h2 id="LiveData"><a href="#LiveData" class="headerlink" title="LiveData"></a>LiveData</h2><p><strong><code>void observe(LifecycleOwner owner,Observer observer)</code></strong></p>
 <ul>
 <li>向LiveData注册观察者——用于消息分发</li>
 <li>向Lifycycle注册观察者——用于感知宿主生命周期</li>
@@ -168,6 +167,11 @@
 <li><strong>支持黏性事件的分发</strong><br> 即先发送一条数据，后注册一个观察者，默认是能够收到最后发送的那条数据</li>
 <li><strong>共享资源</strong><br> 可以使用单例模式拓展 <code>LiveData</code>，实现全局的消息分发总线。</li>
 </ul>
+<h2 id="ViewModel"><a href="#ViewModel" class="headerlink" title="ViewModel"></a>ViewModel</h2><p>ViewModel的源码里并没有特别需要注意的实际代码，而且它也是一个抽象类。</p>
+<p>应该是为了当做一个ViewModel的基类，具体内容由开发者实现。</p>
+<p>值得一提的是，ViewModel的创建一般是由ViewModelFactory通过class.newInstance来创建</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NewInstanceFactory</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Factory</span> </span>&#123;<br><br>    <span class="hljs-meta">@SuppressWarnings(&quot;ClassNewInstance&quot;)</span><br>    <span class="hljs-meta">@NonNull</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> &lt;T extends ViewModel&gt; <span class="hljs-function">T <span class="hljs-title">create</span><span class="hljs-params">(<span class="hljs-meta">@NonNull</span> Class&lt;T&gt; modelClass)</span> </span>&#123;<br>        <span class="hljs-comment">//noinspection TryWithIdenticalCatches</span><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">return</span> modelClass.newInstance();<br>        &#125; <span class="hljs-keyword">catch</span> (InstantiationException e) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<span class="hljs-string">&quot;Cannot create an instance of &quot;</span> + modelClass, e);<br>        &#125; <span class="hljs-keyword">catch</span> (IllegalAccessException e) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<span class="hljs-string">&quot;Cannot create an instance of &quot;</span> + modelClass, e);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
 
       </section>
 
@@ -265,7 +269,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LiveData%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="toc-number">1.</span> <span class="toc-text">LiveData的优势</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LiveData"><span class="toc-number">1.</span> <span class="toc-text">LiveData</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LiveData%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="toc-number">2.</span> <span class="toc-text">LiveData的优势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ViewModel"><span class="toc-number">3.</span> <span class="toc-text">ViewModel</span></a></li></ol>
   </div>
 </section>
 
