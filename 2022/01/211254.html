@@ -24,7 +24,7 @@
 
   
 
-  <title>HTTP和HTTPS的区别 | ReasonLee</title>
+  <title>SQLite 个人使用相关 | ReasonLee</title>
 
   
 
@@ -102,20 +102,20 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">HTTP和HTTPS的区别</h1>
+          <h1 class="title-wrap">SQLite 个人使用相关</h1>
           <h2 class="title-sub-wrap">
             <strong>ReasonLee</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2022-01-11T01:20:14.000Z" itemprop="datePublished">2022-01-11</time>
+            <time  class="article-date" datetime="2022-01-21T04:54:12.000Z" itemprop="datePublished">2022-01-21</time>
           </h2>
           <ul class="wrap-list dark">
   
-    <li><a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">📒 计算机网络</a></li>
+    <li><a href="/categories/Android/">📒 Android</a></li>
   
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">🏷️ 计算机网络</a></li>
+    <li><a href="/tags/Android/">🏷️ Android</a></li>
   
 </ul>
         </div>
@@ -139,38 +139,12 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>一、HTTPS协议需要到证书颁发机构CA申请证书，HTTP不用申请证书；</p>
-<p>二、HTTP是超文本传输协议，属于应用层信息传输，HTTPS 则是具有SSL加密传安全性传输协议，对数据的传输进行加密，相当于HTTP的升级版；</p>
-<p>三、HTTP和HTTPS使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</p>
-<p>四、HTTP的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比HTTP协议安全。</p>
-<h2 id="HTTPS加密流程"><a href="#HTTPS加密流程" class="headerlink" title="HTTPS加密流程"></a>HTTPS加密流程</h2><p>HTTPS是通过SSL(安全套接层)和TLS(安全传输协议)的组合使用，加密TCP载荷即HTTP报文内容，同时通过不对称密钥方式认证身份，保证传输的安全可靠</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7ZtUN6"><img src="https://s4.ax1x.com/2022/01/11/7ZtUN6.png" alt="7ZtUN6.png"></a></p>
-<h4 id="数字证书认证"><a href="#数字证书认证" class="headerlink" title="数字证书认证"></a>数字证书认证</h4><p>由于公钥在下发的时候也容易被替换劫持，所以需要个第三方认证机构确认公钥的正确性</p>
-<p>CA：数字证书认证机构，是客户端服务端都认可的第三方机构，负责数字签名服务端公钥</p>
-<p>​    （CA证书内容包括：电子签证机关，公钥用户信息，公钥，权威机构签名和有效期）</p>
-<p>数字签名：签名就是一种证明身份的机制，是一种校验机制（简单说是用私钥加密内容的hash,公钥解密对比hash判断内容是否完整）</p>
-<p>数字证书：由一个可信的组织验证和签发的识别信息</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7Zta4K"><img src="https://s4.ax1x.com/2022/01/11/7Zta4K.png" alt="7Zta4K.png"></a></p>
-<h2 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h2><p>如何抓取明文HTTPS信息：伪造证书，让用户信任CA证书（权威机构）</p>
-<h2 id="中间人攻击"><a href="#中间人攻击" class="headerlink" title="中间人攻击"></a>中间人攻击</h2><h4 id="过程如下："><a href="#过程如下：" class="headerlink" title="过程如下："></a>过程如下：</h4><ul>
-<li><p>服务器向客户端发送公钥。</p>
-</li>
-<li><p>攻击者截获公钥，保留在自己手上。</p>
-</li>
-<li><p>然后攻击者自己生成一个【伪造的】公钥，发给客户端。</p>
-</li>
-<li><p>客户端收到伪造的公钥后，生成加密hash值发给服务器。</p>
-</li>
-<li><p>攻击者获得加密hash值，用自己的私钥解密获得真秘钥。</p>
-</li>
-<li><p>同时生成假的加密hash值，发给服务器。</p>
-</li>
-<li><p>服务器用私钥解密获得假秘钥。</p>
-</li>
-<li><p>服务器用假秘钥加密传输信息</p>
-</li>
-</ul>
-<h4 id="防范方法："><a href="#防范方法：" class="headerlink" title="防范方法："></a>防范方法：</h4><p>服务端在发送浏览器的公钥中加入CA证书，浏览器可以验证CA证书的有效性</p>
+        <h2 id="DBHelper"><a href="#DBHelper" class="headerlink" title="DBHelper"></a>DBHelper</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.myapplication;<br><br><span class="hljs-keyword">import</span> android.content.ContentValues;<br><span class="hljs-keyword">import</span> android.content.Context;<br><span class="hljs-keyword">import</span> android.database.sqlite.SQLiteDatabase;<br><span class="hljs-keyword">import</span> android.database.sqlite.SQLiteOpenHelper;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DBHelper</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">SQLiteOpenHelper</span> </span>&#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 作为SQLiteOpenHelper子类必须有的构造方法</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> context 上下文参数</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> name 数据库名字</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> factory 游标工厂 ，通常是null</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> version 数据库的版本</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">DBHelper</span><span class="hljs-params">(Context context, String name, SQLiteDatabase.CursorFactory factory, <span class="hljs-keyword">int</span> version)</span> </span>&#123;<br>        <span class="hljs-keyword">super</span>(context, name, factory, version);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onCreate</span><span class="hljs-params">(SQLiteDatabase db)</span> </span>&#123;<br>        <span class="hljs-comment">//创建数据库sql语句</span><br>        String sql = <span class="hljs-string">&quot;create table user(u_id int not null primary key,u_name varchar(50) not null,age int)&quot;</span>;<br>        <span class="hljs-comment">//执行sql语句</span><br>        db.execSQL(sql);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 当数据库的版本号增加调用</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> db</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> oldVersion</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> newVersion</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onUpgrade</span><span class="hljs-params">(SQLiteDatabase db, <span class="hljs-keyword">int</span> oldVersion, <span class="hljs-keyword">int</span> newVersion)</span> </span>&#123;<br><br>    &#125;<br><br><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="DBTest"><a href="#DBTest" class="headerlink" title="DBTest"></a>DBTest</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.myapplication;<br><br><span class="hljs-keyword">import</span> android.content.ContentValues;<br><span class="hljs-keyword">import</span> android.content.Context;<br><span class="hljs-keyword">import</span> android.database.Cursor;<br><span class="hljs-keyword">import</span> android.database.sqlite.SQLiteDatabase;<br><span class="hljs-keyword">import</span> android.util.Log;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DBTest</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> DBHelper dbHelper;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">DBTest</span><span class="hljs-params">(Context context)</span></span>&#123;<br>        dbHelper = <span class="hljs-keyword">new</span> DBHelper(context,<span class="hljs-string">&quot;myDB&quot;</span>,<span class="hljs-keyword">null</span>,<span class="hljs-number">1</span>);<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(String name,<span class="hljs-keyword">int</span> age)</span></span>&#123;<br>        <span class="hljs-comment">// 通过DBHelper类获取一个读写的SQLiteDatabase对象</span><br>        SQLiteDatabase db=dbHelper.getWritableDatabase();<br>        <span class="hljs-comment">// 创建ContentValue设置参数</span><br>        ContentValues contentValues=<span class="hljs-keyword">new</span> ContentValues();<br>        contentValues.put(<span class="hljs-string">&quot;u_id&quot;</span>,<span class="hljs-number">1</span>);<br>        contentValues.put(<span class="hljs-string">&quot;u_name&quot;</span>,name);<br>        contentValues.put(<span class="hljs-string">&quot;age&quot;</span>,age);<br>        <span class="hljs-comment">// 插入数据</span><br>        <span class="hljs-comment">// insert方法参数1：要插入的表名</span><br>        <span class="hljs-comment">// insert方法参数2：如果发现将要插入的行为空时，会将这个列名的值设为null</span><br>        <span class="hljs-comment">// insert方法参数3：contentValue</span><br>        <span class="hljs-keyword">long</span> i=db.insert(<span class="hljs-string">&quot;user&quot;</span>,<span class="hljs-keyword">null</span> ,contentValues);<br><br>        <span class="hljs-comment">// 释放连接</span><br>        db.close();<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(String name,<span class="hljs-keyword">int</span> age)</span></span>&#123;<br>        <span class="hljs-comment">// 通过DBHelper类获取一个读写的SQLiteDatabase对象</span><br>        SQLiteDatabase db=dbHelper.getWritableDatabase();<br>        <span class="hljs-comment">// 创建ContentValue设置参数</span><br>        ContentValues contentValues=<span class="hljs-keyword">new</span> ContentValues();<br>        contentValues.put(<span class="hljs-string">&quot;age&quot;</span>,age);<br>        <span class="hljs-comment">// 修改数据</span><br>        <span class="hljs-comment">// 参数1：tablename</span><br>        <span class="hljs-comment">// 参数2：修改的值</span><br>        <span class="hljs-comment">// 参数3：修改的条件（SQL where语句）</span><br>        <span class="hljs-comment">// 参数4：表示whereClause语句中的表达式的占位符参数列表，这些字符串会替换where条件中?</span><br>        db.update(<span class="hljs-string">&quot;user&quot;</span>,contentValues,<span class="hljs-string">&quot;name=?&quot;</span>,<span class="hljs-keyword">new</span> String[]&#123;name&#125;);<br><br>        <span class="hljs-comment">// 释放连接</span><br>        db.close();<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">delete</span><span class="hljs-params">(<span class="hljs-keyword">long</span> id)</span> </span>&#123;<br>        <span class="hljs-comment">// 通过DBHelper类获取一个读写的SQLiteDatabase对象</span><br>        SQLiteDatabase db = dbHelper.getWritableDatabase();<br>        <span class="hljs-comment">// 参数1：tablename</span><br>        <span class="hljs-comment">// 参数2：删除的条件（SQL语句）</span><br>        <span class="hljs-comment">// 参数3：给修改的条件注入参数，一个或多个</span><br>        db.delete(<span class="hljs-string">&quot;user&quot;</span>, <span class="hljs-string">&quot;u_id=?&quot;</span>, <span class="hljs-keyword">new</span> String[]&#123;id + <span class="hljs-string">&quot;&quot;</span>&#125;);<br>        <span class="hljs-comment">// 释放连接</span><br>        db.close();<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">query</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-comment">// 通过DBHelper类获取一个读写的SQLiteDatabase对象</span><br>        SQLiteDatabase db = dbHelper.getWritableDatabase();<br>        <span class="hljs-comment">// 参数1：table_name</span><br>        <span class="hljs-comment">// 参数2：columns 要查询出来的列名。相当于 select  *** from table语句中的 ***部分</span><br>        <span class="hljs-comment">// 参数3：selection 查询条件字句，在条件子句允许使用占位符“?”表示条件值</span><br>        <span class="hljs-comment">// 参数4：selectionArgs ：对应于 selection参数 占位符的值</span><br>        <span class="hljs-comment">// 参数5：groupby 相当于 select *** from table where &amp;&amp; group by ... 语句中 ... 的部分</span><br>        <span class="hljs-comment">// 参数6：having 相当于 select *** from table where &amp;&amp; group by ...having %%% 语句中 %%% 的部分</span><br>        <span class="hljs-comment">// 参数7：orderBy ：相当于 select  ***from ？？  where&amp;&amp; group by ...having %%% order by@@语句中的@@ 部分，如： personid desc（按person 降序）</span><br>        Cursor cursor = db.query(<span class="hljs-string">&quot;user&quot;</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>);<br><br>        <span class="hljs-comment">// 将游标移到开头</span><br>        cursor.moveToFirst();<br><br>        <span class="hljs-keyword">while</span> (!cursor.isAfterLast()) &#123; <span class="hljs-comment">// 游标只要不是在最后一行之后，就一直循环</span><br><br>            <span class="hljs-keyword">int</span> id=cursor.getInt(<span class="hljs-number">0</span>);<br>            String name=cursor.getString(<span class="hljs-number">1</span>);<br>            Log.e(<span class="hljs-string">&quot;testtest&quot;</span>,name);<br>            <span class="hljs-comment">// 将游标移到下一行</span><br>            cursor.moveToNext();<br><br>        &#125;<br><br>        db.close();<br>    &#125;<br><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
 
       </section>
 
@@ -183,8 +157,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/111520.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">HTTP总览</h2>
+        <a href="/2022/02/031920.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Android：Handler机制</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -198,8 +172,8 @@
     
     <div class="card-text">
       
-        <a href="/2022/01/101920.html" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">IM心跳是怎么回事</h2>
+        <a href="/2022/01/200120.html" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">JAVA：多线程</h2>
         </a>
       
       <div class="card-text--row">Older</div>
@@ -268,7 +242,7 @@
     <span>TOC</span>
   </div>
   <div class="widget-body">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS%E5%8A%A0%E5%AF%86%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">HTTPS加密流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">补充：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB"><span class="toc-number">4.</span> <span class="toc-text">中间人攻击</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DBHelper"><span class="toc-number">1.</span> <span class="toc-text">DBHelper</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DBTest"><span class="toc-number">2.</span> <span class="toc-text">DBTest</span></a></li></ol>
   </div>
 </section>
 
